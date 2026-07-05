@@ -9,6 +9,11 @@ h2 {
     margin-bottom: 20px;
 }
 
+h3 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
 p {
     color: var(--text-primary);
     line-height: 1.6;
