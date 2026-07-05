@@ -1,0 +1,14 @@
+:root {
+    /* Navy Blues - Your primary brand colors */
+    --primary-color: #0b101b;
+    /* Dark navy - primary background */
+    --sidebar-color: #111722;
+    /* Slightly lighter - sidebar */
+    --hover-color: #262059;
+    --selected-color: #2e5ef7;
+    /* Medium - hover states */
+
+    /* Text & UI */
+    --text-primary: #ffffff;
+    /* White text on dark */
+}

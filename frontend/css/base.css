@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h2 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+p {
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+}

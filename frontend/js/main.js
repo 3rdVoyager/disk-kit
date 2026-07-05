@@ -2,10 +2,16 @@ const toolContent = {
   home: `
     <h2>Welcome to Disk Kit</h2>
     <p>Select a tool from the sidebar to get started.</p>
+    <div id="file-browser">
+      <div class="breadcrumbs">Home</div>
+      <div id="file-list">
+      <!-- File explorer content will be loaded here -->
+      </div>
+    </div>
   `,
   rename: `
     <h2>Rename</h2>
-    <p>Batch rename files using patterns and rules.</p>
+    <p>Batch rename your files with this simple tool.</p>
   `,
   convert: `
     <h2>Convert</h2>
@@ -74,3 +80,23 @@ document.addEventListener('DOMContentLoaded', () => {
   init();
   setupNavigation();
 });
+
+async function loadFileBrowser(path = '') {
+  // For now, mock data - later connect to backend
+  const mockFiles = [
+    { name: 'Documents', type: 'folder', size: '--' },
+    { name: 'Downloads', type: 'folder', size: '--' },
+    { name: 'Project', type: 'folder', size: '--' },
+    { name: 'notes.txt', type: 'file', size: '2 KB' },
+    { name: 'image.png', type: 'file', size: '1.4 MB' },
+  ];
+
+  const fileList = document.getElementById('file-list');
+  fileList.innerHTML = mockFiles.map(file => `
+    <div class="file-item" data-type="${file.type}" data-name="${file.name}">
+      <span class="file-icon">📁</span>
+      <span class="file-name">${file.name}</span>
+      <span class="file-size">${file.size}</span>
+    </div>
+  `).join('');
+}
