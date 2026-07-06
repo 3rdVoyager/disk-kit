@@ -12,34 +12,37 @@ main {
     min-height: 100vh;
     overflow-y: auto;
     color: var(--text-primary);
+    padding-bottom: 200px;
 }
 
 #sidebar {
     width: 280px;
     background-color: var(--sidebar-color);
-    padding: 14px 0;
+    padding: 0;
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    border-right: 2px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 8px #000000;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #sidebar h2 {
     color: var(--text-primary);
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 10px 20px;
+    padding: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid var(--border-color);
 }
 
 #sidebar ul {
     list-style: none;
-    padding: 0 12px;
+    padding: 0;
     margin: 0;
 }
 
@@ -52,21 +55,41 @@ main {
     padding: 0 12px;
 }
 
-#sidebar h3 {
+#sidebar .nav-title {
     text-transform: uppercase;
-    padding: 12px 12px;
+    padding: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    color: var(--text-secondary);
     display: block;
+    position: relative;
+    margin-top: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+#sidebar>ul>li:first-child .nav-title {
+    padding-top: 8px;
+    margin-top: 0;
 }
 
 
 #sidebar a {
-    display: block;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin: 4px 0;
     color: var(--text-primary);
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid transparent;
-    transition: all 0.3s;
+    transition: all var(--transition-fast);
+    font-size: 1rem;
+    position: relative;
+    outline: none;
 }
 
 #sidebar a:hover {
@@ -74,11 +97,17 @@ main {
 }
 
 #sidebar a.selected {
-    background-color: var(--selected-color);
+    background: var(--selected-color);
+    color: var(--text-primary);
 }
 
 #sidebar .nav-icon {
-    font-size: 1.1rem;
-    width: 24px;
+    font-size: 1.2rem;
     text-align: center;
+    transition: all var(--transition-fast);
+    opacity: 0.85;
+}
+
+#sidebar a:hover .nav-icon {
+    transform: rotate(-10deg) scale(1.1);
 }

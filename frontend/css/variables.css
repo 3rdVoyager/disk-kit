@@ -11,5 +11,10 @@
 
     /* Text & UI */
     --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
     /* White text on dark */
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
