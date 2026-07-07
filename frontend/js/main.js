@@ -1,3 +1,6 @@
+// Import icon configuration
+import { ICONS, getIconHTML } from './config/icons.js';
+
 const toolContent = {
   home: null, // Will be loaded from saved HTML
   "browse-files": `
