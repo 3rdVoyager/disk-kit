@@ -6,7 +6,7 @@
 .dashboard-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-default);
-    border-radius: 12px;
+    border-radius: var(--radius-cards);
     padding: 20px;
     overflow: hidden;
     display: flex;
@@ -24,7 +24,7 @@
     align-items: center;
     padding: 12px 16px;
     background-color: var(--bg-elevated);
-    border-radius: 8px 8px 0 0;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
     margin: -20px -20px 20px -20px;
     border-bottom: 1px solid var(--border-default);
 }
@@ -46,7 +46,7 @@
     color: var(--text-secondary);
     cursor: pointer;
     padding: 6px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,7 +76,7 @@
     cursor: pointer;
     font-size: 0.85rem;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     transition: all var(--transition-fast);
 }
 
@@ -89,7 +89,7 @@
     border: 1px solid var(--border-default);
     color: var(--text-primary);
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-size: 0.9rem;
     transition: all var(--transition-fast);
@@ -136,7 +136,7 @@
 .file-thumbnail {
     width: 60px;
     height: 60px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background-color: var(--bg-elevated);
     border: 1px solid var(--border-default);
     display: flex;
@@ -316,7 +316,7 @@
     align-items: center;
     padding: 8px;
     background-color: var(--bg-elevated);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     border: 1px solid transparent;
 }
@@ -329,7 +329,7 @@
 .breakdown-icon {
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -382,13 +382,13 @@
     grid-column: 1 / -1;
     height: 6px;
     background-color: var(--border-default);
-    border-radius: 3px;
+    border-radius: var(--radius-progress);
     overflow: hidden;
 }
 
 .breakdown-fill {
     height: 100%;
-    border-radius: 3px;
+    border-radius: var(--radius-progress);
     transition: width 0.5s ease;
 }
 
@@ -441,7 +441,7 @@
     gap: 12px;
     padding: 12px;
     background-color: var(--bg-elevated);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     border: 1px solid transparent;
     transition: all var(--transition-fast);
     cursor: pointer;
@@ -456,7 +456,7 @@
 .action-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -522,7 +522,7 @@
     height: 32px;
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     color: var(--text-secondary);
     cursor: pointer;
     display: flex;
@@ -572,7 +572,7 @@
     gap: 12px;
     padding: 12px;
     background-color: var(--bg-elevated);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     border: 1px solid transparent;
     transition: all var(--transition-fast);
@@ -591,7 +591,7 @@
 .tool-icon {
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -676,7 +676,7 @@
     gap: 12px;
     padding: 12px;
     background-color: var(--bg-elevated);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     border: 1px solid transparent;
     transition: all var(--transition-fast);
@@ -691,7 +691,7 @@
 .op-icon {
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -771,7 +771,7 @@
     background-color: rgba(34, 197, 94, 0.15);
     color: var(--status-success);
     padding: 4px 10px;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     font-size: 0.75rem;
     font-weight: 500;
     white-space: nowrap;

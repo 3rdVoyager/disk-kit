@@ -16,7 +16,14 @@
        ============================================ */
     --border-default: #2a3042;   /* Default border color */
     --border-accent: #3b82f6;    /* Accent border (btn-action hover, links) */
-
+    
+    /* Border Radius */
+    --radius-cards: 12px;            /* Large cards (dashboard, file browser) */
+    --radius-default: 10px;          /* Default for most components */
+    --radius-md: 8px;                /* Medium radius (items, buttons, badges) */
+    --radius-sm: 6px;                /* Small radius (tool buttons, file items) */
+    --radius-xs: 4px;                /* Extra small (links, subtle elements) */
+    --radius-progress: 3px;          /* Progress bars and fill elements */
     /* ============================================
        TEXT
        ============================================ */
