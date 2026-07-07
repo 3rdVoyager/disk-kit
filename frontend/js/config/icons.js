@@ -33,6 +33,7 @@ export const ICONS = {
   code: 'code',
   
   // Navigation
+  menu: 'menu',
   home: 'home',
   files: 'folder',
   allTools: 'apps',
