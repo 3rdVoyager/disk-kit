@@ -1,0 +1,110 @@
+/* ============================================
+   FILE BROWSER
+   ============================================ */
+
+.file-browser-card {
+    min-height: 400px;
+}
+
+/* File List Header - Column Labels */
+.file-list-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    gap: 16px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #2a3042;
+    margin-bottom: 8px;
+}
+
+/* File List Container */
+.file-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 500px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual File Item */
+.file-item {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    gap: 16px;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all var(--transition-fast);
+}
+
+.file-item:hover {
+    background-color: #2a3042;
+}
+
+.file-item.selected {
+    background-color: #2e5ef7;
+}
+
+.file-item.selected .file-icon,
+.file-item.selected .file-name {
+    color: white;
+}
+
+/* File Icon */
+.file-icon {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+}
+
+.file-icon.folder {
+    color: #fbbf24;
+}
+
+.file-icon.file {
+    color: #9ca3af;
+}
+
+/* File Name */
+.file-name {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* File Date */
+.file-date {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* File Type */
+.file-type {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* File Size */
+.file-size {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    justify-content: flex-end;
+}
+
+/* Breadcrumbs (hidden in view but kept for compatibility) */
+.breadcrumbs {
+    display: none;
+}

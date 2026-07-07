@@ -8,6 +8,9 @@
     --selected-color: #2e5ef7;
     /* Medium - hover states */
     --border-color: #1a1f2e;
+    --dark-color:#0f1419;
+    --dark-color-hover:#1f2937;
+    --temp-color:#2e5ef7;
 
     /* Text & UI */
     --text-primary: #ffffff;

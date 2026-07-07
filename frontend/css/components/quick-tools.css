@@ -1,0 +1,96 @@
+/* ============================================
+   QUICK TOOLS - 2x4 Grid of Tool Cards
+   ============================================ */
+
+.quick-tools-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+/* Grid Container */
+.quick-tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    gap: 12px;
+}
+
+/* Individual Tool Item */
+.quick-tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--dark-color);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.quick-tool-item:hover {
+    background-color: var(--dark-color-hover);
+    border-color: var(--selected-color);
+}
+
+.quick-tool-item:hover .tool-icon .material-symbols-rounded {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+/* Tool Icon Container */
+.tool-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tool-icon .material-symbols-rounded {
+    font-size: 1.4rem;
+    color: white;
+    transition: transform var(--transition-fast);
+}
+
+/* Icon Color Variants */
+.tool-icon.blue {
+    background-color: #2563eb;
+}
+
+.tool-icon.purple {
+    background-color: #9333ea;
+}
+
+.tool-icon.green {
+    background-color: #16a34a;
+}
+
+.tool-icon.orange {
+    background-color: #ea580c;
+}
+
+.tool-icon.gray {
+    background-color: #4b5563;
+}
+
+/* Tool Info */
+.tool-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tool-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.tool-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.3;
+}

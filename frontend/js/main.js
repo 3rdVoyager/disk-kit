@@ -1,12 +1,7 @@
 const toolContent = {
   home: `
-    <h2>Welcome to Disk Kit</h2>
-    <p>Select a tool from the sidebar to get started.</p>
-    <div id="file-browser">
-      <div class="breadcrumbs">Home</div>
-      <div id="file-list">
-      <!-- File explorer content will be loaded here -->
-      </div>
+    <div class="bento-grid">
+      <p class="reloading">Loading home...</p>
     </div>
   `,
   rename: `
@@ -38,18 +33,37 @@ const toolContent = {
 // DOM elements
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
+let originalHomeHTML = '';
 
-// Initialize: Load home content, set first link as active
+// Initialize: Set active state, store home HTML, and load mock files
 function init() {
-  loadContent('home');
+  // Store the original home page HTML for fast restoration
+  originalHomeHTML = contentSection.innerHTML;
+  
   // Set the first nav link as active if the list is not empty
   if (navLinks.length > 0) {
     navLinks[0].classList.add('selected');
+  }
+  
+  // Load mock file browser data
+  const fileList = document.getElementById('file-list');
+  if (fileList) {
+    loadFileBrowser();
   }
 }
 
 // Load content for a given tool
 function loadContent(toolName) {
+  if (toolName === 'home') {
+    // Restore the original home HTML from memory (instant, no re-parsing)
+    contentSection.innerHTML = originalHomeHTML;
+    // Reload file browser data since we just restored the HTML
+    const fileList = document.getElementById('file-list');
+    if (fileList) {
+      loadFileBrowser();
+    }
+    return;
+  }
   const content = toolContent[toolName] || `<h2>Tool Coming Soon</h2><p>This feature is under development.</p>`;
   contentSection.innerHTML = content;
 }
@@ -93,10 +107,10 @@ async function loadFileBrowser(path = '') {
 
   const fileList = document.getElementById('file-list');
   fileList.innerHTML = mockFiles.map(file => `
-    <div class="file-item" data-type="${file.type}" data-name="${file.name}">
+    <li class="file-item" data-type="${file.type}" data-name="${file.name}">
       <span class="file-icon">📁</span>
       <span class="file-name">${file.name}</span>
       <span class="file-size">${file.size}</span>
-    </div>
+    </li>
   `).join('');
 }
