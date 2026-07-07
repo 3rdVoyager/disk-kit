@@ -178,10 +178,27 @@ function setupNavigation() {
   });
 }
 
+// Toggle sidebar open/closed state
+function setupMenuToggle() {
+  const menuToggle = document.getElementById('menu-toggle');
+  const mainElement = document.querySelector('main');
+
+  if (!menuToggle || !mainElement) return;
+
+  menuToggle.addEventListener('click', () => {
+    const isCollapsed = mainElement.classList.toggle('sidebar-collapsed');
+    const iconSpan = menuToggle.querySelector('.material-symbols-rounded');
+    if (iconSpan) {
+      iconSpan.textContent = isCollapsed ? 'menu_open' : 'menu';
+    }
+  });
+}
+
 // Initialize the app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   init();
   setupNavigation();
+  setupMenuToggle();
 });
 
 async function loadFileBrowser(path = '') {
