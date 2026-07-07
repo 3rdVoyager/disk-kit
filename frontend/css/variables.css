@@ -4,7 +4,8 @@
        ============================================ */
     --bg-primary: #0b101b;       /* Main page background */
     --bg-sidebar: #111722;       /* Sidebar background */
-    --bg-card: #1a2332;          /* Card background (darker than before for better contrast) */
+    --bg-card: #0b101b;          /* Card background (darker than before for better contrast) */
+    --bg-header: #1a2332;        /* Header background (darker than before for better contrast) */
     --bg-elevated: #0f1419;      /* Elevated items inside cards (tool items, ops, breakdowns) */
     --bg-elevated-hover: #1f2937;/* Hover for elevated items */
     --bg-hover: #262059;         /* General hover state (sidebar links, header icons) */
@@ -32,6 +33,7 @@
     --accent-purple: #9333ea;
     --accent-green: #16a34a;
     --accent-orange: #ea580c;
+    --accent-red: #dc2626;
     --accent-gray: #4b5563;
     --accent-yellow: #f59e0b;
     --accent-teal: #0d9488;

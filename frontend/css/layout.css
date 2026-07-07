@@ -13,7 +13,7 @@ main {
     right: 20px;
     height: 60px;
     border-radius: 10px;
-    background-color: var(--bg-card);
+    background-color: var(--bg-header);
     border: 1px solid var(--border-default);
     display: flex;
     align-items: center;
@@ -284,7 +284,6 @@ header,
     font-size: 1.2rem;
     text-align: center;
     transition: all var(--transition-fast);
-    opacity: 0.85;
     flex-shrink: 0;
 }
 
@@ -358,7 +357,7 @@ header,
 
 .sidebar-collapsed #sidebar a .nav-icon {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 .sidebar-collapsed #sidebar #menu-toggle {
