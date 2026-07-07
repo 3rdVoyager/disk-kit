@@ -21,7 +21,7 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background-color: var(--dark-color);
+    background-color: var(--bg-elevated);
     border-radius: 8px;
     cursor: pointer;
     border: 1px solid transparent;
@@ -29,8 +29,8 @@
 }
 
 .quick-tool-item:hover {
-    background-color: var(--dark-color-hover);
-    border-color: var(--selected-color);
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
 }
 
 .quick-tool-item:hover .tool-icon .material-symbols-rounded {
@@ -56,23 +56,31 @@
 
 /* Icon Color Variants */
 .tool-icon.blue {
-    background-color: #2563eb;
+    background-color: var(--accent-blue);
 }
 
 .tool-icon.purple {
-    background-color: #9333ea;
+    background-color: var(--accent-purple);
 }
 
 .tool-icon.green {
-    background-color: #16a34a;
+    background-color: var(--accent-green);
 }
 
 .tool-icon.orange {
-    background-color: #ea580c;
+    background-color: var(--accent-orange);
 }
 
 .tool-icon.gray {
-    background-color: #4b5563;
+    background-color: var(--accent-gray);
+}
+
+.tool-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.tool-icon.teal {
+    background-color: var(--accent-teal);
 }
 
 /* Tool Info */

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components/bentogrid.css" />
+    <link rel="stylesheet" href="css/components/dashboard.css" />
     <link rel="stylesheet" href="css/components/file-browser.css" />
     <link rel="stylesheet" href="css/components/quick-tools.css" />
     <link rel="stylesheet" href="css/components/recent-ops.css" />
@@ -136,9 +136,9 @@
 
       <!-- Main Content Area (this gets swapped by JS) -->
       <section id="content">
-        <div class="bento-grid">
+        <div class="dashboard-grid">
           <!-- Storage Overview Card -->
-          <div class="bento-card storage-overview-card">
+          <div class="dashboard-card storage-overview-card">
             <div class="card-header-row">
               <h3>Storage Overview</h3>
               <button class="btn-link">Details</button>
@@ -169,7 +169,6 @@
                 </div>
               </div>
               <div class="storage-breakdown">
-                <h4>By File Type</h4>
                 <ul class="breakdown-list">
                   <li class="breakdown-item">
                     <span class="breakdown-icon blue"><span class="material-symbols-rounded">image</span></span>
@@ -190,7 +189,7 @@
                     <div class="breakdown-bar"><div class="breakdown-fill green" style="width: 13%"></div></div>
                   </li>
                   <li class="breakdown-item">
-                    <span class="breakdown-icon orange"><span class="material-symbols-rounded">folder</span></span>
+                    <span class="breakdown-icon yellow"><span class="material-symbols-rounded">folder</span></span>
                     <span class="breakdown-label">Other</span>
                     <span class="breakdown-value">59 GB</span>
                     <div class="breakdown-bar"><div class="breakdown-fill orange" style="width: 8%"></div></div>
@@ -201,14 +200,14 @@
           </div>
 
           <!-- Suggested Actions Card -->
-          <div class="bento-card suggested-actions-card">
+          <div class="dashboard-card suggested-actions-card">
             <div class="card-header-row">
               <h3>Suggested Actions</h3>
               <button class="btn-link">Dismiss All</button>
             </div>
             <ul class="actions-list">
               <li class="action-item">
-                <div class="action-icon orange">
+                <div class="action-icon purple">
                   <span class="material-symbols-rounded">auto_fix_high</span>
                 </div>
                 <div class="action-info">
@@ -217,7 +216,7 @@
                 </div>
               </li>
               <li class="action-item">
-                <div class="action-icon purple">
+                <div class="action-icon orange">
                   <span class="material-symbols-rounded">inventory_2</span>
                 </div>
                 <div class="action-info">
@@ -244,7 +243,7 @@
                 </div>
               </li>
               <li class="action-item">
-                <div class="action-icon gray">
+                <div class="action-icon orange">
                   <span class="material-symbols-rounded">storage</span>
                 </div>
                 <div class="action-info">
@@ -256,7 +255,7 @@
           </div>
 
           <!-- Quick Tools Card -->
-          <section class="bento-card quick-tools-card">
+          <section class="dashboard-card quick-tools-card">
             <div class="card-header-row">
               <h3>Quick Tools</h3>
               <button class="btn-link">View All</button>
@@ -281,7 +280,7 @@
                 </div>
               </li>
               <li class="quick-tool-item">
-                <div class="tool-icon green">
+                <div class="tool-icon orange">
                   <span class="material-symbols-rounded">inventory_2</span>
                 </div>
                 <div class="tool-info">
@@ -290,7 +289,7 @@
                 </div>
               </li>
               <li class="quick-tool-item">
-                <div class="tool-icon blue">
+                <div class="tool-icon green">
                   <span class="material-symbols-rounded">find_replace</span>
                 </div>
                 <div class="tool-info">
@@ -338,14 +337,14 @@
           </section>
 
           <!-- Recent Operations Card -->
-          <section class="bento-card recent-ops-card">
+          <section class="dashboard-card recent-ops-card">
             <div class="card-header-row">
               <h3>Recent Operations</h3>
               <button class="btn-link">View All History</button>
             </div>
             <ul class="operations-list">
               <li class="operation-item">
-                <div class="op-icon">
+                <div class="op-icon blue">
                   <span class="material-symbols-rounded">edit</span>
                 </div>
                 <div class="op-details">
@@ -358,7 +357,7 @@
                 </div>
               </li>
               <li class="operation-item">
-                <div class="op-icon">
+                <div class="op-icon purple">
                   <span class="material-symbols-rounded">transform</span>
                 </div>
                 <div class="op-details">
@@ -371,7 +370,7 @@
                 </div>
               </li>
               <li class="operation-item">
-                <div class="op-icon">
+                <div class="op-icon orange">
                   <span class="material-symbols-rounded">inventory_2</span>
                 </div>
                 <div class="op-details">
@@ -384,7 +383,7 @@
                 </div>
               </li>
               <li class="operation-item">
-                <div class="op-icon">
+                <div class="op-icon green">
                   <span class="material-symbols-rounded">find_replace</span>
                 </div>
                 <div class="op-details">
@@ -397,7 +396,7 @@
                 </div>
               </li>
               <li class="operation-item">
-                <div class="op-icon">
+                <div class="op-icon green">
                   <span class="material-symbols-rounded">delete_sweep</span>
                 </div>
                 <div class="op-details">

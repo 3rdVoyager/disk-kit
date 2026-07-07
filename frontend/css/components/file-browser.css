@@ -2,8 +2,8 @@
    FILE BROWSER
    ============================================ */
 
-/* When used in bento grid (on Files tab with details panel) */
-.bento-grid .file-browser-card {
+/* When used in dashboard grid (on Files tab with details panel) */
+.dashboard-grid .file-browser-card {
     min-height: 400px;
 }
 
@@ -24,7 +24,7 @@
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #2a3042;
+    border-bottom: 1px solid var(--border-default);
     margin-bottom: 8px;
 }
 
@@ -58,11 +58,11 @@
 }
 
 .file-item:hover {
-    background-color: #2a3042;
+    background-color: var(--border-default);
 }
 
 .file-item.selected {
-    background-color: #2e5ef7;
+    background-color: var(--accent-primary);
 }
 
 .file-item.selected .file-icon,
@@ -78,11 +78,11 @@
 }
 
 .file-icon.folder {
-    color: #fbbf24;
+    color: var(--accent-yellow);
 }
 
 .file-icon.file {
-    color: #9ca3af;
+    color: var(--text-secondary);
 }
 
 /* File Name */

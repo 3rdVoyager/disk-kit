@@ -20,7 +20,7 @@
     align-items: center;
     gap: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #2a3042;
+    border-bottom: 1px solid var(--border-default);
 }
 
 .storage-ring {
@@ -38,13 +38,13 @@
 
 .circle-bg {
     fill: none;
-    stroke: #2a3042;
+    stroke: var(--border-default);
     stroke-width: 3;
 }
 
 .circle {
     fill: none;
-    stroke: #3b82f6;
+    stroke: var(--accent-info);
     stroke-width: 3;
     stroke-linecap: round;
     transition: stroke-dasharray 0.5s ease;
@@ -95,15 +95,6 @@
     overflow-y: auto;
 }
 
-.storage-breakdown h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
 .breakdown-list {
     list-style: none;
     padding: 0;
@@ -119,13 +110,13 @@
     gap: 12px;
     align-items: center;
     padding: 8px;
-    background-color: #0f1419;
+    background-color: var(--bg-elevated);
     border-radius: 8px;
     transition: all var(--transition-fast);
 }
 
 .breakdown-item:hover {
-    background-color: #1a2332;
+    background-color: var(--bg-card);
 }
 
 .breakdown-icon {
@@ -144,19 +135,27 @@
 }
 
 .breakdown-icon.blue {
-    background-color: #2563eb;
+    background-color: var(--accent-blue);
 }
 
 .breakdown-icon.purple {
-    background-color: #9333ea;
+    background-color: var(--accent-purple);
 }
 
 .breakdown-icon.green {
-    background-color: #16a34a;
+    background-color: var(--accent-green);
 }
 
 .breakdown-icon.orange {
-    background-color: #ea580c;
+    background-color: var(--accent-orange);
+}
+
+.breakdown-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.breakdown-icon.teal {
+    background-color: var(--accent-teal);
 }
 
 .breakdown-label {
@@ -175,7 +174,7 @@
 .breakdown-bar {
     grid-column: 1 / -1;
     height: 6px;
-    background-color: #2a3042;
+    background-color: var(--border-default);
     border-radius: 3px;
     overflow: hidden;
 }
@@ -187,17 +186,25 @@
 }
 
 .breakdown-fill.blue {
-    background-color: #2563eb;
+    background-color: var(--accent-blue);
 }
 
 .breakdown-fill.purple {
-    background-color: #9333ea;
+    background-color: var(--accent-purple);
 }
 
 .breakdown-fill.green {
-    background-color: #16a34a;
+    background-color: var(--accent-green);
 }
 
 .breakdown-fill.orange {
-    background-color: #ea580c;
+    background-color: var(--accent-orange);
+}
+
+.breakdown-fill.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.breakdown-fill.teal {
+    background-color: var(--accent-teal);
 }

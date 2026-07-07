@@ -20,7 +20,7 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background-color: var(--dark-color);
+    background-color: var(--bg-elevated);
     border-radius: 8px;
     cursor: pointer;
     border: 1px solid transparent;
@@ -28,8 +28,8 @@
 }
 
 .operation-item:hover {
-    background-color: var(--dark-color-hover);
-    border-color: var(--selected-color);
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
 }
 
 /* Operation Icon */
@@ -37,11 +37,38 @@
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    background-color: var(--temp-color);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+}
+
+.op-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.op-icon.purple {
+    background-color: var(--accent-purple);
+}
+
+.op-icon.green {
+    background-color: var(--accent-green);
+}
+
+.op-icon.orange {
+    background-color: var(--accent-orange);
+}
+
+.op-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.op-icon.teal {
+    background-color: var(--accent-teal);
+}
+
+.op-icon.gray {
+    background-color: var(--accent-gray);
 }
 
 .op-icon .material-symbols-rounded {
@@ -87,7 +114,7 @@
 .badge-success {
     display: inline-block;
     background-color: rgba(34, 197, 94, 0.15);
-    color: #22c55e;
+    color: var(--status-success);
     padding: 4px 10px;
     border-radius: 6px;
     font-size: 0.75rem;

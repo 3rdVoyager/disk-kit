@@ -1,23 +1,50 @@
 :root {
-    /* Navy Blues - Your primary brand colors */
-    --primary-color: #0b101b;
-    /* Dark navy - primary background */
-    --sidebar-color: #111722;
-    /* Slightly lighter - sidebar */
-    --hover-color: #262059;
-    --selected-color: #2e5ef7;
-    /* Medium - hover states */
-    --border-color: #1a1f2e;
-    --dark-color:#0f1419;
-    --dark-color-hover:#1f2937;
-    --temp-color:#2e5ef7;
+    /* ============================================
+       SURFACE COLORS
+       ============================================ */
+    --bg-primary: #0b101b;       /* Main page background */
+    --bg-sidebar: #111722;       /* Sidebar background */
+    --bg-card: #1a2332;          /* Card background (darker than before for better contrast) */
+    --bg-elevated: #0f1419;      /* Elevated items inside cards (tool items, ops, breakdowns) */
+    --bg-elevated-hover: #1f2937;/* Hover for elevated items */
+    --bg-hover: #262059;         /* General hover state (sidebar links, header icons) */
+    --bg-selected: #2e5ef7;      /* Selected/active state */
 
-    /* Text & UI */
+    /* ============================================
+       BORDERS
+       ============================================ */
+    --border-default: #2a3042;   /* Default border color */
+    --border-accent: #3b82f6;    /* Accent border (btn-action hover, links) */
+
+    /* ============================================
+       TEXT
+       ============================================ */
     --text-primary: #ffffff;
     --text-secondary: #9ca3af;
-    /* White text on dark */
 
-    /* Transitions */
+    /* ============================================
+       ACCENT COLORS (for icons, badges, progress bars)
+       ============================================ */
+    --accent-primary: #2e5ef7;   /* Primary accent (selected state, profile icon) */
+    --accent-info: #3b82f6;      /* Info/link accent (btn-link, storage ring) */
+    
+    --accent-blue: #2563eb;
+    --accent-purple: #9333ea;
+    --accent-green: #16a34a;
+    --accent-orange: #ea580c;
+    --accent-gray: #4b5563;
+    --accent-yellow: #f59e0b;
+    --accent-teal: #0d9488;
+
+    /* ============================================
+       STATUS COLORS
+       ============================================ */
+    --status-success: #22c55e;
+    --status-error: #ef4444;
+
+    /* ============================================
+       TRANSITIONS
+       ============================================ */
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -2,24 +2,25 @@ main {
     display: flex;
     width: 100%;
     min-height: 100vh;
-    background-color: var(--primary-color);
+    background-color: var(--bg-primary);
 }
 
-/* Global Header */
+/* Global Header - Solid with strong shadow */
 .global-header {
     position: fixed;
-    top: 0;
-    left: 280px;
-    right: 0;
+    top: 10px;
+    left: 300px;
+    right: 20px;
     height: 60px;
-    background-color: var(--sidebar-color);
-    border-bottom: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-default);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 24px;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0px 32px 10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 .header-left {
@@ -30,7 +31,7 @@ main {
 
 .breadcrumb-path {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
@@ -44,8 +45,8 @@ main {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--primary-color);
-    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--bg-card);
     border-radius: 8px;
     padding: 8px 12px;
     min-width: 300px;
@@ -83,7 +84,7 @@ main {
 }
 
 .header-icon:hover {
-    background-color: var(--hover-color);
+    background-color: var(--bg-hover);
     color: var(--text-primary);
 }
 
@@ -91,7 +92,7 @@ main {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: var(--selected-color);
+    background-color: var(--accent-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,37 +125,37 @@ header,
     padding-top: 20px;
 }
 
-/* Bento Grid Layout */
-.bento-grid {
+/* Dashboard Grid Layout */
+.dashboard-grid {
     display: grid;
     grid-template-columns: 1fr 400px;
     grid-template-rows: auto auto;
     gap: 20px;
 }
 
-.file-browser-card {
+.dashboard-grid .file-browser-card {
     grid-column: 1;
     grid-row: 1;
 }
 
-.details-card {
+.dashboard-grid .details-card {
     grid-column: 2;
     grid-row: 1;
 }
 
-.quick-tools-card {
+.dashboard-grid .quick-tools-card {
     grid-column: 1;
     grid-row: 2;
 }
 
-.recent-ops-card {
+.dashboard-grid .recent-ops-card {
     grid-column: 2;
     grid-row: 2;
 }
 
 #sidebar {
     width: 280px;
-    background-color: var(--sidebar-color);
+    background-color: var(--bg-sidebar);
     padding: 0;
     position: fixed;
     top: 0;
@@ -162,7 +163,7 @@ header,
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    border-right: 1px solid var(--border-color);
+    border-right: 1px solid var(--bg-card);
     box-shadow: 2px 0 8px #000000;
     display: flex;
     flex-direction: column;
@@ -175,7 +176,7 @@ header,
     padding: 15px;
     margin: 0 15px;
     margin-bottom: 15px;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--bg-card);
 }
 
 #sidebar ul {
@@ -205,7 +206,7 @@ header,
     margin-top: 16px;
     margin-left: 8px;
     margin-right: 8px;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--bg-card);
 }
 
 #sidebar>ul>li:first-child .nav-title {
@@ -231,11 +232,11 @@ header,
 }
 
 #sidebar a:hover {
-    background-color: var(--hover-color);
+    background-color: var(--bg-hover);
 }
 
 #sidebar a.selected {
-    background: var(--selected-color);
+    background: var(--bg-selected);
     color: var(--text-primary);
 }
 

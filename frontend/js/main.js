@@ -4,9 +4,9 @@ import { ICONS, getIconHTML } from './config/icons.js';
 const toolContent = {
   home: null, // Will be loaded from saved HTML
   "browse-files": `
-    <div class="bento-grid">
+    <div class="dashboard-grid">
       <!-- File Browser Card -->
-      <div class="bento-card file-browser-card">
+      <div class="dashboard-card file-browser-card">
         <div class="browser-toolbar">
           <div class="toolbar-left">
             <button class="btn-tool" title="New">
@@ -46,7 +46,7 @@ const toolContent = {
       </div>
 
       <!-- File Details Panel -->
-      <div class="bento-card details-card">
+      <div class="dashboard-card details-card">
         <div class="details-header">
           <div class="file-thumbnail">
             <span class="material-symbols-rounded">insert_drive_file</span>

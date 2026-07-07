@@ -22,7 +22,7 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background-color: #0f1419;
+    background-color: var(--bg-elevated);
     border-radius: 8px;
     border: 1px solid transparent;
     transition: all var(--transition-fast);
@@ -30,8 +30,8 @@
 }
 
 .action-item:hover {
-    background-color: #1a2332;
-    border-color: var(--selected-color);
+    background-color: var(--bg-card);
+    border-color: var(--accent-primary);
 }
 
 /* Action Icon */
@@ -51,23 +51,31 @@
 }
 
 .action-icon.orange {
-    background-color: #ea580c;
+    background-color: var(--accent-orange);
 }
 
 .action-icon.purple {
-    background-color: #9333ea;
+    background-color: var(--accent-purple);
 }
 
 .action-icon.green {
-    background-color: #16a34a;
+    background-color: var(--accent-green);
 }
 
 .action-icon.blue {
-    background-color: #2563eb;
+    background-color: var(--accent-blue);
 }
 
 .action-icon.gray {
-    background-color: #4b5563;
+    background-color: var(--accent-gray);
+}
+
+.action-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.action-icon.teal {
+    background-color: var(--accent-teal);
 }
 
 /* Action Info */
@@ -107,9 +115,9 @@
 }
 
 .action-btn:hover {
-    background-color: var(--selected-color);
+    background-color: var(--accent-primary);
     color: white;
-    border-color: var(--selected-color);
+    border-color: var(--accent-primary);
 }
 
 .action-btn .material-symbols-rounded {
@@ -119,5 +127,5 @@
 /* Dismiss All Button */
 .suggested-actions-card .btn-link:hover {
     background-color: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
+    color: var(--status-error);
 }
