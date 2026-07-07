@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/components/file-browser.css" />
     <link rel="stylesheet" href="css/components/quick-tools.css" />
     <link rel="stylesheet" href="css/components/recent-ops.css" />
+    <link rel="stylesheet" href="css/components/storage-overview.css" />
+    <link rel="stylesheet" href="css/components/suggested-actions.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
       rel="stylesheet"
@@ -51,7 +53,7 @@
               >Home</a
             >
           </li>
-          <li><a class="nav-link" href="#files"><span class="nav-icon material-symbols-rounded">folder</span>Files</a></li>
+          <li><a class="nav-link" href="#browse-files"><span class="nav-icon material-symbols-rounded">folder</span>Files</a></li>
           <li><a class="nav-link" href="#alltools"><span class="nav-icon material-symbols-rounded">apps</span>All Tools</a></li>
           <li>
             <h3 class="nav-title">Tools</h3>
@@ -134,81 +136,122 @@
       <!-- Main Content Area (this gets swapped by JS) -->
       <section id="content">
         <div class="bento-grid">
-          <!-- File Browser Card -->
-          <div class="bento-card file-browser-card">
-            <div class="browser-toolbar">
-              <div class="toolbar-left">
-                <button class="btn-tool" title="New">
-                  <span class="material-symbols-rounded">add</span>
-                </button>
-                <button class="btn-tool" title="Cut">
-                  <span class="material-symbols-rounded">content_cut</span>
-                </button>
-                <button class="btn-tool" title="Copy">
-                  <span class="material-symbols-rounded">content_copy</span>
-                </button>
-                <button class="btn-tool" title="Paste">
-                  <span class="material-symbols-rounded">content_paste</span>
-                </button>
-                <button class="btn-tool" title="Delete">
-                  <span class="material-symbols-rounded">delete</span>
-                </button>
+          <!-- Storage Overview Card -->
+          <div class="bento-card storage-overview-card">
+            <div class="card-header-row">
+              <h3>Storage Overview</h3>
+              <button class="btn-link">Details</button>
+            </div>
+            <div class="storage-content">
+              <div class="storage-main">
+                <div class="storage-ring">
+                  <svg viewBox="0 0 36 36" class="circular-chart">
+                    <path class="circle-bg"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path class="circle"
+                      stroke-dasharray="75, 100"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <div class="storage-percentage">75%</div>
+                </div>
+                <div class="storage-info">
+                  <div class="storage-total">
+                    <span class="storage-label">Total Used</span>
+                    <span class="storage-value">756 GB</span>
+                  </div>
+                  <div class="storage-available">
+                    <span class="storage-label">Available</span>
+                    <span class="storage-value">244 GB</span>
+                  </div>
+                </div>
               </div>
-              <div class="toolbar-right">
-                <button class="btn-icon" title="Sort">
-                  <span class="material-symbols-rounded">sort</span>
-                </button>
-                <button class="btn-icon" title="View">
-                  <span class="material-symbols-rounded">grid_view</span>
-                </button>
+              <div class="storage-breakdown">
+                <h4>By File Type</h4>
+                <ul class="breakdown-list">
+                  <li class="breakdown-item">
+                    <span class="breakdown-icon blue"><span class="material-symbols-rounded">image</span></span>
+                    <span class="breakdown-label">Images</span>
+                    <span class="breakdown-value">312 GB</span>
+                    <div class="breakdown-bar"><div class="breakdown-fill blue" style="width: 41%"></div></div>
+                  </li>
+                  <li class="breakdown-item">
+                    <span class="breakdown-icon purple"><span class="material-symbols-rounded">movie</span></span>
+                    <span class="breakdown-label">Videos</span>
+                    <span class="breakdown-value">287 GB</span>
+                    <div class="breakdown-bar"><div class="breakdown-fill purple" style="width: 38%"></div></div>
+                  </li>
+                  <li class="breakdown-item">
+                    <span class="breakdown-icon green"><span class="material-symbols-rounded">description</span></span>
+                    <span class="breakdown-label">Documents</span>
+                    <span class="breakdown-value">98 GB</span>
+                    <div class="breakdown-bar"><div class="breakdown-fill green" style="width: 13%"></div></div>
+                  </li>
+                  <li class="breakdown-item">
+                    <span class="breakdown-icon orange"><span class="material-symbols-rounded">folder</span></span>
+                    <span class="breakdown-label">Other</span>
+                    <span class="breakdown-value">59 GB</span>
+                    <div class="breakdown-bar"><div class="breakdown-fill orange" style="width: 8%"></div></div>
+                  </li>
+                </ul>
               </div>
             </div>
-            <div class="file-list-header">
-              <span class="col-name">Name</span>
-              <span class="col-date">Date Modified</span>
-              <span class="col-type">Type</span>
-              <span class="col-size">Size</span>
-            </div>
-            <ul class="file-list" id="file-list">
-              <!-- Files will be loaded here -->
-            </ul>
           </div>
 
-          <!-- Details Panel Card -->
-          <div class="bento-card details-card">
-            <div class="details-header">
-              <div class="file-thumbnail">
-                <span class="material-symbols-rounded">insert_drive_file</span>
-              </div>
-              <div class="file-info">
-                <h3 id="detail-filename">example.py</h3>
-                <p class="file-type" id="detail-filetype">Python File</p>
-              </div>
+          <!-- Suggested Actions Card -->
+          <div class="bento-card suggested-actions-card">
+            <div class="card-header-row">
+              <h3>Suggested Actions</h3>
+              <button class="btn-link">Dismiss All</button>
             </div>
-            <div class="details-meta">
-              <div class="meta-row">
-                <span class="meta-label">Location</span>
-                <span class="meta-value" id="detail-location">C:\Projects\DiskKit</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-label">Size</span>
-                <span class="meta-value" id="detail-size">8.6 KB</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-label">Date Modified</span>
-                <span class="meta-value" id="detail-modified">2025-05-20</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-label">Date Created</span>
-                <span class="meta-value" id="detail-created">2025-05-17</span>
-              </div>
-            </div>
-            
-            <div class="details-actions">
-              <button class="btn-action">Open</button>
-              <button class="btn-action">Open Containing Folder</button>
-              <button class="btn-action">Copy Path</button>
-            </div>
+            <ul class="actions-list">
+              <li class="action-item">
+                <div class="action-icon orange">
+                  <span class="material-symbols-rounded">auto_fix_high</span>
+                </div>
+                <div class="action-info">
+                  <h4>Organize Downloads</h4>
+                  <p>12 files could be sorted into folders</p>
+                </div>
+              </li>
+              <li class="action-item">
+                <div class="action-icon purple">
+                  <span class="material-symbols-rounded">inventory_2</span>
+                </div>
+                <div class="action-info">
+                  <h4>Compress old projects</h4>
+                  <p>Save 8.2 GB by compressing 3 folders</p>
+                </div>
+              </li>
+              <li class="action-item">
+                <div class="action-icon green">
+                  <span class="material-symbols-rounded">find_replace</span>
+                </div>
+                <div class="action-info">
+                  <h4>Remove duplicates</h4>
+                  <p>2.4 GB can be freed</p>
+                </div>
+              </li>
+              <li class="action-item">
+                <div class="action-icon blue">
+                  <span class="material-symbols-rounded">edit</span>
+                </div>
+                <div class="action-info">
+                  <h4>Batch rename photos</h4>
+                  <p>24 images in Camera Roll</p>
+                </div>
+              </li>
+              <li class="action-item">
+                <div class="action-icon gray">
+                  <span class="material-symbols-rounded">storage</span>
+                </div>
+                <div class="action-info">
+                  <h4>Review large files</h4>
+                  <p>15 files over 100 MB</p>
+                </div>
+              </li>
+            </ul>
           </div>
 
           <!-- Quick Tools Card -->

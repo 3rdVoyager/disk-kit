@@ -1,7 +1,82 @@
 const toolContent = {
-  home: `
+  home: null, // Will be loaded from saved HTML
+  "browse-files": `
     <div class="bento-grid">
-      <p class="reloading">Loading home...</p>
+      <!-- File Browser Card -->
+      <div class="bento-card file-browser-card">
+        <div class="browser-toolbar">
+          <div class="toolbar-left">
+            <button class="btn-tool" title="New">
+              <span class="material-symbols-rounded">add</span>
+            </button>
+            <button class="btn-tool" title="Cut">
+              <span class="material-symbols-rounded">content_cut</span>
+            </button>
+            <button class="btn-tool" title="Copy">
+              <span class="material-symbols-rounded">content_copy</span>
+            </button>
+            <button class="btn-tool" title="Paste">
+              <span class="material-symbols-rounded">content_paste</span>
+            </button>
+            <button class="btn-tool" title="Delete">
+              <span class="material-symbols-rounded">delete</span>
+            </button>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-icon" title="Sort">
+              <span class="material-symbols-rounded">sort</span>
+            </button>
+            <button class="btn-icon" title="View">
+              <span class="material-symbols-rounded">grid_view</span>
+            </button>
+          </div>
+        </div>
+        <div class="file-list-header">
+          <span class="col-name">Name</span>
+          <span class="col-date">Date Modified</span>
+          <span class="col-type">Type</span>
+          <span class="col-size">Size</span>
+        </div>
+        <ul class="file-list" id="file-list">
+          <!-- Files will be loaded here -->
+        </ul>
+      </div>
+
+      <!-- File Details Panel -->
+      <div class="bento-card details-card">
+        <div class="details-header">
+          <div class="file-thumbnail">
+            <span class="material-symbols-rounded">insert_drive_file</span>
+          </div>
+          <div class="file-info">
+            <h3 id="detail-filename">Select a file</h3>
+            <p class="file-type" id="detail-filetype">--</p>
+          </div>
+        </div>
+        <div class="details-meta">
+          <div class="meta-row">
+            <span class="meta-label">Location</span>
+            <span class="meta-value" id="detail-location">--</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Size</span>
+            <span class="meta-value" id="detail-size">--</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Date Modified</span>
+            <span class="meta-value" id="detail-modified">--</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Date Created</span>
+            <span class="meta-value" id="detail-created">--</span>
+          </div>
+        </div>
+        <div class="details-actions">
+          <button class="btn-action">Open</button>
+          <button class="btn-action">Open Containing Folder</button>
+          <button class="btn-action">Copy Path</button>
+        </div>
+      </div>
     </div>
   `,
   rename: `
@@ -57,14 +132,25 @@ function loadContent(toolName) {
   if (toolName === 'home') {
     // Restore the original home HTML from memory (instant, no re-parsing)
     contentSection.innerHTML = originalHomeHTML;
-    // Reload file browser data since we just restored the HTML
-    const fileList = document.getElementById('file-list');
-    if (fileList) {
-      loadFileBrowser();
-    }
     return;
   }
-  const content = toolContent[toolName] || `<h2>Tool Coming Soon</h2><p>This feature is under development.</p>`;
+  
+  const content = toolContent[toolName];
+  if (!content) {
+    contentSection.innerHTML = `<h2>Tool Coming Soon</h2><p>This feature is under development.</p>`;
+    return;
+  }
+  
+  if (toolName === 'browse-files') {
+    // Load the file browser view
+    contentSection.innerHTML = content;
+    // Initialize file browser after the DOM is updated
+    setTimeout(() => {
+      loadFileBrowser();
+    }, 0);
+    return;
+  }
+  
   contentSection.innerHTML = content;
 }
 
@@ -97,19 +183,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadFileBrowser(path = '') {
   // For now, mock data - later connect to backend
+  const now = new Date();
   const mockFiles = [
-    { name: 'Documents', type: 'folder', size: '--' },
-    { name: 'Downloads', type: 'folder', size: '--' },
-    { name: 'Project', type: 'folder', size: '--' },
-    { name: 'notes.txt', type: 'file', size: '2 KB' },
-    { name: 'image.png', type: 'file', size: '1.4 MB' },
+    { name: 'Documents', type: 'folder', size: '--', date: '2025-06-15 14:23' },
+    { name: 'Downloads', type: 'folder', size: '--', date: '2025-06-14 09:10' },
+    { name: 'Project', type: 'folder', size: '--', date: '2025-06-12 16:45' },
+    { name: 'notes.txt', type: 'file', size: '2 KB', date: '2025-06-10 11:30' },
+    { name: 'image.png', type: 'file', size: '1.4 MB', date: '2025-06-08 08:15' },
   ];
 
   const fileList = document.getElementById('file-list');
   fileList.innerHTML = mockFiles.map(file => `
     <li class="file-item" data-type="${file.type}" data-name="${file.name}">
-      <span class="file-icon">📁</span>
+      <span class="file-icon">${file.type === 'folder' ? '📁' : '📄'}</span>
       <span class="file-name">${file.name}</span>
+      <span class="file-date">${file.date}</span>
+      <span class="file-type">${file.type === 'folder' ? 'File Folder' : 'File'}</span>
       <span class="file-size">${file.size}</span>
     </li>
   `).join('');

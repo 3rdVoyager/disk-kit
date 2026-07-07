@@ -1,0 +1,123 @@
+/* ============================================
+   SUGGESTED ACTIONS CARD
+   ============================================ */
+
+.suggested-actions-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+/* Actions List */
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Individual Action Item */
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #0f1419;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.action-item:hover {
+    background-color: #1a2332;
+    border-color: var(--selected-color);
+}
+
+/* Action Icon */
+.action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.action-icon .material-symbols-rounded {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.action-icon.orange {
+    background-color: #ea580c;
+}
+
+.action-icon.purple {
+    background-color: #9333ea;
+}
+
+.action-icon.green {
+    background-color: #16a34a;
+}
+
+.action-icon.blue {
+    background-color: #2563eb;
+}
+
+.action-icon.gray {
+    background-color: #4b5563;
+}
+
+/* Action Info */
+.action-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.action-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.action-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Action Button */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.action-btn:hover {
+    background-color: var(--selected-color);
+    color: white;
+    border-color: var(--selected-color);
+}
+
+.action-btn .material-symbols-rounded {
+    font-size: 1.1rem;
+}
+
+/* Dismiss All Button */
+.suggested-actions-card .btn-link:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}

@@ -2,8 +2,15 @@
    FILE BROWSER
    ============================================ */
 
-.file-browser-card {
+/* When used in bento grid (on Files tab with details panel) */
+.bento-grid .file-browser-card {
     min-height: 400px;
+}
+
+/* When file browser is the main content (full-width view) */
+.file-browser-card.full-width {
+    min-height: calc(100vh - 200px);
+    max-width: 100%;
 }
 
 /* File List Header - Column Labels */
@@ -19,6 +26,14 @@
     letter-spacing: 0.5px;
     border-bottom: 1px solid #2a3042;
     margin-bottom: 8px;
+}
+
+.file-list-header .col-name,
+.file-list-header .col-date,
+.file-list-header .col-type,
+.file-list-header .col-size {
+    display: flex;
+    align-items: center;
 }
 
 /* File List Container */

@@ -1,0 +1,203 @@
+/* ============================================
+   STORAGE OVERVIEW CARD
+   ============================================ */
+
+.storage-overview-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+.storage-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+/* Main Storage Display */
+.storage-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2a3042;
+}
+
+.storage-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.circular-chart {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #2a3042;
+    stroke-width: 3;
+}
+
+.circle {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease;
+}
+
+.storage-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.storage-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.storage-total,
+.storage-available {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.storage-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.storage-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* File Type Breakdown */
+.storage-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.storage-breakdown h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.breakdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.breakdown-item {
+    display: grid;
+    grid-template-columns: 32px 1fr 100px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px;
+    background-color: #0f1419;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+}
+
+.breakdown-item:hover {
+    background-color: #1a2332;
+}
+
+.breakdown-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.breakdown-icon .material-symbols-rounded {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.breakdown-icon.blue {
+    background-color: #2563eb;
+}
+
+.breakdown-icon.purple {
+    background-color: #9333ea;
+}
+
+.breakdown-icon.green {
+    background-color: #16a34a;
+}
+
+.breakdown-icon.orange {
+    background-color: #ea580c;
+}
+
+.breakdown-label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.breakdown-value {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: right;
+    font-weight: 500;
+}
+
+.breakdown-bar {
+    grid-column: 1 / -1;
+    height: 6px;
+    background-color: #2a3042;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.breakdown-fill.blue {
+    background-color: #2563eb;
+}
+
+.breakdown-fill.purple {
+    background-color: #9333ea;
+}
+
+.breakdown-fill.green {
+    background-color: #16a34a;
+}
+
+.breakdown-fill.orange {
+    background-color: #ea580c;
+}
