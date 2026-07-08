@@ -78,10 +78,12 @@
     padding: 4px 8px;
     border-radius: var(--radius-xs);
     transition: all var(--transition-fast);
+    text-decoration: none;
 }
 
 .btn-link:hover {
     background-color: rgba(59, 130, 246, 0.1);
+    text-decoration: underline;
 }
 
 .btn-action {

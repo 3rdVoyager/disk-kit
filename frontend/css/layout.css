@@ -14,6 +14,7 @@ main {
     height: 60px;
     background-color: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-default);
+    box-shadow: 4px 2px 8px #000000;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -45,7 +46,7 @@ main {
     align-items: center;
     gap: 8px;
     background-color: var(--bg-primary);
-    border: 1px solid var(--bg-card);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-default);
     padding: 8px 12px;
     min-width: 300px;
@@ -180,7 +181,7 @@ header,
     padding: 15px;
     margin: 0 15px;
     margin-bottom: 15px;
-    border-bottom: 2px solid var(--bg-card);
+    border-bottom: 2px solid var(--border-default);
     white-space: nowrap;
     overflow: hidden;
     transition: opacity 0.3s ease;
@@ -238,7 +239,7 @@ header,
     margin-top: 16px;
     margin-left: 8px;
     margin-right: 8px;
-    border-bottom: 2px solid var(--bg-card);
+    border-bottom: 2px solid var(--border-default);
 }
 
 #sidebar>ul>li:first-child .nav-title {
@@ -337,7 +338,7 @@ header,
     height: 1px;
     padding: 0;
     margin: 12px 8px;
-    border-bottom: 2px solid var(--bg-card);
+    border-bottom: 2px solid var(--border-default);
     color: transparent;
     font-size: 0;
     letter-spacing: 0;

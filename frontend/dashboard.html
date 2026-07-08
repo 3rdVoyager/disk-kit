@@ -23,11 +23,12 @@
       <header class="global-header">
         <div class="header-left">
           <span class="breadcrumb-path">This PC > C: > Projects > DiskKit</span>
+          <a class="btn-link" href="#browse-files">Change Path</a>
         </div>
         <div class="header-right">
           <div class="search-bar">
             <span class="material-symbols-rounded">search</span>
-            <input type="text" placeholder="Search files and folders...">
+            <input type="text" placeholder="Search files and folders..." />
           </div>
           <button class="header-icon" title="Settings">
             <span class="material-symbols-rounded">settings</span>
@@ -43,16 +44,32 @@
 
       <!-- Sidebar Navigation -->
       <section id="sidebar">
-        <h2><span class="sidebar-title">Disk Kit</span><span class="sidebar-logo">DK</span><button id="menu-toggle" title="Toggle menu"><span class="material-symbols-rounded">menu</span></button></h2>
+        <h2>
+          <span class="sidebar-title">Disk Kit</span
+          ><span class="sidebar-logo">DK</span
+          ><button id="menu-toggle" title="Toggle menu">
+            <span class="material-symbols-rounded">menu</span>
+          </button>
+        </h2>
         <ul>
           <li>
-              <a class="nav-link" href="#home"
-                ><span class="nav-icon material-symbols-rounded">home</span
-                ><span class="nav-text">Dashboard</span></a
-              >
+            <a class="nav-link" href="#home"
+              ><span class="nav-icon material-symbols-rounded">home</span
+              ><span class="nav-text">Dashboard</span></a
+            >
           </li>
-          <li><a class="nav-link" href="#browse-files"><span class="nav-icon material-symbols-rounded">folder</span><span class="nav-text">Browse Files</span></a></li>
-          <li><a class="nav-link" href="#alltools"><span class="nav-icon material-symbols-rounded">apps</span><span class="nav-text">All Tools</span></a></li>
+          <li>
+            <a class="nav-link" href="#browse-files"
+              ><span class="nav-icon material-symbols-rounded">folder</span
+              ><span class="nav-text">Browse Files</span></a
+            >
+          </li>
+          <li>
+            <a class="nav-link" href="#alltools"
+              ><span class="nav-icon material-symbols-rounded">apps</span
+              ><span class="nav-text">All Tools</span></a
+            >
+          </li>
           <li>
             <h3 class="nav-title">Quick Tools</h3>
             <ul id="quick-tools">
@@ -95,16 +112,22 @@
                 >
               </li>
               <li>
+                <a class="nav-link" href="#trash"
+                  ><span class="nav-icon material-symbols-rounded">delete</span
+                  ><span class="nav-text">Trash</span></a
+                >
+              </li>
+              <li>
+                <a class="nav-link" href="#storage-details">
+                  <span class="nav-icon material-symbols-rounded">storage</span
+                  ><span class="nav-text">Storage Details</span></a
+                >
+              </li>
+              <li>
                 <a class="nav-link" href="#settings"
                   ><span class="nav-icon material-symbols-rounded"
                     >settings</span
                   ><span class="nav-text">Settings</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link" href="#trash"
-                  ><span class="nav-icon material-symbols-rounded">delete</span
-                  ><span class="nav-text">Trash</span></a
                 >
               </li>
             </ul>
@@ -119,16 +142,18 @@
           <div class="dashboard-card storage-overview-card">
             <div class="card-header-row">
               <h3>Storage Overview</h3>
-              <button class="btn-link">Details</button>
+              <a class="btn-link" href="#storage-details">Details</a>
             </div>
             <div class="storage-content">
               <div class="storage-main">
                 <div class="storage-ring">
                   <svg viewBox="0 0 36 36" class="circular-chart">
-                    <path class="circle-bg"
+                    <path
+                      class="circle-bg"
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
-                    <path class="circle"
+                    <path
+                      class="circle"
                       stroke-dasharray="75, 100"
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
@@ -149,28 +174,57 @@
               <div class="storage-breakdown">
                 <ul class="breakdown-list">
                   <li class="breakdown-item">
-                    <span class="breakdown-icon blue"><span class="material-symbols-rounded">image</span></span>
+                    <span class="breakdown-icon blue"
+                      ><span class="material-symbols-rounded">image</span></span
+                    >
                     <span class="breakdown-label">Images</span>
                     <span class="breakdown-value">312 GB</span>
-                    <div class="breakdown-bar"><div class="breakdown-fill blue" style="width: 41%"></div></div>
+                    <div class="breakdown-bar">
+                      <div class="breakdown-fill blue" style="width: 41%"></div>
+                    </div>
                   </li>
                   <li class="breakdown-item">
-                    <span class="breakdown-icon purple"><span class="material-symbols-rounded">movie</span></span>
+                    <span class="breakdown-icon purple"
+                      ><span class="material-symbols-rounded">movie</span></span
+                    >
                     <span class="breakdown-label">Videos</span>
                     <span class="breakdown-value">287 GB</span>
-                    <div class="breakdown-bar"><div class="breakdown-fill purple" style="width: 38%"></div></div>
+                    <div class="breakdown-bar">
+                      <div
+                        class="breakdown-fill purple"
+                        style="width: 38%"
+                      ></div>
+                    </div>
                   </li>
                   <li class="breakdown-item">
-                    <span class="breakdown-icon green"><span class="material-symbols-rounded">description</span></span>
+                    <span class="breakdown-icon green"
+                      ><span class="material-symbols-rounded"
+                        >description</span
+                      ></span
+                    >
                     <span class="breakdown-label">Documents</span>
                     <span class="breakdown-value">98 GB</span>
-                    <div class="breakdown-bar"><div class="breakdown-fill green" style="width: 13%"></div></div>
+                    <div class="breakdown-bar">
+                      <div
+                        class="breakdown-fill green"
+                        style="width: 13%"
+                      ></div>
+                    </div>
                   </li>
                   <li class="breakdown-item">
-                    <span class="breakdown-icon yellow"><span class="material-symbols-rounded">folder</span></span>
+                    <span class="breakdown-icon yellow"
+                      ><span class="material-symbols-rounded"
+                        >folder</span
+                      ></span
+                    >
                     <span class="breakdown-label">Other</span>
                     <span class="breakdown-value">59 GB</span>
-                    <div class="breakdown-bar"><div class="breakdown-fill orange" style="width: 8%"></div></div>
+                    <div class="breakdown-bar">
+                      <div
+                        class="breakdown-fill orange"
+                        style="width: 8%"
+                      ></div>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -181,7 +235,7 @@
           <div class="dashboard-card suggested-actions-card">
             <div class="card-header-row">
               <h3>Suggested Actions</h3>
-              <button class="btn-link">Dismiss All</button>
+              <a class="btn-link" href="#dismiss-all">Dismiss All</a>
             </div>
             <ul class="actions-list">
               <li class="action-item">
@@ -236,81 +290,10 @@
           <section class="dashboard-card quick-tools-card">
             <div class="card-header-row">
               <h3>Quick Tools</h3>
-              <button class="btn-link">View All</button>
+              <a class="btn-link" href="#alltools">View All</a>
             </div>
-            <ul class="quick-tools-grid">
-              <li class="quick-tool-item">
-                <div class="tool-icon blue">
-                  <span class="material-symbols-rounded">edit</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Batch Rename</h4>
-                  <p>Rename multiple files at once</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon purple">
-                  <span class="material-symbols-rounded">transform</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Convert</h4>
-                  <p>Convert files to different formats</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon orange">
-                  <span class="material-symbols-rounded">inventory_2</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Compress</h4>
-                  <p>Compress files and folders</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon green">
-                  <span class="material-symbols-rounded">find_replace</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Duplicate Finder</h4>
-                  <p>Find and remove duplicate files</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon green">
-                  <span class="material-symbols-rounded">delete_sweep</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Empty Folders</h4>
-                  <p>Find and remove empty folders</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon orange">
-                  <span class="material-symbols-rounded">storage</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Large Files</h4>
-                  <p>Find files taking up space</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon purple">
-                  <span class="material-symbols-rounded">auto_fix_high</span>
-                </div>
-                <div class="tool-info">
-                  <h4>Organize</h4>
-                  <p>Smart organize your files</p>
-                </div>
-              </li>
-              <li class="quick-tool-item">
-                <div class="tool-icon gray">
-                  <span class="material-symbols-rounded">apps</span>
-                </div>
-                <div class="tool-info">
-                  <h4>More Tools</h4>
-                  <p>Explore all available tools</p>
-                </div>
-              </li>
+            <ul class="quick-tools-grid" id="dashboard-quick-tools">
+              <!-- Dynamically rendered by renderDashboardQuickTools() -->
             </ul>
           </section>
 
@@ -318,7 +301,7 @@
           <section class="dashboard-card recent-ops-card">
             <div class="card-header-row">
               <h3>Recent Operations</h3>
-              <button class="btn-link">View All History</button>
+              <a class="btn-link" href="#history">View All History</a>
             </div>
             <ul class="operations-list">
               <li class="operation-item">
