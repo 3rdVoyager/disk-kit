@@ -4,7 +4,7 @@
 
 /* When used in dashboard grid (on Files tab with details panel) */
 .dashboard-grid .file-browser-card {
-    min-height: 400px;
+    min-height: 200px;
 }
 
 /* When file browser is the main content (full-width view) */
@@ -16,18 +16,19 @@
 /* File List Header - Column Labels */
 .file-list-header {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr;
-    gap: 16px;
-    padding: 8px 12px;
-    font-size: 0.75rem;
+    grid-template-columns: 1.2fr 2fr 1.5fr 1fr 1fr;
+    gap: 12px;
+    padding: 6px 12px;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--border-default);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
+.file-list-header .col-icon,
 .file-list-header .col-name,
 .file-list-header .col-date,
 .file-list-header .col-type,
@@ -40,25 +41,27 @@
 .file-list {
     flex: 1;
     overflow-y: auto;
-    max-height: 500px;
+    max-height: 70vh;
     list-style: none;
     padding: 0;
     margin: 0;
+    line-height: 1.3;
 }
 
 /* Individual File Item */
 .file-item {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr;
-    gap: 16px;
-    padding: 10px 12px;
+    grid-template-columns: 1.2fr 2fr 1.5fr 1fr 1fr;
+    gap: 12px;
+    padding: 6px 12px;
     cursor: pointer;
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
+    align-items: center;
 }
 
 .file-item:hover {
-    background-color: var(--border-default);
+    background-color: var(--bg-hover);
 }
 
 .file-item.selected {
@@ -72,9 +75,10 @@
 
 /* File Icon */
 .file-icon {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .file-icon.folder {
@@ -89,39 +93,130 @@
 .file-name {
     display: flex;
     align-items: center;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-primary);
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* File Date */
 .file-date {
     display: flex;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 /* File Type */
 .file-type {
     display: flex;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 /* File Size */
 .file-size {
     display: flex;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
-    justify-content: flex-end;
+    white-space: nowrap;
 }
 
 /* Breadcrumbs (hidden in view but kept for compatibility) */
 .breadcrumbs {
     display: none;
+}
+
+/* Parent directory item */
+.file-item.parent-directory {
+    cursor: pointer;
+}
+
+.file-item.parent-directory .file-name {
+    color: var(--accent-info);
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+/* Grid View */
+.file-browser-card.grid-view .file-list-header {
+    display: none;
+}
+
+.file-list.grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 12px;
+    max-height: none;
+}
+
+.file-list.grid-view .file-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 8px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.file-list.grid-view .file-item:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--accent-primary);
+}
+
+.file-list.grid-view .file-item.selected {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.file-list.grid-view .file-icon {
+    font-size: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-list.grid-view .file-name {
+    font-size: 0.8rem;
+    text-align: center;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.2;
+    max-height: 2.4em;
+    overflow: hidden;
+}
+
+.file-list.grid-view .file-date,
+.file-list.grid-view .file-type,
+.file-list.grid-view .file-size {
+    display: none;
+}
+
+/* Error state */
+.file-item .file-name.error {
+    color: var(--status-error);
+}
+
+/* Material Symbols icon in file items */
+.file-item .file-icon.material-symbols-rounded {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+/* Directory icon color */
+.file-item[data-type="directory"] .file-icon.material-symbols-rounded {
+    color: var(--accent-yellow);
 }
 
 /* ============================================
@@ -131,14 +226,16 @@
 .details-card {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding-bottom: 24px;
+    gap: 12px;
+    padding-bottom: 16px;
+    width: 100%;
 }
 
 .details-header {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
+    width: 100%;
 }
 
 .file-thumbnail {
@@ -163,6 +260,7 @@
 .file-info {
     flex: 1;
     min-width: 0;
+    width: 100%;
 }
 
 .file-info h3 {
@@ -180,23 +278,34 @@
 .details-meta {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
 }
 
 .meta-row {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px;
     align-items: center;
     font-size: 0.85rem;
+    width: 100%;
 }
 
 .meta-label {
     color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
 }
 
 .meta-value {
     color: var(--text-primary);
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
 }
 
 .details-actions {

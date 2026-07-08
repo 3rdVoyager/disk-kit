@@ -3,39 +3,35 @@
       <div class="dashboard-card file-browser-card">
         <div class="browser-toolbar">
           <div class="toolbar-left">
-            <button class="btn-tool" title="New">
-              <span class="material-symbols-rounded">add</span>
+            <button class="btn-tool" title="Back">
+              <span class="material-symbols-rounded">arrow_back</span>
             </button>
-            <button class="btn-tool" title="Cut">
-              <span class="material-symbols-rounded">content_cut</span>
-            </button>
-            <button class="btn-tool" title="Copy">
-              <span class="material-symbols-rounded">content_copy</span>
-            </button>
-            <button class="btn-tool" title="Paste">
-              <span class="material-symbols-rounded">content_paste</span>
+            <button class="btn-tool" title="Forward">
+              <span class="material-symbols-rounded">arrow_forward</span>
             </button>
             <button class="btn-tool" title="Delete">
               <span class="material-symbols-rounded">delete</span>
             </button>
           </div>
+          <div class="toolbar-search">
+            <span class="material-symbols-rounded">search</span>
+            <input type="text" class="browser-search-input" placeholder="Search files in this directory..." />
+          </div>
           <div class="toolbar-right">
-            <button class="btn-icon" title="Sort">
-              <span class="material-symbols-rounded">sort</span>
-            </button>
             <button class="btn-icon" title="View">
               <span class="material-symbols-rounded">grid_view</span>
             </button>
           </div>
         </div>
         <div class="file-list-header">
+          <span class="col-icon">Icon</span>
           <span class="col-name">Name</span>
           <span class="col-date">Date Modified</span>
           <span class="col-type">Type</span>
           <span class="col-size">Size</span>
         </div>
         <ul class="file-list" id="file-list">
-          <!-- Files will be loaded here -->
+          <!-- Files will be loaded dynamically by JavaScript -->
         </ul>
       </div>
 

@@ -2,6 +2,7 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
+from file_browser import list_files_api, delete_files_api
 
 BACKEND_DIR = Path(__file__).resolve().parent
 STATIC_FOLDER = BACKEND_DIR.parent / 'frontend'
@@ -58,6 +59,16 @@ def update_quick_tools():
         return jsonify({'success': True, 'quickTools': current_settings['quickTools']})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/files', methods=['GET'])
+def list_files():
+    """List files and directories at the given path"""
+    return list_files_api(request, load_settings)
+
+@app.route('/api/files/delete', methods=['POST'])
+def delete_files():
+    """Delete a file or directory"""
+    return delete_files_api(request)
 
 if __name__ == '__main__':
     ensure_settings_file()
