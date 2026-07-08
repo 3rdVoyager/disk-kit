@@ -15,7 +15,7 @@
 
 .settings-header p {
   margin: 0;
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .settings-section {
@@ -47,7 +47,7 @@
   border-radius: 6px;
   border: 1px solid var(--border-default);
   background: var(--input-bg);
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
 .checkbox-group label {
@@ -72,8 +72,8 @@
   padding: 10px 16px;
   border: none;
   border-radius: 6px;
-  background: #007bff;
-  color: #fff;
+  background: var(--accent-primary);
+  color: var(--text-primary);
   cursor: pointer;
 }
 
@@ -82,7 +82,7 @@
   border: 1px solid var(--border-default);
   border-radius: 6px;
   background: transparent;
-  color: var(--text-color);
+  color: var(--text-primary);
   cursor: pointer;
 }
 
@@ -92,9 +92,9 @@
 }
 
 .settings-message.success {
-  color: #28a745;
+  color: var(--status-success);
 }
 
 .settings-message.error {
-  color: #dc3545;
+  color: var(--status-error);
 }

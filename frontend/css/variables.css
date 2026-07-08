@@ -56,4 +56,39 @@
        ============================================ */
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+   /* ============================================
+      INPUTS
+      ============================================ */
+   --input-bg: #1f2937;          /* Input background */
+}
+
+   /* Light mode */
+   [data-theme="light"] {
+       --bg-primary: #f9fafb;
+       --bg-sidebar: #ffffff;
+       --bg-card: #ffffff;
+       --bg-header: #f3f4f6;
+       --bg-elevated: #ffffff;
+       --bg-elevated-hover: #f3f4f6;
+       --bg-hover: #e5e7eb;
+       --bg-selected: #3b82f6;
+
+       --border-default: #d1d5db;
+       --border-accent: #3b82f6;
+
+       --text-primary: #111827;
+       --text-secondary: #6b7280;
+
+       --accent-primary: #3b82f6;
+       --accent-info: #2563eb;
+
+       --accent-blue: #2563eb;
+       --accent-purple: #9333ea;
+       --accent-green: #16a34a;
+       --accent-orange: #ea580c;
+       --accent-red: #dc2626;
+       --accent-gray: #4b5563;
+       --accent-yellow: #f59e0b;
+       --accent-teal: #0d9488;  
 }

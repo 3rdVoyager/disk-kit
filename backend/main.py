@@ -13,7 +13,7 @@ SETTINGS_FILE = Path(__file__).parent / 'settings.json'
 
 DEFAULT_SETTINGS = {
     "general": {
-        "theme": "light",
+        "theme": "dark",
         "language": "en",
         "defaultPath": "C:/Users"
     },
