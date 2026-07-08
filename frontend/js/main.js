@@ -11,22 +11,35 @@ const quickToolsList = document.getElementById('quick-tools');
 let originalHomeHTML = '';
 
 // ============================================================
-// Quick Tools state (persisted in localStorage)
+// Quick Tools state (persisted via API to backend)
 // ============================================================
-const STORAGE_KEY = 'disk-kit-quick-tools';
 const DEFAULT_QUICK_TOOLS = ['rename', 'convert', 'compress', 'cleanup'];
+let cachedQuickTools = null;
 
-function getQuickTools() {
+async function getQuickTools() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : DEFAULT_QUICK_TOOLS;
-  } catch {
+    if (cachedQuickTools !== null) {
+      return cachedQuickTools;
+    }
+    const response = await apiFetch('/api/quick-tools');
+    cachedQuickTools = response.quickTools || DEFAULT_QUICK_TOOLS;
+    return cachedQuickTools;
+  } catch (err) {
+    console.error('Failed to load quick tools:', err);
     return DEFAULT_QUICK_TOOLS;
   }
 }
 
-function saveQuickTools(tools) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tools));
+async function saveQuickTools(tools) {
+  try {
+    await apiFetch('/api/quick-tools', {
+      method: 'POST',
+      body: { quickTools: tools }
+    });
+    cachedQuickTools = tools;
+  } catch (err) {
+    console.error('Failed to save quick tools:', err);
+  }
 }
 
 // ============================================================
@@ -110,8 +123,8 @@ const TOOL_CATEGORIES = {
 // ============================================================
 // Sidebar: render quick tools list
 // ============================================================
-function renderQuickTools() {
-  const tools = getQuickTools();
+async function renderQuickTools() {
+  const tools = await getQuickTools();
   quickToolsList.innerHTML = '';
   
   if (tools.length === 0) return;
@@ -129,11 +142,11 @@ function renderQuickTools() {
 // ============================================================
 // Dashboard: render quick tools card grid
 // ============================================================
-function renderDashboardQuickTools() {
+async function renderDashboardQuickTools() {
   const grid = document.getElementById('dashboard-quick-tools');
   if (!grid) return;
 
-  const tools = getQuickTools();
+  const tools = await getQuickTools();
   grid.innerHTML = '';
 
   tools.forEach(toolId => {
@@ -175,17 +188,18 @@ function renderDashboardQuickTools() {
 // ============================================================
 // Quick Tools toggle (from All Tools checkboxes)
 // ============================================================
-function toggleQuickTool(toolId, checked) {
-  const tools = getQuickTools();
+async function toggleQuickTool(toolId, checked) {
+  const tools = await getQuickTools();
+  const newTools = [...tools];
   if (checked) {
-    if (!tools.includes(toolId)) {
-      tools.push(toolId);
+    if (!newTools.includes(toolId)) {
+      newTools.push(toolId);
     }
   } else {
-    const idx = tools.indexOf(toolId);
-    if (idx > -1) tools.splice(idx, 1);
+    const idx = newTools.indexOf(toolId);
+    if (idx > -1) newTools.splice(idx, 1);
   }
-  saveQuickTools(tools);
+  await saveQuickTools(newTools);
   renderQuickTools();
   renderDashboardQuickTools();
 }
@@ -193,14 +207,14 @@ function toggleQuickTool(toolId, checked) {
 // ============================================================
 // Initialize
 // ============================================================
-function init() {
+async function init() {
   originalHomeHTML = contentSection.innerHTML;
   
   if (navLinks.length > 0) {
     navLinks[0].classList.add('selected');
   }
   
-  renderQuickTools();
+  await renderQuickTools();
   
   const fileList = document.getElementById('file-list');
   if (fileList) {
@@ -230,7 +244,10 @@ async function loadContent(toolName, pushHistory = true) {
       setTimeout(() => loadFileBrowser(), 0);
     }
     if (toolName === 'alltools') {
-      attachToggleListeners();
+      setTimeout(async () => {
+        await initializeAllToolsCheckboxes();
+        attachToggleListeners();
+      }, 0);
     }
     if (toolName === 'settings') {
       setTimeout(() => setupSettings(), 0);
@@ -248,15 +265,24 @@ async function loadContent(toolName, pushHistory = true) {
 // ============================================================
 // All Tools page: checkbox toggle listeners
 // ============================================================
+async function initializeAllToolsCheckboxes() {
+  const tools = await getQuickTools();
+  const checkboxes = document.querySelectorAll('.quick-tool-toggle');
+  checkboxes.forEach(checkbox => {
+    const toolId = checkbox.getAttribute('data-tool');
+    checkbox.checked = tools.includes(toolId);
+  });
+}
+
 function attachToggleListeners() {
   const toggles = document.querySelectorAll('.quick-tool-toggle');
   toggles.forEach(toggle => {
     const newToggle = toggle.cloneNode(true);
     toggle.parentNode.replaceChild(newToggle, toggle);
     
-    newToggle.addEventListener('change', (e) => {
+    newToggle.addEventListener('change', async (e) => {
       const toolId = e.target.getAttribute('data-tool');
-      toggleQuickTool(toolId, e.target.checked);
+      await toggleQuickTool(toolId, e.target.checked);
     });
   });
 }
@@ -310,10 +336,10 @@ function setupGlobalNavigation() {
 // Toggle listeners (delegated for checkboxes)
 // ============================================================
 function setupToggleListeners() {
-  document.addEventListener('change', (e) => {
+  document.addEventListener('change', async (e) => {
     if (e.target.classList.contains('quick-tool-toggle')) {
       const toolId = e.target.getAttribute('data-tool');
-      toggleQuickTool(toolId, e.target.checked);
+      await toggleQuickTool(toolId, e.target.checked);
     }
   });
 }
@@ -493,16 +519,16 @@ function setupHelpDialog() {
 // ============================================================
 // Bootstrap
 // ============================================================
-function bootstrap() {
+async function bootstrap() {
   try {
-    init();
+    await init();
     setupGlobalNavigation();
     setupToggleListeners();
     setupMenuToggle();
     setupThemeToggle();
     setupHelpDialog();
-    loadTheme();
-    renderDashboardQuickTools();
+    await loadTheme();
+    await renderDashboardQuickTools();
     
     // Load tab from URL hash on page load
     const hash = window.location.hash.slice(1);

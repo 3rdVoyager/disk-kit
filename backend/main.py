@@ -39,6 +39,26 @@ def reset_settings():
 def get_defaults():
     return jsonify(DEFAULT_SETTINGS)
 
+@app.route('/api/quick-tools', methods=['GET'])
+def get_quick_tools():
+    settings = load_settings()
+    return jsonify({'quickTools': settings.get('quickTools', DEFAULT_SETTINGS.get('quickTools', []))})
+
+@app.route('/api/quick-tools', methods=['POST'])
+def update_quick_tools():
+    try:
+        data = request.get_json()
+        if not data or 'quickTools' not in data:
+            return jsonify({'error': 'Missing quickTools field'}), 400
+        
+        # Update only the quickTools field
+        current_settings = load_settings()
+        current_settings['quickTools'] = data['quickTools']
+        save_settings(current_settings)
+        return jsonify({'success': True, 'quickTools': current_settings['quickTools']})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     ensure_settings_file()
     app.run(debug=True, port=5000)

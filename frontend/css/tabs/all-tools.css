@@ -120,21 +120,17 @@
     background-color: var(--accent-gray);
 }
 
-/* Tool Card Checkbox - Hidden by default, shown on hover */
+/* Tool Card Checkbox - Always shown */
 .tool-card-checkbox {
     position: absolute;
     top: 8px;
     right: 8px;
-    display: none;
+    display: block;
     cursor: pointer;
 }
 
 .tool-card {
     position: relative;
-}
-
-.tool-card:hover .tool-card-checkbox {
-    display: block;
 }
 
 /* Custom checkbox styling */

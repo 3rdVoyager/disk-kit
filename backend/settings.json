@@ -18,5 +18,11 @@
     "autoSuggestions": false,
     "apiEndpoint": "",
     "apiKey": ""
-  }
+  },
+  "quickTools": [
+    "rename",
+    "convert",
+    "compress",
+    "cleanup"
+  ]
 }

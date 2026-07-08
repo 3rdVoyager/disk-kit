@@ -23,7 +23,8 @@ DEFAULT_SETTINGS = {
         "autoSuggestions": False,
         "apiEndpoint": "",
         "apiKey": ""
-    }
+    },
+    "quickTools": ["rename", "convert", "compress", "cleanup"]
 }
 
 
