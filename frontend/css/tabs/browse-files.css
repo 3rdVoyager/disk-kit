@@ -61,7 +61,7 @@
 }
 
 .file-item:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--bg-elevated-hover);
 }
 
 .file-item.selected {

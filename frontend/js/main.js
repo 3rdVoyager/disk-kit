@@ -4,6 +4,33 @@ if (!ICONS || !getIconHTML) {
   console.warn('Icons module failed to load; continuing without icons');
 }
 
+// Import file browser functionality
+import {
+  currentFilePath,
+  isListView,
+  selectedFilePath,
+  fileBrowserHistory,
+  currentHistoryIndex,
+  suppressHistoryRecord,
+  loadFileBrowser,
+  goBack,
+  goForward,
+  setupFileBrowserNavigation,
+  selectFileItem,
+  deleteSelectedFile,
+  filterFileList,
+  toggleFileView,
+  updateNavigationButtons,
+  setupFileBrowserButtonListeners,
+  setupGlobalNavigation,
+  getFileIcon,
+  showFileDetails,
+  formatFileSize
+} from './file-browser.js';
+
+// Import utilities
+import { escapeHtml, apiFetch, getNestedValue, setNestedValue } from './utils.js';
+
 // DOM elements
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
@@ -303,90 +330,7 @@ function navigateTo(toolName) {
   history.pushState(null, null, `#${toolName}`);
 }
 
-// File browser state
-let isListView = true;
-let selectedFilePath = null;
 
-function selectFileItem(item) {
-  // Remove previous selection
-  document.querySelectorAll('.file-item.selected').forEach(el => el.classList.remove('selected'));
-  // Mark this item as selected
-  item.classList.add('selected');
-  // Track the file path for delete
-  selectedFilePath = item.dataset.path;
-}
-
-async function deleteSelectedFile() {
-  if (!selectedFilePath) return;
-  if (!confirm(`Are you sure you want to delete "${selectedFilePath.split('/').pop()}"?`)) return;
-  try {
-    await apiFetch('/api/files/delete', {
-      method: 'POST',
-      body: { path: selectedFilePath }
-    });
-    selectedFilePath = null;
-    loadFileBrowser(currentFilePath);
-  } catch (err) {
-    console.error('Delete failed:', err);
-    alert(`Delete failed: ${err.message}`);
-  }
-}
-
-function filterFileList() {
-  const searchInput = document.querySelector('.browser-search-input');
-  const fileList = document.getElementById('file-list');
-  if (!searchInput || !fileList) return;
-  
-  const query = searchInput.value.trim().toLowerCase();
-  const items = fileList.querySelectorAll('.file-item');
-  
-  items.forEach(item => {
-    const name = item.querySelector('.file-name')?.textContent?.trim().toLowerCase() || '';
-    if (!query || name.includes(query)) {
-      item.style.display = '';
-    } else {
-      item.style.display = 'none';
-    }
-  });
-}
-
-function toggleFileView() {
-  const fileList = document.getElementById('file-list');
-  if (!fileList) return;
-  isListView = !isListView;
-  const viewBtn = document.querySelector('.btn-icon[title="View"]');
-  if (viewBtn) {
-    const icon = viewBtn.querySelector('.material-symbols-rounded');
-    if (icon) {
-      icon.textContent = isListView ? 'grid_view' : 'view_list';
-    }
-  }
-  // Toggle grid/list class on file list and container
-  const container = fileList.closest('.file-browser-card');
-  if (container) {
-    container.classList.toggle('grid-view', !isListView);
-  }
-  fileList.classList.toggle('grid-view', !isListView);
-}
-
-function updateNavigationButtons() {
-  const backBtn = document.querySelector('.btn-tool[title="Back"]');
-  const forwardBtn = document.querySelector('.btn-tool[title="Forward"]');
-  if (backBtn) backBtn.classList.toggle('disabled', !(currentHistoryIndex >= 0));
-  if (forwardBtn) forwardBtn.classList.toggle('disabled', !(currentHistoryIndex < fileBrowserHistory.length - 1));
-}
-
-function setupFileBrowserButtonListeners() {
-  const deleteBtn = document.querySelector('.btn-tool[title="Delete"]');
-  const viewBtn = document.querySelector('.btn-icon[title="View"]');
-  const searchInput = document.querySelector('.browser-search-input');
-  
-  if (deleteBtn) deleteBtn.addEventListener('click', deleteSelectedFile);
-  if (viewBtn) viewBtn.addEventListener('click', toggleFileView);
-  if (searchInput) {
-    searchInput.addEventListener('input', filterFileList);
-  }
-}
 
 function setupGlobalNavigation() {
   document.addEventListener('click', (e) => {
@@ -513,56 +457,7 @@ function setupThemeToggle() {
   }
 }
 
-// ============================================================
-// File Browser Navigation (Back/Forward)
-// ============================================================
-const fileBrowserHistory = [];
-let currentHistoryIndex = -1;
-let suppressHistoryRecord = false;
 
-function goBack() {
-  // Move back one step in history
-  if (currentHistoryIndex > 0) {
-    currentHistoryIndex--;
-    suppressHistoryRecord = true;
-    loadFileBrowser(fileBrowserHistory[currentHistoryIndex]);
-  } else if (currentHistoryIndex === 0) {
-    // Going back to the initial root (history becomes empty)
-    suppressHistoryRecord = true;
-    currentHistoryIndex--;
-    loadFileBrowser('');
-  }
-}
-
-function goForward() {
-  if (currentHistoryIndex < fileBrowserHistory.length - 1) {
-    currentHistoryIndex++;
-    suppressHistoryRecord = true;
-    loadFileBrowser(fileBrowserHistory[currentHistoryIndex]);
-  }
-}
-
-function setupFileBrowserNavigation() {
-  const originalLoadFileBrowser = loadFileBrowser;
-  loadFileBrowser = async function(path) {
-    if (!suppressHistoryRecord) {
-      // This is a user-initiated navigation (e.g., double-clicking a directory)
-      // Truncate any forward history
-      if (currentHistoryIndex < fileBrowserHistory.length - 1) {
-        fileBrowserHistory.splice(currentHistoryIndex + 1);
-      }
-      // Record the path we're navigating TO when it's different from current
-      if (path !== currentFilePath && path !== undefined && path !== null) {
-        fileBrowserHistory.push(path);
-        currentHistoryIndex = fileBrowserHistory.length - 1;
-      }
-    }
-    suppressHistoryRecord = false;
-    await originalLoadFileBrowser(path);
-    // Update navigation button states after load
-    updateNavigationButtons();
-  };
-}
 
 // ============================================================
 // Help dialog
@@ -594,12 +489,6 @@ function renderHelpSection(sectionKey) {
       </div>
     </div>
   `).join('');
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 function openHelpDialog() {
@@ -678,6 +567,7 @@ async function bootstrap() {
     setupThemeToggle();
     setupHelpDialog();
     setupFileBrowserNavigation();
+    setupFileBrowserButtonListeners();
     await loadTheme();
     await renderDashboardQuickTools();
     
@@ -697,49 +587,6 @@ bootstrap();
 // Settings helpers
 // ============================================================
 let currentSettings = null;
-
-async function apiFetch(path, options = {}) {
-    const base = window.location.origin || 'http://localhost:5000';
-    const url = `${base}${path}`;
-    const defaults = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    };
-    const config = Object.assign({}, defaults, options);
-    if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
-        config.body = JSON.stringify(config.body);
-    }
-    const response = await fetch(url, config);
-    if (!response.ok) {
-        const errorText = await response.text();
-        let message = `HTTP ${response.status}`;
-        try {
-            const err = JSON.parse(errorText);
-            message = err.error || message;
-        } catch {
-            // ignore
-        }
-        throw new Error(message);
-    }
-    if (response.status === 204) return null;
-    return response.json();
-}
-
-function getNestedValue(obj, path) {
-    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
-}
-
-function setNestedValue(obj, path, value) {
-    const parts = path.split('.');
-    const last = parts.pop();
-    const target = parts.reduce((acc, part) => {
-        if (!(part in acc)) acc[part] = {};
-        return acc[part];
-    }, obj);
-    target[last] = value;
-}
 
 function populateSettingsForm(settings) {
     currentSettings = settings;
@@ -834,145 +681,4 @@ function setupSettings() {
         resetBtn.addEventListener('click', () => resetSettings());
     }
     loadSettings();
-}
-
-// ============================================================
-// Content loading
-// ============================================================
-// ============================================================
-// File browser - real implementation
-// ============================================================
-let currentFilePath = '';
-
-async function loadFileBrowser(path = '') {
-  const fileList = document.getElementById('file-list');
-  if (!fileList) return;
-
-  // Update current path
-  if (path !== undefined && path !== null) {
-    currentFilePath = path;
-  }
-
-  try {
-    // Fetch files from API
-    const response = await apiFetch(`/api/files?path=${encodeURIComponent(currentFilePath)}`);
-    
-    // Update breadcrumb
-    const breadcrumb = document.querySelector('.breadcrumb-path');
-    if (breadcrumb) {
-      const parts = response.path.split('/').filter(p => p);
-      breadcrumb.textContent = `This PC > ${parts.join(' > ')}`;
-    }
-
-    // Render file list
-    fileList.innerHTML = response.items.map(item => {
-      const date = new Date(item.modified).toLocaleString();
-      const size = item.type === 'directory' ? '--' : formatFileSize(item.size);
-      const typeLabel = item.type === 'directory' ? 'File Folder' : 'File';
-      const icon = item.type === 'directory' ? 'folder' : getFileIcon(item.name);
-      
-      return `
-        <li class="file-item" data-type="${item.type}" data-path="${escapeHtml(item.fullPath)}" data-name="${escapeHtml(item.name)}">
-          <span class="file-icon material-symbols-rounded">${icon}</span>
-          <span class="file-name">${escapeHtml(item.name)}</span>
-          <span class="file-date">${date}</span>
-          <span class="file-type">${typeLabel}</span>
-          <span class="file-size">${size}</span>
-        </li>
-      `;
-    }).join('');
-
-    // Add click handlers for directories
-    fileList.querySelectorAll('.file-item[data-type="directory"]').forEach(item => {
-      item.addEventListener('dblclick', () => {
-        loadFileBrowser(item.dataset.path);
-      });
-      // Also allow single click for selection
-      item.addEventListener('click', () => {
-        // Show details for selected directory
-        selectFileItem(item);
-        showFileDetails(item.dataset);
-      });
-    });
-
-    // Add click handlers for files
-    fileList.querySelectorAll('.file-item[data-type="file"]').forEach(item => {
-      item.addEventListener('click', () => {
-        selectFileItem(item);
-        showFileDetails(item.dataset);
-      });
-    });
-
-  } catch (err) {
-    fileList.innerHTML = `<li class="file-item"><span class="file-name error">Error loading directory: ${escapeHtml(err.message)}</span></li>`;
-    console.error('File browser error:', err);
-  }
-}
-
-function getFileIcon(filename) {
-  const extension = filename.split('.').pop().toLowerCase();
-  const icons = {
-    'txt': 'description',
-    'md': 'description',
-    'pdf': 'picture_as_pdf',
-    'jpg': 'image', 'jpeg': 'image', 'png': 'image', 'gif': 'image', 'webp': 'image',
-    'mp3': 'music_note', 'wav': 'music_note', 'flac': 'music_note', 'ogg': 'music_note',
-    'mp4': 'movie', 'avi': 'movie', 'mkv': 'movie', 'mov': 'movie',
-    'zip': 'inventory_2', 'rar': 'inventory_2', '7z': 'inventory_2',
-    'doc': 'description', 'docx': 'description',
-    'xls': 'grid_view', 'xlsx': 'grid_view',
-    'ppt': 'slideshow', 'pptx': 'slideshow',
-    'exe': 'terminal',
-    'py': 'code', 'js': 'code', 'html': 'code', 'css': 'code',
-    'json': 'data_object',
-  };
-  return icons[extension] || 'insert_drive_file';
-}
-
-function showFileDetails(data) {
-  const filenameEl = document.getElementById('detail-filename');
-  const filetypeEl = document.getElementById('detail-filetype');
-  const locationEl = document.getElementById('detail-location');
-  const sizeEl = document.getElementById('detail-size');
-  const modifiedEl = document.getElementById('detail-modified');
-  const createdEl = document.getElementById('detail-created');
-
-  if (!filenameEl) return;
-
-  filenameEl.textContent = data.name || 'Select a file';
-  
-  if (filetypeEl) {
-    filetypeEl.textContent = data.type === 'directory' ? 'Folder' : 
-      (data.name ? data.name.split('.').pop().toUpperCase() + ' File' : '--');
-  }
-  
-  if (locationEl) {
-    locationEl.textContent = data.path || '--';
-  }
-  
-  if (sizeEl) {
-    if (data.type === 'directory') {
-      sizeEl.textContent = '--';
-    } else if (data.size) {
-      sizeEl.textContent = formatFileSize(parseInt(data.size));
-    } else {
-      sizeEl.textContent = '--';
-    }
-  }
-  
-  if (modifiedEl && data.modified) {
-    modifiedEl.textContent = new Date(parseInt(data.modified)).toLocaleString();
-  }
-  
-  if (createdEl && data.created) {
-    createdEl.textContent = new Date(parseInt(data.created)).toLocaleString();
-  }
-}
-
-function formatFileSize(bytes) {
-  if (bytes === 0 || bytes === undefined) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
