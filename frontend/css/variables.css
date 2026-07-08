@@ -92,5 +92,6 @@
        --accent-red: #dc2626;
        --accent-gray: #4b5563;
        --accent-yellow: #f59e0b;
-       --accent-teal: #0d9488;  
+       --accent-teal: #0d9488; 
+       --input-bg: #f3f4f6;          /* Input background for light mode */
 }
