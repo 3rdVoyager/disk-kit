@@ -1,0 +1,32 @@
+<section class="tool-page">
+  <div class="tool-page-header">
+    <h2>Duplicate Finder</h2>
+    <p>Find exact duplicate files using size + SHA-256 hash.</p>
+  </div>
+
+  <form id="duplicates-form" class="tool-form">
+    <div class="tool-form-row">
+      <label for="duplicates-path">Path</label>
+      <div class="input-group">
+        <input id="duplicates-path" type="text" placeholder="Leave empty to use default path" />
+        <button type="button" class="btn-browse" id="duplicates-browse" title="Browse...">
+          <span class="material-symbols-rounded">folder_open</span>
+        </button>
+      </div>
+    </div>
+    <div class="tool-form-row">
+      <label for="duplicates-min-size">Min Size (MB)</label>
+      <input id="duplicates-min-size" type="number" min="1" value="1" />
+    </div>
+    <div class="tool-form-row">
+      <label for="duplicates-limit">Group Limit</label>
+      <input id="duplicates-limit" type="number" min="1" value="200" />
+    </div>
+    <div class="tool-form-actions">
+      <button type="submit" class="btn-primary">Find Duplicates</button>
+    </div>
+  </form>
+
+  <div id="duplicates-summary" class="tool-summary"></div>
+  <div id="duplicates-results" class="tool-results"></div>
+</section>

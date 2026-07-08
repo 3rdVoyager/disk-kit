@@ -2,6 +2,17 @@
 
 A comprehensive, locally-hosted file management toolkit with a modern web interface. Disk Kit provides a complete suite of tools for organizing, converting, compressing, and managing files on your system.
 
+## Current Status
+
+Disk Kit is currently scoped to a smaller v1 feature set:
+- Dashboard shell
+- Browse Files (directory listing + file/folder deletion within configured root)
+- Settings (JSON-backed preferences)
+- **Hybrid Workflow**: Tools are path-driven. Each tool has a path input and a "Browse..." button to select a folder from a shared browser dialog.
+- **V1 Tools**: Large Files, Batch Rename, Duplicate Finder, Smart Organize.
+
+Additional tools in this README represent planned functionality and UI scaffolding, not fully shipped workflows yet.
+
 ## Features
 
 ### Core Functionality
@@ -103,7 +114,7 @@ Application settings are stored in `backend/settings.json` and include:
     "apiEndpoint": "",
     "apiKey": ""
   },
-  "quickTools": ["rename", "convert", "compress", "cleanup"]
+  "quickTools": []
 }
 ```
 
@@ -122,29 +133,21 @@ disk-kit/
 │
 ├── frontend/
 │   ├── dashboard.html       # Main HTML entry point
-│   ├── css/
-│   │   ├── base.css         # Base styles
-│   │   ├── variables.css     # CSS variables (colors, spacing, etc.)
-│   │   ├── layout.css        # Layout and navigation styles
-│   │   └── tabs/            # Tab-specific CSS
-│   │       ├── dashboard.css
-│   │       ├── all-tools.css
-│   │       ├── browse-files.css
-│   │       └── settings.css
-│   │
-│   ├── js/
-│   │   ├── main.js          # Main JavaScript application
-│   │   └── config/          # Configuration files
-│   │       └── icons.js      # Icon mappings
-│   │
-│   └── html/
-│       ├── alltools.html    # All Tools page
-│       ├── browse-files.html
-│       └── system/          # System tool pages
-│           ├── settings.html
-│           └── ...
+│   ├── css/                 # Stylesheets
+│   ├── js/                  # JavaScript application
+│   └── html/                # Tool pages
 │
-└── README.md
+├── docs/
+│   ├── build/               # Build and installation guides
+│   └── planning/            # Roadmap and issue tracking
+│
+├── scripts/                 # Build scripts and utilities
+│
+├── packaging/               # Packaging configurations (e.g., .spec files)
+│
+├── diskkit_app.py           # Desktop application entry point
+├── README.md
+└── LICENSE
 ```
 
 ## API Endpoints
@@ -162,7 +165,7 @@ disk-kit/
 ### Response Format
 All API responses return JSON with appropriate HTTP status codes.
 
-## Available Tools
+## Planned Tool Catalog
 
 ### File Operations
 - **Batch Rename** - Rename multiple files at once
@@ -226,12 +229,11 @@ All API responses return JSON with appropriate HTTP status codes.
 
 ## Customization
 
-### Adding New Tools
+### Adding New Tools (Planned)
 1. Add tool metadata to `TOOL_META` in `frontend/js/main.js`
-2. Add tool category mapping to `TOOL_CATEGORIES`
-3. Add dashboard color mapping to `DASHBOARD_CARD_COLORS`
-4. Create HTML file in appropriate category folder under `frontend/html/`
-5. Add CSS styles if needed
+2. Add dashboard color mapping to `DASHBOARD_CARD_COLORS`
+3. Create the tool page in `frontend/html/tools/`
+4. Add CSS styles if needed
 
 ### Theming
 Edit `frontend/css/variables.css` to customize colors, spacing, borders, and other design tokens.

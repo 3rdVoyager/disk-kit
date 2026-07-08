@@ -73,3 +73,18 @@ export function setNestedValue(obj, path, value) {
   }, obj);
   target[last] = value;
 }
+
+/**
+ * Shared path state management
+ */
+const LAST_PATH_KEY = 'disk-kit-last-path';
+
+export function getLastPath() {
+  return localStorage.getItem(LAST_PATH_KEY) || '';
+}
+
+export function setLastPath(path) {
+  if (path) {
+    localStorage.setItem(LAST_PATH_KEY, path);
+  }
+}

@@ -1,0 +1,71 @@
+<section class="tool-page">
+  <div class="tool-page-header">
+    <h2>Batch Rename</h2>
+    <p>Preview and apply renaming rules to files in a folder.</p>
+  </div>
+
+  <form id="batch-rename-form" class="tool-form">
+    <div class="tool-form-row">
+      <label for="rename-path">Path</label>
+      <div class="input-group">
+        <input id="rename-path" type="text" placeholder="Leave empty to use default path" />
+        <button type="button" class="btn-browse" id="rename-browse" title="Browse...">
+          <span class="material-symbols-rounded">folder_open</span>
+        </button>
+      </div>
+    </div>
+    <div class="tool-form-row">
+      <label for="rename-mode">Mode</label>
+      <select id="rename-mode">
+        <option value="replace">Find & Replace</option>
+        <option value="prefix-suffix">Prefix + Suffix</option>
+        <option value="numbering">Numbering</option>
+      </select>
+    </div>
+
+    <div id="rename-fields-replace" class="tool-form-group">
+      <div class="tool-form-row">
+        <label for="rename-find">Find</label>
+        <input id="rename-find" type="text" />
+      </div>
+      <div class="tool-form-row">
+        <label for="rename-replace">Replace With</label>
+        <input id="rename-replace" type="text" />
+      </div>
+    </div>
+
+    <div id="rename-fields-prefix" class="tool-form-group" style="display:none;">
+      <div class="tool-form-row">
+        <label for="rename-prefix">Prefix</label>
+        <input id="rename-prefix" type="text" />
+      </div>
+      <div class="tool-form-row">
+        <label for="rename-suffix">Suffix</label>
+        <input id="rename-suffix" type="text" />
+      </div>
+    </div>
+
+    <div id="rename-fields-numbering" class="tool-form-group" style="display:none;">
+      <div class="tool-form-row">
+        <label for="rename-base">Base Name</label>
+        <input id="rename-base" type="text" value="file" />
+      </div>
+      <div class="tool-form-row">
+        <label for="rename-start">Start Index</label>
+        <input id="rename-start" type="number" min="1" value="1" />
+      </div>
+      <div class="tool-form-row">
+        <label for="rename-pad">Pad Width</label>
+        <input id="rename-pad" type="number" min="1" value="3" />
+      </div>
+    </div>
+
+    <div class="tool-form-actions">
+      <button type="button" class="btn-secondary" id="rename-preview-btn">Preview</button>
+      <button type="submit" class="btn-primary">Apply Rename</button>
+    </div>
+  </form>
+
+  <div id="batch-rename-summary" class="tool-summary"></div>
+  <div id="batch-rename-results" class="tool-results"></div>
+</section>

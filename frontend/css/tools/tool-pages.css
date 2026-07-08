@@ -1,0 +1,126 @@
+.tool-page {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-cards);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tool-page-header h2 {
+  margin: 0 0 4px 0;
+}
+
+.tool-page-header p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.tool-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.tool-form-group {
+  display: contents;
+}
+
+.tool-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-form-row label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tool-form-row input,
+.tool-form-row select {
+  width: 100%;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.input-group {
+  display: flex;
+  gap: 4px;
+}
+
+.input-group input {
+  flex: 1;
+}
+
+.btn-browse {
+  padding: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-browse:hover {
+  background: var(--border-default);
+}
+
+.tool-form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tool-summary {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tool-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 55vh;
+  overflow: auto;
+}
+
+.tool-results-item {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  background: var(--bg-elevated);
+}
+
+.tool-results-item strong {
+  display: block;
+}
+
+.tool-results-item small {
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.tool-results-item.error {
+  border-color: var(--status-error);
+}
+
+.tool-results-item.success {
+  border-color: var(--status-success);
+}

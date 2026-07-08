@@ -1,0 +1,32 @@
+<section class="tool-page">
+  <div class="tool-page-header">
+    <h2>Large Files</h2>
+    <p>Scan a folder and find the largest files quickly.</p>
+  </div>
+
+  <form id="large-files-form" class="tool-form">
+    <div class="tool-form-row">
+      <label for="large-files-path">Path</label>
+      <div class="input-group">
+        <input id="large-files-path" type="text" placeholder="Leave empty to use default path" />
+        <button type="button" class="btn-browse" id="large-files-browse" title="Browse...">
+          <span class="material-symbols-rounded">folder_open</span>
+        </button>
+      </div>
+    </div>
+    <div class="tool-form-row">
+      <label for="large-files-min-size">Min Size (MB)</label>
+      <input id="large-files-min-size" type="number" min="1" value="100" />
+    </div>
+    <div class="tool-form-row">
+      <label for="large-files-limit">Result Limit</label>
+      <input id="large-files-limit" type="number" min="1" value="200" />
+    </div>
+    <div class="tool-form-actions">
+      <button type="submit" class="btn-primary">Scan</button>
+    </div>
+  </form>
+
+  <div id="large-files-summary" class="tool-summary"></div>
+  <div id="large-files-results" class="tool-results"></div>
+</section>

@@ -1,47 +1,38 @@
-// Import icon configuration
-import { ICONS, getIconHTML } from './config/icons.js';
-if (!ICONS || !getIconHTML) {
-  console.warn('Icons module failed to load; continuing without icons');
-}
-
 // Import file browser functionality
 import {
-  currentFilePath,
-  isListView,
-  selectedFilePath,
-  fileBrowserHistory,
-  currentHistoryIndex,
-  suppressHistoryRecord,
   loadFileBrowser,
   goBack,
   goForward,
   setupFileBrowserNavigation,
-  selectFileItem,
-  deleteSelectedFile,
-  filterFileList,
-  toggleFileView,
-  updateNavigationButtons,
   setupFileBrowserButtonListeners,
-  setupGlobalNavigation,
-  getFileIcon,
-  showFileDetails,
-  formatFileSize
-} from './file-browser.js';
+} from './tools/file-browser.js';
+
+import { setupLargeFilesTool } from './tools/large-files.js';
+import { setupBatchRenameTool } from './tools/batch-rename.js';
+import { setupDuplicateFinderTool } from './tools/duplicate-finder.js';
+import { setupSmartOrganizeTool } from './tools/smart-organize.js';
+import { setupSettingsTool } from './tools/settings.js';
 
 // Import utilities
-import { escapeHtml, apiFetch, getNestedValue, setNestedValue } from './utils.js';
+import { escapeHtml, apiFetch } from './utils.js';
 
 // DOM elements
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
 const quickToolsList = document.getElementById('quick-tools');
+const quickToolsSection = quickToolsList ? quickToolsList.closest('li') : null;
 let originalHomeHTML = '';
 
 // ============================================================
 // Quick Tools state (persisted via API to backend)
 // ============================================================
-const DEFAULT_QUICK_TOOLS = ['rename', 'convert', 'compress', 'cleanup'];
+const DEFAULT_QUICK_TOOLS = [];
 let cachedQuickTools = null;
+const QUICK_TOOL_EXCLUDED = new Set(['home', 'alltools', 'browse-files', 'settings']);
+
+function isQuickToolEligible(toolId) {
+  return Boolean(TOOL_META[toolId]) && !QUICK_TOOL_EXCLUDED.has(toolId);
+}
 
 async function getQuickTools() {
   try {
@@ -49,7 +40,14 @@ async function getQuickTools() {
       return cachedQuickTools;
     }
     const response = await apiFetch('/api/quick-tools');
-    cachedQuickTools = response.quickTools || DEFAULT_QUICK_TOOLS;
+    const incomingTools = Array.isArray(response.quickTools) ? response.quickTools : DEFAULT_QUICK_TOOLS;
+    const validTools = incomingTools.filter(toolId => isQuickToolEligible(toolId));
+    cachedQuickTools = validTools.length > 0 ? validTools : DEFAULT_QUICK_TOOLS;
+
+    // If persisted tools include deprecated entries, self-heal to the active v1 set.
+    if (validTools.length !== incomingTools.length || validTools.length === 0) {
+      await saveQuickTools(cachedQuickTools);
+    }
     return cachedQuickTools;
   } catch (err) {
     console.error('Failed to load quick tools:', err);
@@ -73,44 +71,11 @@ async function saveQuickTools(tools) {
 // Central tool metadata — single source of truth for all tools
 // ============================================================
 const TOOL_META = {
-  'rename':         { icon: 'edit',              label: 'Batch Rename',       description: 'Rename multiple files at once' },
-  'move':           { icon: 'drive_file_move',   label: 'Move Files',         description: 'Transfer files between folders' },
-  'copy':           { icon: 'content_copy',      label: 'Copy Files',         description: 'Duplicate files to another location' },
-  'delete':         { icon: 'delete',            label: 'Delete Files',       description: 'Permanently remove selected files' },
-  'split':          { icon: 'call_split',        label: 'Split Files',        description: 'Divide large files into smaller parts' },
-  'merge':          { icon: 'call_merge',        label: 'Merge Files',        description: 'Combine multiple files into one' },
-  'convert':        { icon: 'transform',         label: 'Format Converter',   description: 'Convert between file formats' },
-  'image-convert':  { icon: 'image',             label: 'Image Converter',    description: 'Convert image formats (JPG, PNG, WebP)' },
-  'video-convert':  { icon: 'movie',             label: 'Video Converter',    description: 'Convert video formats and codecs' },
-  'audio-convert':  { icon: 'music_note',        label: 'Audio Converter',    description: 'Convert audio formats (MP3, FLAC, WAV)' },
-  'doc-convert':    { icon: 'description',       label: 'Document Converter', description: 'Convert documents (PDF, DOCX, TXT)' },
-  'compress':       { icon: 'inventory_2',       label: 'Compress Files',     description: 'Create ZIP, RAR, or 7z archives' },
-  'extract':        { icon: 'folder_open',       label: 'Extract Archives',   description: 'Unzip and extract compressed files' },
-  'iso-mount':      { icon: 'album',             label: 'Mount ISO',          description: 'Mount disk image files' },
-  'cleanup':        { icon: 'cleaning_services', label: 'System Cleanup',     description: 'Remove temporary and cache files' },
-  'ai-rename':      { icon: 'auto_awesome',      label: 'AI Rename',          description: 'Smart rename with AI suggestions' },
-  'ai-cleanup':     { icon: 'auto_awesome',      label: 'AI Cleanup',         description: 'AI-powered system cleanup' },
-  'duplicates':     { icon: 'find_replace',       label: 'Duplicate Finder',   description: 'Find and remove duplicate files' },
-  'empty-folders':  { icon: 'delete_sweep',       label: 'Empty Folders',      description: 'Remove empty directories' },
   'large-files':    { icon: 'storage',           label: 'Large Files',        description: 'Find files taking up space' },
-  'old-files':      { icon: 'schedule',          label: 'Old Files',          description: 'Identify files not accessed recently' },
-  'temp-files':     { icon: 'thermostat',        label: 'Temp Files',         description: 'Clean up temporary system files' },
-  'organize':       { icon: 'auto_fix_high',     label: 'Smart Organize',     description: 'Auto-sort files into folders' },
-  'sort':           { icon: 'sort',              label: 'Sort Files',         description: 'Sort by name, date, size, type' },
-  'deduplicate':    { icon: 'filter_list',       label: 'Deduplicate',        description: 'Remove exact file duplicates' },
-  'tag':            { icon: 'label',             label: 'Tag Files',          description: 'Add tags and labels to files' },
-  'resize':         { icon: 'photo_size_select_large', label: 'Resize Images', description: 'Batch resize and crop images' },
-  'watermark':      { icon: 'water_drop',        label: 'Watermark',          description: 'Add watermarks to images' },
-  'thumbnail':      { icon: 'grid_on',           label: 'Thumbnail Generator',description: 'Generate image thumbnails' },
-  'metadata':       { icon: 'info',              label: 'Metadata Viewer',    description: 'View and edit EXIF and file metadata' },
-  'checksum':       { icon: 'fingerprint',       label: 'Checksum',           description: 'Calculate MD5, SHA-256 hashes' },
-  'encrypt':        { icon: 'lock',              label: 'Encrypt Files',      description: 'Secure files with encryption' },
-  'sync':           { icon: 'sync',              label: 'File Sync',          description: 'Sync files between directories' },
-  'secure-delete':  { icon: 'verified',          label: 'Secure Delete',      description: 'Permanently erase with overwrite' },
-  'history':        { icon: 'history',           label: 'History',            description: 'View operation history' },
+  'rename':         { icon: 'edit',              label: 'Batch Rename',       description: 'Preview and apply rename rules' },
+  'duplicates':     { icon: 'find_replace',      label: 'Duplicate Finder',   description: 'Find exact duplicate files' },
+  'organize':       { icon: 'auto_fix_high',     label: 'Smart Organize',     description: 'Sort files into category folders' },
   'settings':       { icon: 'settings',          label: 'Settings',           description: 'Configure application settings' },
-  'trash':          { icon: 'delete',            label: 'Trash',              description: 'View deleted files' },
-  'storage-details':{ icon: 'storage',           label: 'Storage Details',    description: 'View detailed storage information' },
   'browse-files':   { icon: 'folder',            label: 'Browse Files',       description: 'Browse and navigate files' },
   'alltools':       { icon: 'apps',              label: 'All Tools',          description: 'Explore all available tools' },
   'home':           { icon: 'home',              label: 'Dashboard',          description: 'Return to the dashboard' }
@@ -118,14 +83,12 @@ const TOOL_META = {
 
 // Color mapping for dashboard quick tool cards
 const DASHBOARD_CARD_COLORS = {
-  rename: 'blue', move: 'blue', copy: 'blue', delete: 'red', split: 'purple', merge: 'teal',
-  convert: 'purple', 'image-convert': 'orange', 'video-convert': 'purple', 'audio-convert': 'green', 'doc-convert': 'yellow',
-  compress: 'orange', extract: 'teal', 'iso-mount': 'gray',
-  cleanup: 'green', 'ai-rename': 'purple', 'ai-cleanup': 'purple', duplicates: 'green', 'empty-folders': 'green', 'large-files': 'orange', 'old-files': 'yellow', 'temp-files': 'gray',
-  organize: 'purple', sort: 'blue', deduplicate: 'teal', tag: 'purple',
-  resize: 'blue', watermark: 'purple', thumbnail: 'green', metadata: 'gray',
-  checksum: 'yellow', encrypt: 'teal', sync: 'blue', 'secure-delete': 'red',
-  history: 'gray', settings: 'gray', trash: 'red', 'storage-details': 'orange',
+  'large-files': 'orange',
+  rename: 'blue',
+  duplicates: 'green',
+  organize: 'purple',
+  'browse-files': 'blue',
+  settings: 'gray',
   alltools: 'gray'
 };
 
@@ -133,27 +96,16 @@ const DASHBOARD_CARD_COLORS = {
 // Tool category mapping (maps hash -> subdirectory)
 // IMPORTANT!!! When adding a new tool/page, add it here AND in TOOL_META above.
 // ============================================================
-const TOOL_CATEGORIES = {
-  rename: 'file-operations', move: 'file-operations', copy: 'file-operations',
-  delete: 'file-operations', split: 'file-operations', merge: 'file-operations',
-  convert: 'conversion', 'image-convert': 'conversion', 'video-convert': 'conversion',
-  'audio-convert': 'conversion', 'doc-convert': 'conversion',
-  compress: 'compression', extract: 'compression', 'iso-mount': 'compression',
-  cleanup: 'cleanup', 'ai-rename': 'cleanup', 'ai-cleanup': 'cleanup', duplicates: 'cleanup',
-  'empty-folders': 'cleanup', 'large-files': 'cleanup', 'old-files': 'cleanup', 'temp-files': 'cleanup',
-  organize: 'organization', sort: 'organization', deduplicate: 'organization', tag: 'organization',
-  resize: 'media', watermark: 'media', thumbnail: 'media', metadata: 'media',
-  checksum: 'advanced', encrypt: 'advanced', sync: 'advanced', 'secure-delete': 'advanced',
-  history: 'system', settings: 'system', trash: 'system', 'storage-details': 'system'
-};
-
 // ============================================================
 // Sidebar: render quick tools list
 // ============================================================
 async function renderQuickTools() {
   const tools = await getQuickTools();
   quickToolsList.innerHTML = '';
-  
+
+  if (quickToolsSection) {
+    quickToolsSection.style.display = tools.length > 0 ? '' : 'none';
+  }
   if (tools.length === 0) return;
   
   tools.forEach(toolId => {
@@ -216,6 +168,8 @@ async function renderDashboardQuickTools() {
 // Quick Tools toggle (from All Tools checkboxes)
 // ============================================================
 async function toggleQuickTool(toolId, checked) {
+  if (!isQuickToolEligible(toolId)) return;
+
   const tools = await getQuickTools();
   const newTools = [...tools];
   if (checked) {
@@ -260,8 +214,7 @@ async function loadContent(toolName, pushHistory = true) {
   }
   
   try {
-    const category = TOOL_CATEGORIES[toolName] || '';
-    const path = category ? `html/${category}/${toolName}.html` : `html/${toolName}.html`;
+    const path = `html/tools/${toolName}.html`;
     const response = await fetch(path);
     if (!response.ok) throw new Error(`HTTP ${response.status} loading ${path}`);
     const html = await response.text();
@@ -276,11 +229,22 @@ async function loadContent(toolName, pushHistory = true) {
     if (toolName === 'alltools') {
       setTimeout(async () => {
         await initializeAllToolsCheckboxes();
-        attachToggleListeners();
       }, 0);
     }
     if (toolName === 'settings') {
-      setTimeout(() => setupSettings(), 0);
+      setTimeout(() => setupSettingsTool(), 0);
+    }
+    if (toolName === 'large-files') {
+      setTimeout(() => setupLargeFilesTool(), 0);
+    }
+    if (toolName === 'rename') {
+      setTimeout(() => setupBatchRenameTool(), 0);
+    }
+    if (toolName === 'duplicates') {
+      setTimeout(() => setupDuplicateFinderTool(), 0);
+    }
+    if (toolName === 'organize') {
+      setTimeout(() => setupSmartOrganizeTool(), 0);
     }
     
     if (pushHistory) {
@@ -304,19 +268,6 @@ async function initializeAllToolsCheckboxes() {
   });
 }
 
-function attachToggleListeners() {
-  const toggles = document.querySelectorAll('.quick-tool-toggle');
-  toggles.forEach(toggle => {
-    const newToggle = toggle.cloneNode(true);
-    toggle.parentNode.replaceChild(newToggle, toggle);
-    
-    newToggle.addEventListener('change', async (e) => {
-      const toolId = e.target.getAttribute('data-tool');
-      await toggleQuickTool(toolId, e.target.checked);
-    });
-  });
-}
-
 // ============================================================
 // Navigation
 // ============================================================
@@ -326,8 +277,6 @@ function navigateTo(toolName) {
   document.querySelectorAll('#sidebar .nav-link').forEach(l => l.classList.remove('selected'));
   const sidebarLink = document.querySelector(`#sidebar a[href="#${toolName}"]`);
   if (sidebarLink) sidebarLink.classList.add('selected');
-  
-  history.pushState(null, null, `#${toolName}`);
 }
 
 
@@ -567,7 +516,6 @@ async function bootstrap() {
     setupThemeToggle();
     setupHelpDialog();
     setupFileBrowserNavigation();
-    setupFileBrowserButtonListeners();
     await loadTheme();
     await renderDashboardQuickTools();
     
@@ -582,103 +530,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
-// ============================================================
-// Settings helpers
-// ============================================================
-let currentSettings = null;
-
-function populateSettingsForm(settings) {
-    currentSettings = settings;
-    const form = document.getElementById('settings-form');
-    if (!form) return;
-    Array.from(form.elements).forEach(el => {
-        const name = el.getAttribute('name');
-        if (!name) return;
-        const value = getNestedValue(settings, name);
-        if (el.type === 'checkbox') {
-            el.checked = Boolean(value);
-        } else if (el.type === 'number') {
-            el.value = value !== undefined ? value : '';
-        } else {
-            el.value = value !== undefined ? value : '';
-        }
-    });
-}
-
-function gatherSettingsForm() {
-    const form = document.getElementById('settings-form');
-    if (!form) return {};
-    const data = {};
-    Array.from(form.elements).forEach(el => {
-        const name = el.getAttribute('name');
-        if (!name) return;
-        if (el.type === 'checkbox') {
-            setNestedValue(data, name, el.checked);
-        } else if (el.type === 'number') {
-            const num = parseFloat(el.value);
-            setNestedValue(data, name, Number.isNaN(num) ? el.value : num);
-        } else {
-            setNestedValue(data, name, el.value);
-        }
-    });
-    return data;
-}
-
-async function loadSettings() {
-    try {
-        const settings = await apiFetch('/api/settings');
-        populateSettingsForm(settings);
-        showSettingsMessage('Settings loaded.', 'success');
-    } catch (err) {
-        console.error(err);
-        showSettingsMessage(`Failed to load settings: ${err.message}`, 'error');
-    }
-}
-
-async function saveSettings() {
-    const data = gatherSettingsForm();
-    try {
-        const result = await apiFetch('/api/settings', {
-            method: 'POST',
-            body: data
-        });
-        currentSettings = result.settings;
-        showSettingsMessage('Settings saved.', 'success');
-    } catch (err) {
-        console.error(err);
-        showSettingsMessage(`Failed to save settings: ${err.message}`, 'error');
-    }
-}
-
-async function resetSettings() {
-    try {
-        const result = await apiFetch('/api/settings/reset', { method: 'POST' });
-        populateSettingsForm(result.settings);
-        showSettingsMessage('Settings reset to defaults.', 'success');
-    } catch (err) {
-        console.error(err);
-        showSettingsMessage(`Failed to reset settings: ${err.message}`, 'error');
-    }
-}
-
-function showSettingsMessage(message, type) {
-    const el = document.getElementById('settings-message');
-    if (!el) return;
-    el.textContent = message;
-    el.className = `settings-message ${type}`;
-}
-
-function setupSettings() {
-    const form = document.getElementById('settings-form');
-    if (!form) return;
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        saveSettings();
-    });
-    const resetBtn = document.getElementById('reset-settings');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => resetSettings());
-    }
-    loadSettings();
-}

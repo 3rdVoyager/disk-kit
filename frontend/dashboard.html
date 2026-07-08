@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/tabs/dashboard.css" />
-    <link rel="stylesheet" href="css/tabs/browse-files.css" />
-    <link rel="stylesheet" href="css/components/icon-mappings.css" />
-    <link rel="stylesheet" href="css/tabs/all-tools.css" />
-    <link rel="stylesheet" href="css/tabs/settings.css" />
+    <link rel="stylesheet" href="css/tools/browse-files.css" />
+    <link rel="stylesheet" href="css/tools/all-tools.css" />
+    <link rel="stylesheet" href="css/tools/settings.css" />
+    <link rel="stylesheet" href="css/tools/tool-pages.css" />
     <link rel="stylesheet" href="css/components/help-dialog.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -79,24 +79,6 @@
             <h3 class="nav-title">System</h3>
             <ul id="system">
               <li>
-                <a class="nav-link" href="#history"
-                  ><span class="nav-icon material-symbols-rounded">history</span
-                  ><span class="nav-text">History</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link" href="#trash"
-                  ><span class="nav-icon material-symbols-rounded">delete</span
-                  ><span class="nav-text">Trash</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link" href="#storage-details">
-                  <span class="nav-icon material-symbols-rounded">storage</span
-                  ><span class="nav-text">Storage Details</span></a
-                >
-              </li>
-              <li>
                 <a class="nav-link" href="#settings"
                   ><span class="nav-icon material-symbols-rounded"
                     >settings</span
@@ -128,7 +110,7 @@
           <div class="dashboard-card storage-overview-card">
             <div class="card-header-row">
               <h3>Storage Overview</h3>
-              <a class="btn-link" href="#storage-details">Details</a>
+              <a class="btn-link" href="#browse-files">Browse Files</a>
             </div>
             <div class="storage-content">
               <div class="storage-main">
@@ -221,7 +203,7 @@
           <div class="dashboard-card suggested-actions-card">
             <div class="card-header-row">
               <h3>Suggested Actions</h3>
-              <a class="btn-link" href="#dismiss-all">Dismiss All</a>
+              <a class="btn-link" href="#alltools">Open Tools</a>
             </div>
             <ul class="actions-list">
               <li class="action-item">
@@ -287,7 +269,7 @@
           <section class="dashboard-card recent-ops-card">
             <div class="card-header-row">
               <h3>Recent Operations</h3>
-              <a class="btn-link" href="#history">View All History</a>
+              <a class="btn-link" href="#alltools">View Available Tools</a>
             </div>
             <ul class="operations-list">
               <li class="operation-item">
@@ -378,6 +360,40 @@
           </div>
           <div class="help-content" id="help-content">
             <!-- Content loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Browser Selector Dialog -->
+    <div id="browser-selector-dialog" class="dialog-overlay" style="display: none;">
+      <div class="dialog-content browser-selector-content">
+        <div class="dialog-header">
+          <h2>Select Path</h2>
+          <button class="dialog-close" id="browser-selector-close">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <div class="browser-selector-ui">
+            <div class="browser-selector-nav">
+              <button class="btn-icon" id="selector-back" title="Back"><span class="material-symbols-rounded">arrow_back</span></button>
+              <button class="btn-icon" id="selector-forward" title="Forward"><span class="material-symbols-rounded">arrow_forward</span></button>
+              <div class="selector-breadcrumb">This PC > C:</div>
+            </div>
+            <div class="browser-selector-list-container">
+              <ul id="selector-file-list" class="file-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <div class="selected-path-display">
+            <span class="label">Selected:</span>
+            <span id="selector-current-path">C:\Users</span>
+          </div>
+          <div class="footer-actions">
+            <button class="btn-secondary" id="selector-cancel">Cancel</button>
+            <button class="btn-primary" id="selector-confirm">Select Folder</button>
           </div>
         </div>
       </div>
