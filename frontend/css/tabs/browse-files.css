@@ -67,7 +67,7 @@
 
 .file-item.selected .file-icon,
 .file-item.selected .file-name {
-    color: white;
+    color: var(--text-primary);
 }
 
 /* File Icon */
@@ -122,4 +122,91 @@
 /* Breadcrumbs (hidden in view but kept for compatibility) */
 .breadcrumbs {
     display: none;
+}
+
+/* ============================================
+   DETAILS PANEL
+   ============================================ */
+
+.details-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 24px;
+}
+
+.details-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.file-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.file-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-info h3 {
+    font-size: 1.1rem;
+    margin: 0 0 4px 0;
+    word-break: break-word;
+}
+
+.details-file-type {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.details-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.meta-label {
+    color: var(--text-secondary);
+}
+
+.meta-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.details-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.details-actions .btn-action {
+    text-align: center;
+    width: 100%;
 }

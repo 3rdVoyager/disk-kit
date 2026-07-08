@@ -1,0 +1,192 @@
+/* ============================================
+   Help Dialog
+   ============================================ */
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+}
+
+[data-theme="light"] .dialog-overlay {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dialog-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-cards);
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform var(--transition-smooth);
+}
+
+.dialog-overlay.active .dialog-content {
+    transform: translateY(0);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.dialog-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.dialog-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.dialog-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.dialog-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Help Tabs */
+.help-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.help-tab {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.help-tab:hover {
+    color: var(--text-primary);
+}
+
+.help-tab.active {
+    color: var(--accent-info);
+    border-bottom-color: var(--accent-info);
+}
+
+/* Help Content */
+.help-content {
+    min-height: 300px;
+}
+
+.help-section {
+    display: none;
+}
+
+.help-section.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.help-item {
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-default);
+}
+
+.help-item:last-child {
+    margin-bottom: 0;
+}
+
+.help-item h4 {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.help-item h4::before {
+    content: '•';
+    color: var(--accent-info);
+    font-weight: bold;
+}
+
+.help-item p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* Scrollbar styling */
+.dialog-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dialog-body::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+}
+
+.dialog-body::-webkit-scrollbar-thumb {
+    background: var(--border-default);
+    border-radius: var(--radius-sm);
+}
+
+.dialog-body::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-hover);
+}

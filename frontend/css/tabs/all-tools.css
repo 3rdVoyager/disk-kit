@@ -83,7 +83,7 @@
 
 .tool-card-icon .material-symbols-rounded {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-primary);
     transition: transform var(--transition-fast);
 }
 

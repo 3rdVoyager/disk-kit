@@ -337,6 +337,160 @@ function setupMenuToggle() {
 }
 
 // ============================================================
+// Theme handling
+// ============================================================
+async function loadTheme() {
+  try {
+    const settings = await apiFetch('/api/settings');
+    const theme = settings?.general?.theme || 'dark';
+    applyTheme(theme);
+  } catch (err) {
+    console.error('Failed to load theme:', err);
+    applyTheme('dark');
+  }
+}
+
+function applyTheme(theme) {
+  const html = document.documentElement;
+  const isDark = theme === 'dark';
+  html.setAttribute('data-theme', theme);
+  
+  const themeBtn = document.querySelector('.header-icon[title="Theme"]');
+  if (themeBtn) {
+    const iconSpan = themeBtn.querySelector('.material-symbols-rounded');
+    if (iconSpan) {
+      iconSpan.textContent = isDark ? 'dark_mode' : 'light_mode';
+    }
+  }
+  
+  localStorage.setItem('disk-kit-theme', theme);
+}
+
+async function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  applyTheme(newTheme);
+  
+  try {
+    await apiFetch('/api/settings', {
+      method: 'POST',
+      body: { general: { theme: newTheme } }
+    });
+  } catch (err) {
+    console.error('Failed to save theme:', err);
+  }
+}
+
+function setupThemeToggle() {
+  const themeBtn = document.querySelector('.header-icon[title="Theme"]');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => toggleTheme());
+  }
+}
+
+// ============================================================
+// Help dialog
+// ============================================================
+let helpData = null;
+
+async function loadHelpData() {
+  try {
+    const response = await fetch('help/tips.json');
+    if (!response.ok) throw new Error('Failed to load help data');
+    helpData = await response.json();
+    return helpData;
+  } catch (err) {
+    console.error('Failed to load help data:', err);
+    return null;
+  }
+}
+
+function renderHelpSection(sectionKey) {
+  const container = document.getElementById('help-content');
+  if (!container || !helpData) return;
+  
+  const items = helpData[sectionKey] || [];
+  container.innerHTML = items.map(item => `
+    <div class="help-section active">
+      <div class="help-item">
+        <h4>${escapeHtml(item.title)}</h4>
+        <p>${escapeHtml(item.content)}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function openHelpDialog() {
+  const dialog = document.getElementById('help-dialog');
+  if (!dialog) return;
+  
+  dialog.style.display = 'flex';
+  requestAnimationFrame(() => {
+    dialog.classList.add('active');
+  });
+  
+  if (!helpData) {
+    loadHelpData().then(() => {
+      renderHelpSection('gettingStarted');
+    });
+  } else {
+    renderHelpSection('gettingStarted');
+  }
+}
+
+function closeHelpDialog() {
+  const dialog = document.getElementById('help-dialog');
+  if (!dialog) return;
+  
+  dialog.classList.remove('active');
+  setTimeout(() => {
+    dialog.style.display = 'none';
+  }, 300);
+}
+
+function setupHelpTabs() {
+  const tabs = document.querySelectorAll('.help-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      const tabKey = tab.getAttribute('data-tab');
+      renderHelpSection(tabKey);
+    });
+  });
+}
+
+function setupHelpDialog() {
+  const helpBtn = document.querySelector('.header-icon[title="Help"]');
+  if (helpBtn) {
+    helpBtn.addEventListener('click', () => openHelpDialog());
+  }
+  
+  const closeBtn = document.getElementById('help-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => closeHelpDialog());
+  }
+  
+  const dialog = document.getElementById('help-dialog');
+  if (dialog) {
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeHelpDialog();
+      }
+    });
+  }
+  
+  setupHelpTabs();
+}
+
+// ============================================================
 // Bootstrap
 // ============================================================
 function bootstrap() {
@@ -345,7 +499,16 @@ function bootstrap() {
     setupGlobalNavigation();
     setupToggleListeners();
     setupMenuToggle();
+    setupThemeToggle();
+    setupHelpDialog();
+    loadTheme();
     renderDashboardQuickTools();
+    
+    // Load tab from URL hash on page load
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      navigateTo(hash);
+    }
   } catch (err) {
     console.error('Bootstrap failed:', err);
   }

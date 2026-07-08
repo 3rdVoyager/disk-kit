@@ -14,7 +14,7 @@ main {
     height: 60px;
     background-color: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-default);
-    box-shadow: 4px 2px 8px #000000;
+    box-shadow: 4px 2px 8px var(--shadow-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -165,7 +165,7 @@ header,
     overflow-y: auto;
     overflow-x: hidden;
     border-right: 1px solid var(--border-default);
-    box-shadow: 2px 0 8px #000000;
+    box-shadow: 2px 0 8px var(--shadow-color);
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
@@ -292,7 +292,7 @@ header,
 /* Material Symbols base styles */
 .material-symbols-rounded {
     font-size: 1.4rem;
-    color: white;
+    color: var(--text-primary);
     display: inline-block;
 }
 

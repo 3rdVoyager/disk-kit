@@ -6,10 +6,11 @@
     --bg-sidebar: #111722;       /* Sidebar background */
     --bg-card: #0b101b;          /* Card background (darker than before for better contrast) */
     --bg-header: #1a2332;        /* Header background (darker than before for better contrast) */
-    --bg-elevated: #0f1419;      /* Elevated items inside cards (tool items, ops, breakdowns) */
+    --bg-elevated: #0b101b;      /* Elevated items inside cards (tool items, ops, breakdowns) */
     --bg-elevated-hover: #1f2937;/* Hover for elevated items */
     --bg-hover: #262059;         /* General hover state (sidebar links, header icons) */
     --bg-selected: #2e5ef7;      /* Selected/active state */
+    --shadow-color: #000000; /* Shadow color for elevated elements */
 
     /* ============================================
        BORDERS
@@ -70,9 +71,10 @@
        --bg-card: #ffffff;
        --bg-header: #f3f4f6;
        --bg-elevated: #ffffff;
-       --bg-elevated-hover: #f3f4f6;
+       --bg-elevated-hover: #d7d7d7;
        --bg-hover: #e5e7eb;
        --bg-selected: #3b82f6;
+      --shadow-color: #414141;
 
        --border-default: #d1d5db;
        --border-accent: #3b82f6;

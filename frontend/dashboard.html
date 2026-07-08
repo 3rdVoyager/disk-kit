@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/components/icon-mappings.css" />
     <link rel="stylesheet" href="css/tabs/all-tools.css" />
     <link rel="stylesheet" href="css/tabs/settings.css" />
+    <link rel="stylesheet" href="css/components/help-dialog.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
       rel="stylesheet"
@@ -31,8 +32,8 @@
             <span class="material-symbols-rounded">search</span>
             <input type="text" placeholder="Search files and folders..." />
           </div>
-          <button class="header-icon" title="Settings">
-            <span class="material-symbols-rounded">settings</span>
+          <button class="header-icon" title="Help">
+            <span class="material-symbols-rounded">help</span>
           </button>
           <button class="header-icon" title="Theme">
             <span class="material-symbols-rounded">dark_mode</span>
@@ -375,5 +376,27 @@
         </div>
       </section>
     </main>
+
+    <!-- Help Dialog -->
+    <div id="help-dialog" class="dialog-overlay" style="display: none;">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2>Help & Tips</h2>
+          <button class="dialog-close" id="help-close">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <div class="help-tabs">
+            <button class="help-tab active" data-tab="gettingStarted">Getting Started</button>
+            <button class="help-tab" data-tab="tools">Tools</button>
+            <button class="help-tab" data-tab="tips">Tips</button>
+          </div>
+          <div class="help-content" id="help-content">
+            <!-- Content loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

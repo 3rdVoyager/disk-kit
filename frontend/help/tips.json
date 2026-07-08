@@ -1,0 +1,52 @@
+{
+  "gettingStarted": [
+    {
+      "title": "Welcome to Disk Kit!",
+      "content": "Disk Kit helps you manage your files efficiently with powerful tools for organizing, converting, and cleaning up your storage."
+    },
+    {
+      "title": "Quick Tools",
+      "content": "Add tools to your Quick Tools list from the 'All Tools' page. These will appear in the sidebar and dashboard for fast access."
+    },
+    {
+      "title": "Navigation",
+      "content": "Use the sidebar to navigate between Dashboard, Browse Files, and all available tools. Click the menu button to collapse the sidebar."
+    }
+  ],
+  "tools": [
+    {
+      "title": "Batch Rename",
+      "content": "Rename multiple files at once using patterns. Great for organizing photo collections or downloaded files."
+    },
+    {
+      "title": "Format Converter",
+      "content": "Convert files between different formats. Supports images (JPG, PNG, WebP), videos, audio, and documents."
+    },
+    {
+      "title": "Compress Files",
+      "content": "Create ZIP, RAR, or 7z archives to save space. Perfect for backing up projects or sending files."
+    },
+    {
+      "title": "System Cleanup",
+      "content": "Remove temporary files, cache, and duplicates to free up disk space and improve performance."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Pro Tip: Use Themes",
+      "content": "Toggle between light and dark mode using the theme button in the header. Your preference is saved automatically."
+    },
+    {
+      "title": "Keyboard Shortcuts",
+      "content": "Press Ctrl+K to quickly access the command palette (coming soon). Navigate using number keys 1-9 for quick tool access."
+    },
+    {
+      "title": "Organize Downloads",
+      "content": "Enable 'Smart Organize' to automatically sort downloaded files into folders by type (images, documents, videos, etc.)."
+    },
+    {
+      "title": "Save Space",
+      "content": "Use the 'Large Files' tool to find files over 100MB. The 'Duplicate Finder' can free up significant space by removing copies."
+    }
+  ]
+}
