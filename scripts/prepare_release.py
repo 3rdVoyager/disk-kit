@@ -18,6 +18,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 os.chdir(ROOT_DIR)
 APP_VERSION = "0.6.0"
 PINNED_PYINSTALLER = "6.21.0"
+RELEASE_NOTES_TEMPLATE = ROOT_DIR / "docs" / "release" / "release-notes.template.md"
 
 
 def print_header(text):
@@ -232,53 +233,28 @@ def create_installer():
 
 
 def create_release_notes():
-    """Create a release notes file"""
+    """Render release notes from the markdown template."""
     print_header("Creating Release Notes")
-    
+
+    if not RELEASE_NOTES_TEMPLATE.exists():
+        print(f"[ERROR] Release notes template not found: {RELEASE_NOTES_TEMPLATE}")
+        return False
+
     date_str = datetime.now().strftime("%B %d, %Y")
-    
-    release_notes = f"""Disk Kit v{APP_VERSION} - Release Notes
-Released: {date_str}
+    template = RELEASE_NOTES_TEMPLATE.read_text(encoding="utf-8")
+    release_notes = (
+        template
+        .replace("{{version}}", APP_VERSION)
+        .replace("{{date}}", date_str)
+    )
 
-## Installation
-
-### Option 1: Installer (Recommended)
-1. Run DiskKit-Setup-{APP_VERSION}.exe
-2. Follow the installation wizard
-3. Launch from Start Menu or Desktop shortcut
-
-### Option 2: Portable
-1. Extract DiskKit-Portable-{APP_VERSION}.zip to any folder
-2. Run DiskKit.exe
-
-## System Requirements
-- Windows 7 or later (64-bit)
-- No additional software required
-
-## What's New in v{APP_VERSION}
-- Initial release
-- Dashboard with storage overview
-- Browse Files tool
-- Large Files finder
-- Batch Rename tool
-- Duplicate Finder
-- Smart Organize
-- Settings management
-
-## Known Issues
-- None at this time
-
-## Support
-- GitHub Issues: https://github.com/3rdVoyager/disk-kit/issues
-- Documentation: https://github.com/3rdVoyager/disk-kit
-"""
-    
     releases_dir = ROOT_DIR / "releases"
     releases_dir.mkdir(exist_ok=True)
-    
+
     notes_file = releases_dir / f"RELEASE_NOTES_v{APP_VERSION}.txt"
-    notes_file.write_text(release_notes)
+    notes_file.write_text(release_notes, encoding="utf-8")
     print(f"[OK] Created {notes_file}")
+    return True
 
 
 def main():
@@ -324,7 +300,7 @@ def main():
     print("  1. Test the EXE: dist/DiskKit.exe")
     print(f"  2. Test the installer: installer/DiskKit-Setup-{APP_VERSION}.exe")
     print("  3. Upload to GitHub Releases or your distribution platform")
-    print("  4. Update APP_VERSION in scripts/prepare_release.py and DiskKit.iss if needed")
+    print("  4. Update APP_VERSION, DiskKit.iss, and docs/release/release-notes.template.md if needed")
     print()
 
 

@@ -46,12 +46,84 @@ Publish files from `releases/`:
 - portable ZIP
 - release notes
 
+## Release Notes Workflow
+
+Release notes are generated from a template file, not edited in Python.
+
+**Source template (edit this):**
+- `docs/release/release-notes.template.md`
+
+**Generated output (do not edit by hand):**
+- `releases/RELEASE_NOTES_v<version>.txt`
+
+### How to update release notes
+
+1. Edit `docs/release/release-notes.template.md`
+   - Update the **What's New** bullets
+   - Update **Known Issues** if needed
+2. Bump version in:
+   - `APP_VERSION` in `scripts/prepare_release.py`
+   - `#define AppVersion` in `DiskKit.iss`
+3. Run:
+   ```bash
+   python scripts/prepare_release.py
+   ```
+4. Review generated file in `releases/` before publishing
+
+### Template placeholders
+
+The release script replaces these automatically:
+- `{{version}}` -> current `APP_VERSION`
+- `{{date}}` -> build date (for example: `July 08, 2026`)
+
 ## Version Bump Checklist
 
 Before each release:
 - Update `APP_VERSION` in `scripts/prepare_release.py`
 - Update `#define AppVersion` in `DiskKit.iss`
-- Update release notes/changelog text as needed
+- Update `docs/release/release-notes.template.md`
+- **Do not change** `AppId` in `DiskKit.iss` (required for in-place upgrades)
+
+## Updates (How Users Upgrade)
+
+### Installer users (recommended)
+
+**Yes — running a newer installer upgrades the existing install.**
+
+Disk Kit uses a stable Inno `AppId` in `DiskKit.iss`. When a user already has Disk Kit installed and runs a newer `DiskKit-Setup-<version>.exe`:
+
+1. Inno detects the existing installation
+2. The old app files are replaced in the same install folder
+3. Shortcuts and the Installed Apps entry are updated to the new version
+4. Uninstall still works from Windows Settings
+
+**User steps to update:**
+1. Download the latest `DiskKit-Setup-<version>.exe` from GitHub Releases
+2. Run the installer
+3. Follow the wizard (no need to uninstall first)
+
+### What is not included yet
+
+- No automatic “check for updates” inside the app
+- No background download/install of updates
+- `AppUpdatesURL` in `DiskKit.iss` is informational only
+
+For now, updates are **manual**: publish a new installer and tell users to download it.
+
+### Portable ZIP users
+
+Portable users must update manually:
+1. Close Disk Kit
+2. Replace `DiskKit.exe` (or extract the new portable ZIP over the old folder)
+3. Run the new EXE
+
+### Maintainer rule for upgrades
+
+Keep the same `AppId` across all releases. If you change `AppId`, Windows treats it as a different app and users may end up with duplicate installs.
+
+### Future option (not implemented)
+
+If you want in-app updates later, add a “Check for updates” action that reads GitHub Releases and prompts users to download the latest installer.
 
 ## Validation Checklist
 
