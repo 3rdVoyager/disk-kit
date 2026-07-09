@@ -3,7 +3,7 @@ import logging
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 from settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
-from tools.file_browser import list_files_api, delete_files_api
+from file_browser import list_files_api, delete_files_api
 from tools.large_files import list_large_files_api
 from tools.batch_rename import batch_rename_api
 from tools.duplicate_finder import find_duplicates_api

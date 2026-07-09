@@ -5,7 +5,7 @@ Preview and apply deterministic file renaming rules.
 
 from flask import jsonify
 
-from .file_browser import sanitize_path, get_allowed_roots, is_path_allowed
+from path_utils import sanitize_path, get_allowed_roots, is_path_allowed
 
 
 def _safe_int(value, default_value, min_value=1, max_value=999999):

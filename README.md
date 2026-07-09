@@ -92,7 +92,7 @@ Settings are stored in `backend/settings.json`:
 
 - Server default is `debug=False`.
 - Frontend lives under `frontend/`.
-- Backend tool handlers live under `backend/tools/`.
+- Backend tool handlers live under `backend/tools/`; core modules (file browser, settings, path utilities) live directly in `backend/`.
 
 ## License
 

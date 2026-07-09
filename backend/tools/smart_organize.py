@@ -6,7 +6,7 @@ Organize files into category folders using extension-based rules.
 import shutil
 from flask import jsonify
 
-from .file_browser import sanitize_path, get_allowed_roots, is_path_allowed
+from path_utils import sanitize_path, get_allowed_roots, is_path_allowed
 
 
 EXTENSION_TO_CATEGORY = {
