@@ -1,103 +1,70 @@
-# DiskKit Roadmap
+# Disk Kit Roadmap
 
-The planned development path from initial concept to production-ready application.
+Roadmap aligned to current implementation status and release posture.
+
+---
+
+## Current Position
+
+### v0.6.0 (Current Version)
+
+A real, usable app with core workflows and installer prep, but still pre-1.0 in hardening and scope completeness.
+
+**What exists now**
+- Dashboard shell and navigation
+- Browse Files with guarded delete operations
+- Large Files, Batch Rename, Duplicate Finder, Smart Organize
+- Settings and quick-tools persistence
+- Desktop wrapper (`pywebview`) + PyInstaller build
+- Inno Setup packaging path and release automation scripts
 
 ---
 
 ## Milestones
 
-### v1.0.0 - Production Release
-A stable, useful, and trustworthy application ready for general use. Defined by meeting the standard: *something I would confidently recommend my parents download.*
+### v0.7.0 - Stability and Safety
 
-**Deliverables:**
-- Stable, production-ready codebase
-- Complete documentation
-- Packaged for distribution
+Focus: make current features safer and more supportable.
 
----
-
-### v0.9.0 - Refinement Phase
-Final polish before production release.
-
-**Deliverables:**
-- Extensive bug fixing
-- UI/UX improvements
-- Performance optimizations
-- Documentation completion
-- Final packaging
+**Deliverables**
+- Consistent API error model and structured logging
+- Better failure handling and user feedback across all tools
+- Smoke tests for core workflows (browse, delete, large files, rename, duplicates, organize)
+- Packaging reliability checks (install, launch, uninstall)
 
 ---
 
-### v0.8.0 - AI Integration
-Introduction of intelligent features to enhance user productivity.
+### v0.8.0 - Workflow Completeness
 
-**Deliverables:**
-- AI-powered suggestions
-- Automatic file naming
-- Folder content summaries
+Focus: round out practical daily-use workflows.
 
----
-### v0.7.0 - Storage Management
-Tools for organizing and optimizing disk storage.
-
-**Deliverables:**
-- Duplicate detection
-- Empty folder identification
-- Large file handling
-- Storage cleanup utilities
+**Deliverables**
+- History of operations and clear action outcomes
+- More robust batch operations UX (progress, retries, conflict handling)
+- Improve file browser ergonomics (selection, navigation polish, state restore)
+- Documentation expansion for user and maintainer flows
 
 ---
-### v0.6.0 - User Experience Enhancements
-Improvements to make the application more user-friendly.
 
-**Deliverables:**
-- Application settings and preferences
-- Operation history tracking
-- Undo functionality
-- Progress indicators
-- General polish
+### v0.9.0 - Release Candidate Phase
 
----
-### v0.5.0 - Core Utilities
-Multiple essential features that define DiskKit's purpose.
+Focus: production-readiness and scale confidence.
 
-**Deliverables:**
-- Batch file renaming
-- File format conversion
-- Archive compression tools
+**Deliverables**
+- Test coverage baseline for backend and critical frontend paths
+- CI checks for lint/build/tests
+- Signed release process and repeatable release checklist
+- Performance tuning and bug backlog burn-down
 
 ---
-### v0.4.0 - First Utility Feature
-Introduction of the first practical tool.
 
-**Deliverables:**
-- Batch rename functionality
-- Image conversion capabilities
+### v1.0.0 - Professional Production Release
 
----
-### v0.3.0 - Filesystem Integration
-Basic filesystem interaction capabilities.
+A stable, trustworthy application ready for broad user adoption.
 
-**Deliverables:**
-- Folder selection interface
-- File listing and browsing
-- Read-only filesystem access
-
----
-### v0.2.0 - Backend Foundation
-Establishment of server-side infrastructure.
-
-**Deliverables:**
-- Python server implementation
-- Frontend-to-backend communication
-- Basic backend response verification
-
----
-### v0.1.0 - Initial Release
-Foundational frontend structure.
-
-**Deliverables:**
-- Homepage layout
-- Branding elements
-- Navigation system
-- Browser-compatible interface
+**Definition of done**
+- Core scope complete and intentionally frozen
+- Installer/update/uninstall flow validated
+- Documentation fully aligned with actual behavior
+- Regression test gates in place and passing
+- Release process is repeatable by another maintainer

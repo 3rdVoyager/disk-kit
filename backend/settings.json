@@ -1,23 +1,12 @@
 {
   "general": {
     "theme": "dark",
-    "language": "en",
     "defaultPath": "C:/Users"
   },
-  "tools": {
-    "defaultCompressionFormat": "zip",
-    "batchSizeLimit": 100,
-    "confirmBeforeDelete": true
-  },
-  "performance": {
-    "maxConcurrentOperations": 4,
-    "cacheSize": "512MB",
-    "showProgressDetails": true
-  },
-  "ai": {
-    "autoSuggestions": false,
-    "apiEndpoint": "",
-    "apiKey": ""
-  },
-  "quickTools": []
+  "quickTools": [
+    "large-files",
+    "rename",
+    "duplicates",
+    "organize"
+  ]
 }

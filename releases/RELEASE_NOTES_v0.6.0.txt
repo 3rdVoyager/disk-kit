@@ -1,0 +1,34 @@
+Disk Kit v0.6.0 - Release Notes
+Released: July 08, 2026
+
+## Installation
+
+### Option 1: Installer (Recommended)
+1. Run DiskKit-Setup-0.6.0.exe
+2. Follow the installation wizard
+3. Launch from Start Menu or Desktop shortcut
+
+### Option 2: Portable
+1. Extract DiskKit-Portable-0.6.0.zip to any folder
+2. Run DiskKit.exe
+
+## System Requirements
+- Windows 7 or later (64-bit)
+- No additional software required
+
+## What's New in v0.6.0
+- Initial public milestone aligned to roadmap maturity
+- Dashboard with storage overview
+- Browse Files tool
+- Large Files finder
+- Batch Rename tool
+- Duplicate Finder
+- Smart Organize
+- Settings management
+
+## Known Issues
+- None at this time
+
+## Support
+- GitHub Issues: https://github.com/3rdVoyager/disk-kit/issues
+- Documentation: https://github.com/3rdVoyager/disk-kit

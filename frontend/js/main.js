@@ -26,7 +26,7 @@ let originalHomeHTML = '';
 // ============================================================
 // Quick Tools state (persisted via API to backend)
 // ============================================================
-const DEFAULT_QUICK_TOOLS = [];
+const DEFAULT_QUICK_TOOLS = ["large-files", "rename", "duplicates", "organize"];
 let cachedQuickTools = null;
 const QUICK_TOOL_EXCLUDED = new Set(['home', 'alltools', 'browse-files', 'settings']);
 

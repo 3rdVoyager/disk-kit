@@ -35,6 +35,21 @@ export async function loadFileBrowser(path = '', containerId = 'file-list') {
 
   const isSelector = containerId === 'selector-file-list';
 
+  // Track history for the main browser only.
+  // Keep root ("") out of history so Back can return to root as a special case.
+  if (!isSelector && !suppressHistoryRecord) {
+    const hasExplicitPath = path !== undefined && path !== null;
+    const shouldTrack = hasExplicitPath && path !== '' && path !== currentFilePath;
+    if (shouldTrack) {
+      if (currentHistoryIndex < fileBrowserHistory.length - 1) {
+        fileBrowserHistory.splice(currentHistoryIndex + 1);
+      }
+      fileBrowserHistory.push(path);
+      currentHistoryIndex = fileBrowserHistory.length - 1;
+    }
+  }
+  suppressHistoryRecord = false;
+
   // Update current path (only for main browser)
   if (!isSelector && path !== undefined && path !== null) {
     currentFilePath = path;
@@ -100,6 +115,10 @@ export async function loadFileBrowser(path = '', containerId = 'file-list') {
   } catch (err) {
     fileList.innerHTML = `<li class="file-item"><span class="file-name error">Error loading directory: ${escapeHtml(err.message)}</span></li>`;
     console.error('File browser error:', err);
+  } finally {
+    if (!isSelector) {
+      updateNavigationButtons();
+    }
   }
 }
 
@@ -137,24 +156,8 @@ export function goForward() {
  * Set up file browser navigation with history tracking
  */
 export function setupFileBrowserNavigation() {
-  const originalLoadFileBrowser = loadFileBrowser;
-  // Note: We only track history for the main browser
-  window.loadFileBrowser = async function(path, containerId = 'file-list') {
-    if (containerId === 'file-list' && !suppressHistoryRecord) {
-      if (currentHistoryIndex < fileBrowserHistory.length - 1) {
-        fileBrowserHistory.splice(currentHistoryIndex + 1);
-      }
-      if (path !== currentFilePath && path !== undefined && path !== null) {
-        fileBrowserHistory.push(path);
-        currentHistoryIndex = fileBrowserHistory.length - 1;
-      }
-    }
-    suppressHistoryRecord = false;
-    await originalLoadFileBrowser(path, containerId);
-    if (containerId === 'file-list') {
-      updateNavigationButtons();
-    }
-  };
+  // History tracking now happens directly in loadFileBrowser().
+  updateNavigationButtons();
 }
 
 // ============================================================

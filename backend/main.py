@@ -1,5 +1,7 @@
 from pathlib import Path
+import logging
 from flask import Flask, jsonify, request, send_from_directory
+from werkzeug.exceptions import HTTPException
 from settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
 from tools.file_browser import list_files_api, delete_files_api
 from tools.large_files import list_large_files_api
@@ -10,6 +12,11 @@ from tools.smart_organize import smart_organize_api
 BACKEND_DIR = Path(__file__).resolve().parent
 STATIC_FOLDER = BACKEND_DIR.parent / 'frontend'
 app = Flask(__name__, static_folder=str(STATIC_FOLDER))
+LOGGER = logging.getLogger(__name__)
+
+
+def api_error(message, status_code):
+    return jsonify({'error': message}), status_code
 @app.route('/')
 def index():
     return send_from_directory(STATIC_FOLDER, 'dashboard.html')
@@ -27,11 +34,12 @@ def update_settings():
     try:
         data = request.get_json()
         if not data:
-            return jsonify({'error': 'Invalid JSON'}), 400
+            return api_error('Invalid JSON', 400)
         save_settings(data)
         return jsonify({'success': True, 'settings': load_settings()})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        LOGGER.exception('Failed to update settings')
+        return api_error('Internal server error', 500)
 
 @app.route('/api/settings/reset', methods=['POST'])
 def reset_settings():
@@ -52,15 +60,16 @@ def update_quick_tools():
     try:
         data = request.get_json()
         if not data or 'quickTools' not in data:
-            return jsonify({'error': 'Missing quickTools field'}), 400
+            return api_error('Missing quickTools field', 400)
         
         # Update only the quickTools field
         current_settings = load_settings()
         current_settings['quickTools'] = data['quickTools']
         save_settings(current_settings)
         return jsonify({'success': True, 'quickTools': current_settings['quickTools']})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        LOGGER.exception('Failed to update quick tools')
+        return api_error('Internal server error', 500)
 
 @app.route('/api/files', methods=['GET'])
 def list_files():
@@ -91,6 +100,17 @@ def find_duplicates():
 def smart_organize():
     """Preview/apply smart organization rules."""
     return smart_organize_api(request, load_settings)
+
+
+@app.errorhandler(Exception)
+def handle_unexpected_error(err):
+    """Return safe JSON for unexpected API errors."""
+    if isinstance(err, HTTPException):
+        return err
+    LOGGER.exception('Unhandled error on %s', request.path)
+    if request.path.startswith('/api/'):
+        return api_error('Internal server error', 500)
+    return 'Internal server error', 500
 
 if __name__ == '__main__':
     ensure_settings_file()

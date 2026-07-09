@@ -12,6 +12,8 @@ import shutil
 ROOT_DIR = Path(__file__).resolve().parents[1]
 os.chdir(ROOT_DIR)
 
+PINNED_PYINSTALLER = "6.21.0"
+
 def check_python():
     """Check if Python is available"""
     try:
@@ -24,28 +26,22 @@ def check_python():
 def install_dependencies():
     """Install required build dependencies"""
     print("Installing build dependencies...")
-    
-    # Install PyWebView (note: pywebview, not webview)
+
+    # Install pinned build dependency.
     subprocess.run([
-        sys.executable, "-m", "pip", "install", 
-        "pywebview>=4.0"
+        sys.executable, "-m", "pip", "install",
+        f"pyinstaller=={PINNED_PYINSTALLER}"
     ], check=True)
-    
-    # Install PyInstaller
-    subprocess.run([
-        sys.executable, "-m", "pip", "install", 
-        "pyinstaller>=5.0"
-    ], check=True)
-    
-    # Install project dependencies
+
+    # Install pinned runtime dependencies.
     requirements_file = Path("backend/requirements.txt")
     if requirements_file.exists():
         subprocess.run([
-            sys.executable, "-m", "pip", "install", 
+            sys.executable, "-m", "pip", "install",
             "-r", str(requirements_file)
         ], check=True)
-    
-    print("Dependencies installed")
+
+    print(f"Dependencies installed (PyInstaller {PINNED_PYINSTALLER})")
 
 
 def clean_build():

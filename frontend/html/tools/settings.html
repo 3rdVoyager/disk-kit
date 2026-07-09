@@ -16,82 +16,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="language">Language</label>
-        <select id="language" name="general.language">
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-        </select>
-      </div>
-      <div class="form-group">
         <label for="defaultPath">Default Path</label>
         <input type="text" id="defaultPath" name="general.defaultPath" value="C:/Users" />
-      </div>
-    </div>
-
-    <!-- Tools -->
-    <div class="settings-section">
-      <h3>Tools</h3>
-      <div class="form-group">
-        <label for="defaultCompressionFormat">Default Compression Format</label>
-        <select id="defaultCompressionFormat" name="tools.defaultCompressionFormat">
-          <option value="zip">ZIP</option>
-          <option value="rar">RAR</option>
-          <option value="7z">7z</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="batchSizeLimit">Batch Size Limit</label>
-        <input type="number" id="batchSizeLimit" name="tools.batchSizeLimit" value="100" min="1" max="1000" />
-      </div>
-      <div class="form-group checkbox-group">
-        <label>
-          <input type="checkbox" id="confirmBeforeDelete" name="tools.confirmBeforeDelete" />
-          Confirm before delete
-        </label>
-      </div>
-    </div>
-
-    <!-- Performance -->
-    <div class="settings-section">
-      <h3>Performance</h3>
-      <div class="form-group">
-        <label for="maxConcurrentOperations">Max Concurrent Operations</label>
-        <input type="number" id="maxConcurrentOperations" name="performance.maxConcurrentOperations" value="4" min="1" max="16" />
-      </div>
-      <div class="form-group">
-        <label for="cacheSize">Cache Size</label>
-        <select id="cacheSize" name="performance.cacheSize">
-          <option value="256MB">256 MB</option>
-          <option value="512MB">512 MB</option>
-          <option value="1GB">1 GB</option>
-          <option value="2GB">2 GB</option>
-        </select>
-      </div>
-      <div class="form-group checkbox-group">
-        <label>
-          <input type="checkbox" id="showProgressDetails" name="performance.showProgressDetails" />
-          Show progress details
-        </label>
-      </div>
-    </div>
-
-    <!-- AI -->
-    <div class="settings-section">
-      <h3>AI</h3>
-      <div class="form-group checkbox-group">
-        <label>
-          <input type="checkbox" id="autoSuggestions" name="ai.autoSuggestions" />
-          Enable auto-suggestions
-        </label>
-      </div>
-      <div class="form-group">
-        <label for="apiEndpoint">API Endpoint</label>
-        <input type="text" id="apiEndpoint" name="ai.apiEndpoint" placeholder="https://api.example.com" />
-      </div>
-      <div class="form-group">
-        <label for="apiKey">API Key</label>
-        <input type="password" id="apiKey" name="ai.apiKey" placeholder="Enter API key" />
       </div>
     </div>
 

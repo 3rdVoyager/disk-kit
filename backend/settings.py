@@ -6,23 +6,7 @@ SETTINGS_FILE = Path(__file__).parent / 'settings.json'
 DEFAULT_SETTINGS = {
     "general": {
         "theme": "dark",
-        "language": "en",
         "defaultPath": "C:/Users"
-    },
-    "tools": {
-        "defaultCompressionFormat": "zip",
-        "batchSizeLimit": 100,
-        "confirmBeforeDelete": True
-    },
-    "performance": {
-        "maxConcurrentOperations": 4,
-        "cacheSize": "512MB",
-        "showProgressDetails": True
-    },
-    "ai": {
-        "autoSuggestions": False,
-        "apiEndpoint": "",
-        "apiKey": ""
     },
     "quickTools": []
 }
