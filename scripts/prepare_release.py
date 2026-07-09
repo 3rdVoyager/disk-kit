@@ -17,6 +17,7 @@ from datetime import datetime
 ROOT_DIR = Path(__file__).resolve().parents[1]
 os.chdir(ROOT_DIR)
 APP_VERSION = "0.6.0"
+PINNED_PYINSTALLER = "6.21.0"
 
 
 def print_header(text):
@@ -47,26 +48,82 @@ def clean_dist():
     print()
 
 
-def build_exe():
-    """Build the EXE using the build script"""
-    print_header("Building Disk Kit EXE")
-    
-    build_script = ROOT_DIR / "scripts" / "build.py"
-    if not build_script.exists():
-        print("[ERROR] Build script not found!")
+def check_python():
+    """Check if Python is available."""
+    try:
+        subprocess.run([sys.executable, "--version"], check=True, capture_output=True)
+        return True
+    except Exception:
         return False
-    
-    result = subprocess.run([sys.executable, str(build_script)])
+
+
+def install_dependencies():
+    """Install required build/runtime dependencies."""
+    print("Installing build dependencies...")
+    subprocess.run([
+        sys.executable, "-m", "pip", "install",
+        f"pyinstaller=={PINNED_PYINSTALLER}"
+    ], check=True)
+
+    requirements_file = ROOT_DIR / "backend" / "requirements.txt"
+    if requirements_file.exists():
+        subprocess.run([
+            sys.executable, "-m", "pip", "install",
+            "-r", str(requirements_file)
+        ], check=True)
+
+    print(f"[OK] Dependencies installed (PyInstaller {PINNED_PYINSTALLER})")
+
+
+def build_exe():
+    """Build the EXE with PyInstaller."""
+    print_header("Building Disk Kit EXE")
+
+    if not check_python():
+        print("[ERROR] Python not found!")
+        return False
+
+    try:
+        install_dependencies()
+    except subprocess.CalledProcessError:
+        print("[ERROR] Dependency installation failed!")
+        return False
+
+    print("Building EXE with PyInstaller...")
+    icon_path = ROOT_DIR / "icon.ico"
+    cmd = [
+        sys.executable, "-m", "PyInstaller",
+        "--onefile",
+        "--windowed",
+        "--name=DiskKit",
+        "--clean",
+    ]
+
+    if icon_path.exists():
+        cmd.extend(["--icon", str(icon_path)])
+    else:
+        print("[WARN] icon.ico not found, using default icon")
+
+    cmd.extend([
+        "--add-data", "frontend;frontend",
+        "--add-data", "backend/settings.json;backend",
+        "--add-data", "frontend/css;frontend/css",
+        "--add-data", "frontend/js;frontend/js",
+        "--add-data", "frontend/html;frontend/html",
+        "diskkit_app.py"
+    ])
+
+    print(f"  Running: {' '.join(cmd)}")
+    result = subprocess.run(cmd)
     if result.returncode != 0:
         print("[ERROR] Build failed!")
         return False
-    
-    # Verify the EXE was created
+
     exe_path = ROOT_DIR / "dist" / "DiskKit.exe"
     if not exe_path.exists():
         print("[ERROR] EXE not found after build!")
         return False
-    
+
     size_mb = exe_path.stat().st_size / (1024 * 1024)
     print(f"[OK] Build successful! DiskKit.exe ({size_mb:.1f} MB)\n")
     return True

@@ -6,7 +6,6 @@ This guide defines the official v1 release process.
 
 - Primary distribution artifact: **Inno Setup installer**
 - Secondary artifact: **portable ZIP**
-- `scripts/build.py` is internal/dev-only for building `dist/DiskKit.exe`
 - Official release entrypoint: `scripts/prepare_release.py`
 
 ## Prerequisites

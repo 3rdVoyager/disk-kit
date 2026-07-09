@@ -54,12 +54,6 @@ Installer-first release flow:
 python scripts/prepare_release.py
 ```
 
-Developer-only EXE build (no installer):
-
-```bash
-python scripts/build.py
-```
-
 ## Settings
 
 Settings are stored in `backend/settings.json`:
