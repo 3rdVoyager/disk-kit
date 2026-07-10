@@ -8,10 +8,25 @@ from pathlib import Path
 
 FALLBACK_ALLOWED_ROOT = Path('C:/Users')
 
+# Always denied regardless of sandbox or user blocklist settings.
+SYSTEM_BLOCKED_ROOTS = [
+    Path('C:/Windows'),
+    Path('C:/Program Files'),
+    Path('C:/Program Files (x86)'),
+]
+
 
 def normalize_path(raw_path):
     """Normalize path separators and resolve to an absolute path."""
     return Path(str(raw_path).replace('/', '\\')).resolve(strict=False)
+
+
+def resolve_path_for_access(target_path):
+    """
+    Resolve symlinks/junctions to a canonical path for access checks.
+    A path inside the sandbox that resolves outside it will fail is_path_allowed.
+    """
+    return normalize_path(target_path)
 
 
 def is_path_within(target_path, root_path):
@@ -35,10 +50,54 @@ def get_allowed_roots(settings):
     return [normalize_path(FALLBACK_ALLOWED_ROOT)]
 
 
+def get_blocked_paths(settings):
+    """
+    User-configured blocked paths plus always-on system blocked roots.
+    """
+    blocked = []
+    for raw in settings.get('security', {}).get('blockedPaths', []):
+        if not raw or not str(raw).strip():
+            continue
+        try:
+            blocked.append(normalize_path(raw))
+        except (OSError, ValueError):
+            continue
+    for system_root in SYSTEM_BLOCKED_ROOTS:
+        blocked.append(normalize_path(system_root))
+    return blocked
+
+
+def is_path_blocked(target_path, blocked_paths):
+    """Check if target_path is inside any blocked path."""
+    target = resolve_path_for_access(target_path)
+    return any(
+        is_path_within(target, blocked) or target == blocked
+        for blocked in blocked_paths
+    )
+
+
 def is_path_allowed(target_path, allowed_roots):
     """Check if target_path is inside any configured root."""
-    target = normalize_path(target_path)
+    target = resolve_path_for_access(target_path)
     return any(is_path_within(target, root) for root in allowed_roots)
+
+
+def validate_path_access(target_path, settings):
+    """
+    Single security gate for all file tools.
+    Returns (resolved_path, None) on success or (None, (error_message, status_code)).
+    """
+    resolved = resolve_path_for_access(target_path)
+    allowed_roots = get_allowed_roots(settings)
+    blocked_paths = get_blocked_paths(settings)
+
+    if not is_path_allowed(resolved, allowed_roots):
+        return None, ('Access denied', 403)
+
+    if is_path_blocked(resolved, blocked_paths):
+        return None, ('Path is blocked by settings', 403)
+
+    return resolved, None
 
 
 def sanitize_path(path_param, default_path):

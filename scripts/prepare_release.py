@@ -31,7 +31,7 @@ def print_header(text):
 def clean_dist():
     """Clean distribution directories"""
     print("Cleaning distribution directories...")
-    dirs_to_clean = ["dist", "build", "installer"]
+    dirs_to_clean = ["dist", "build", "installer", "releases"]
     
     for dir_name in dirs_to_clean:
         dir_path = Path(dir_name)
@@ -106,6 +106,18 @@ def build_exe():
         print("[WARN] icon.ico not found, using default icon")
 
     cmd.extend([
+        "--paths", str(ROOT_DIR),
+        "--collect-submodules", "backend",
+        "--hidden-import", "waitress",
+        "--hidden-import", "send2trash",
+        "--hidden-import", "backend.main",
+        "--hidden-import", "backend.settings",
+        "--hidden-import", "backend.pages.browse_files",
+        "--hidden-import", "backend.path_utils",
+        "--hidden-import", "backend.tools.large_files",
+        "--hidden-import", "backend.tools.rename",
+        "--hidden-import", "backend.tools.duplicates",
+        "--hidden-import", "backend.tools.organize",
         "--add-data", "frontend;frontend",
         "--add-data", "backend/settings.json;backend",
         "--add-data", "frontend/css;frontend/css",
@@ -262,7 +274,7 @@ def main():
     print_header("Disk Kit - Release Preparation")
     
     print("This script will:")
-    print("  1. Clean previous build artifacts")
+    print("  1. Clean previous build and release artifacts")
     print("  2. Build DiskKit.exe")
     print("  3. Create portable ZIP distribution")
     print("  4. Optionally create Inno Setup installer")

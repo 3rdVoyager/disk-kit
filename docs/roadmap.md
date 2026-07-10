@@ -6,15 +6,17 @@ Roadmap aligned to current implementation status and release posture.
 
 ## Current Position
 
-### v0.6.0 (Current Version)
+### v0.7.0 (Current Version)
 
-A real, usable app with core workflows and installer prep, but still pre-1.0 in hardening and scope completeness.
+Safety and stability hardening for core file workflows.
 
 **What exists now**
 - Dashboard shell and navigation
-- Browse Files with guarded delete operations
+- Browse Files with guarded Recycle Bin operations
 - Large Files, Batch Rename, Duplicate Finder, Smart Organize
-- Settings and quick-tools persistence
+- Settings (theme, default path, blocked paths) and quick-tools persistence
+- Centralized path security (`validate_path_access`) across all file tools
+- Waitress production server for desktop and dev modes
 - Desktop wrapper (`pywebview`) + PyInstaller build
 - Inno Setup packaging path and release automation scripts
 
@@ -22,15 +24,21 @@ A real, usable app with core workflows and installer prep, but still pre-1.0 in 
 
 ## Milestones
 
-### v0.7.0 - Stability and Safety
+### v0.7.0 - Stability and Safety (shipped)
 
 Focus: make current features safer and more supportable.
 
-**Deliverables**
-- Consistent API error model and structured logging
-- Better failure handling and user feedback across all tools
+**Delivered**
+- Waitress replaces Flask development server
+- Recycle Bin deletes via `send2trash`
+- User-configurable blocked paths in Settings
+- Symlink-resolved path access checks
+- System path deny list (`C:/Windows`, `C:/Program Files`)
+
+**Remaining for later patch releases**
 - Smoke tests for core workflows (browse, delete, large files, rename, duplicates, organize)
 - Packaging reliability checks (install, launch, uninstall)
+- Expanded-access / danger mode for system-level tools (post-v1)
 
 ---
 

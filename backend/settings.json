@@ -3,6 +3,9 @@
     "theme": "dark",
     "defaultPath": "C:/Users"
   },
+  "security": {
+    "blockedPaths": []
+  },
   "quickTools": [
     "large-files",
     "rename",

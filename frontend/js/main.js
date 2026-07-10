@@ -5,13 +5,13 @@ import {
   goForward,
   setupFileBrowserNavigation,
   setupFileBrowserButtonListeners,
-} from './tools/file-browser.js';
+} from './pages/browse-files.js';
 
 import { setupLargeFilesTool } from './tools/large-files.js';
-import { setupBatchRenameTool } from './tools/batch-rename.js';
-import { setupDuplicateFinderTool } from './tools/duplicate-finder.js';
-import { setupSmartOrganizeTool } from './tools/smart-organize.js';
-import { setupSettingsTool } from './tools/settings.js';
+import { setupRenameTool } from './tools/rename.js';
+import { setupDuplicatesTool } from './tools/duplicates.js';
+import { setupOrganizeTool } from './tools/organize.js';
+import { setupSettingsTool } from './pages/settings.js';
 
 // Import utilities
 import { escapeHtml, apiFetch } from './utils.js';
@@ -29,6 +29,12 @@ let originalHomeHTML = '';
 const DEFAULT_QUICK_TOOLS = ["large-files", "rename", "duplicates", "organize"];
 let cachedQuickTools = null;
 const QUICK_TOOL_EXCLUDED = new Set(['home', 'alltools', 'browse-files', 'settings']);
+const PAGE_ROUTES = new Set(['browse-files', 'settings', 'alltools']);
+
+function getViewHtmlPath(routeId) {
+  const folder = PAGE_ROUTES.has(routeId) ? 'pages' : 'tools';
+  return `html/${folder}/${routeId}.html`;
+}
 
 function isQuickToolEligible(toolId) {
   return Boolean(TOOL_META[toolId]) && !QUICK_TOOL_EXCLUDED.has(toolId);
@@ -214,7 +220,7 @@ async function loadContent(toolName, pushHistory = true) {
   }
   
   try {
-    const path = `html/tools/${toolName}.html`;
+    const path = getViewHtmlPath(toolName);
     const response = await fetch(path);
     if (!response.ok) throw new Error(`HTTP ${response.status} loading ${path}`);
     const html = await response.text();
@@ -238,13 +244,13 @@ async function loadContent(toolName, pushHistory = true) {
       setTimeout(() => setupLargeFilesTool(), 0);
     }
     if (toolName === 'rename') {
-      setTimeout(() => setupBatchRenameTool(), 0);
+      setTimeout(() => setupRenameTool(), 0);
     }
     if (toolName === 'duplicates') {
-      setTimeout(() => setupDuplicateFinderTool(), 0);
+      setTimeout(() => setupDuplicatesTool(), 0);
     }
     if (toolName === 'organize') {
-      setTimeout(() => setupSmartOrganizeTool(), 0);
+      setTimeout(() => setupOrganizeTool(), 0);
     }
     
     if (pushHistory) {

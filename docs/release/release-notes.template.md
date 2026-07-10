@@ -17,7 +17,10 @@ Released: {{date}}
 - No additional software required
 
 ## What's New in v{{version}}
-- Edit this section before each release
+- Waitress production server (no Flask dev-server warning)
+- Browse Files moves items to Recycle Bin instead of permanent delete
+- Blocked paths setting to protect sensitive folders
+- Symlink-resolved path security across all file tools
 - Dashboard with storage overview
 - Browse Files tool
 - Large Files finder

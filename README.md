@@ -6,22 +6,27 @@ Disk Kit is a locally hosted desktop-style file toolkit with a Flask backend and
 
 Implemented and supported now:
 - Dashboard shell UI
-- Browse Files (list directories, inspect files, delete files/folders within configured root)
+- Browse Files (list directories, inspect files, move items to Recycle Bin within configured root)
 - Large Files scanner
 - Batch Rename (preview/apply)
 - Duplicate Finder
 - Smart Organize (preview/apply)
-- Settings (theme + default root path)
+- Settings (theme, default root path, blocked paths)
 - Quick Tools customization
 
 Planned items shown in older docs/UI are not part of shipped v1 unless listed above.
 
 ## Security Model (Current)
 
-- Backend serves local UI and API on `http://127.0.0.1:5000`.
+- Backend serves local UI and API on `http://127.0.0.1:5000` via Waitress (production WSGI server).
 - File operations are restricted to `general.defaultPath` (fallback `C:/Users`).
+- Paths are resolved before access checks so symlinks/junctions cannot escape the sandbox.
+- User-configurable `security.blockedPaths` denies browse, scan, and delete inside listed folders.
+- System paths (`C:/Windows`, `C:/Program Files`) are always blocked.
+- Deletes move items to the Recycle Bin (`send2trash`), not permanent removal.
 - Settings schema is allowlisted; unknown keys are dropped.
 - API errors return safe user-facing messages instead of raw exceptions.
+- The frontend is not trusted for security; all path checks run in Python on every request.
 
 ## Installation
 
@@ -33,7 +38,7 @@ Planned items shown in older docs/UI are not part of shipped v1 unless listed ab
 
 ```bash
 pip install -r backend/requirements.txt
-python backend/main.py
+python -m backend.main
 ```
 
 Open `http://127.0.0.1:5000`.
@@ -64,6 +69,9 @@ Settings are stored in `backend/settings.json`:
     "theme": "dark",
     "defaultPath": "C:/Users"
   },
+  "security": {
+    "blockedPaths": []
+  },
   "quickTools": [
     "large-files",
     "rename",
@@ -72,6 +80,8 @@ Settings are stored in `backend/settings.json`:
   ]
 }
 ```
+
+`security.blockedPaths` accepts an array of absolute paths (one per line in the Settings UI). Tools cannot browse, scan, or move items to the Recycle Bin inside blocked paths.
 
 ## API Endpoints
 
@@ -90,7 +100,8 @@ Settings are stored in `backend/settings.json`:
 
 ## Development Notes
 
-- Server default is `debug=False`.
+- Server runs via Waitress on `127.0.0.1:5000` with `debug=False`.
+- Runtime dependencies include `flask`, `waitress`, `send2trash`, and `pywebview`.
 - Frontend lives under `frontend/`.
 - Backend tool handlers live under `backend/tools/`; core modules (file browser, settings, path utilities) live directly in `backend/`.
 

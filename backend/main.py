@@ -1,16 +1,24 @@
 from pathlib import Path
 import logging
+import sys
+
+if __package__ is None:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
-from settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
-from file_browser import list_files_api, delete_files_api
-from tools.large_files import list_large_files_api
-from tools.batch_rename import batch_rename_api
-from tools.duplicate_finder import find_duplicates_api
-from tools.smart_organize import smart_organize_api
+from backend.settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
+from backend.pages.browse_files import list_files_api, delete_files_api
+from backend.tools.large_files import large_files_api
+from backend.tools.rename import rename_api
+from backend.tools.duplicates import duplicates_api
+from backend.tools.organize import organize_api
 
 BACKEND_DIR = Path(__file__).resolve().parent
-STATIC_FOLDER = BACKEND_DIR.parent / 'frontend'
+if getattr(sys, 'frozen', False):
+    STATIC_FOLDER = Path(sys._MEIPASS) / 'frontend'
+else:
+    STATIC_FOLDER = BACKEND_DIR.parent / 'frontend'
 app = Flask(__name__, static_folder=str(STATIC_FOLDER))
 LOGGER = logging.getLogger(__name__)
 
@@ -78,28 +86,28 @@ def list_files():
 
 @app.route('/api/files/delete', methods=['POST'])
 def delete_files():
-    """Delete a file or directory"""
+    """Move a file or directory to the Recycle Bin"""
     return delete_files_api(request, load_settings)
 
 @app.route('/api/large-files', methods=['GET'])
 def large_files():
     """Scan for files above a minimum size threshold."""
-    return list_large_files_api(request, load_settings)
+    return large_files_api(request, load_settings)
 
 @app.route('/api/batch-rename', methods=['POST'])
 def batch_rename():
     """Preview/apply batch file rename in a directory."""
-    return batch_rename_api(request, load_settings)
+    return rename_api(request, load_settings)
 
 @app.route('/api/duplicates', methods=['GET'])
 def find_duplicates():
     """Find duplicate files by size and hash."""
-    return find_duplicates_api(request, load_settings)
+    return duplicates_api(request, load_settings)
 
 @app.route('/api/organize', methods=['POST'])
 def smart_organize():
     """Preview/apply smart organization rules."""
-    return smart_organize_api(request, load_settings)
+    return organize_api(request, load_settings)
 
 
 @app.errorhandler(Exception)
@@ -113,5 +121,7 @@ def handle_unexpected_error(err):
     return 'Internal server error', 500
 
 if __name__ == '__main__':
+    from waitress import serve
+
     ensure_settings_file()
-    app.run(debug=False, port=5000)
+    serve(app, host='127.0.0.1', port=5000)

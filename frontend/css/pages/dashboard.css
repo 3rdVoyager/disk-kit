@@ -1,0 +1,732 @@
+/* ============================================
+   DASHBOARD - Card Base Styles
+   ============================================ */
+
+/* Card Base */
+.dashboard-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-cards);
+    padding: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* ============================================
+   BROWSER TOOLBAR
+   ============================================ */
+
+.browser-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.toolbar-left {
+    display: flex;
+    gap: 8px;
+}
+
+.toolbar-right {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-tool,
+.btn-icon {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    font-size: 1.2rem;
+}
+
+.btn-tool:hover,
+.btn-icon:hover {
+    background-color: var(--border-default);
+    color: var(--text-primary);
+}
+
+.btn-tool.disabled,
+.btn-icon.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-tool .material-symbols-rounded,
+.btn-icon .material-symbols-rounded {
+    font-size: 1.3rem;
+}
+
+/* Toolbar Search */
+.toolbar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    padding: 6px 12px;
+    flex: 1;
+    max-width: 400px;
+    margin: 0 16px;
+}
+
+.toolbar-search .material-symbols-rounded {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.browser-search-input {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+    width: 100%;
+}
+
+.browser-search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--accent-info);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    text-decoration: underline;
+}
+
+.btn-action {
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-action:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-info);
+}
+
+/* ============================================
+   CARD HEADER ROW (for Quick Tools & Recent Ops)
+   ============================================ */
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header-row h3 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* ============================================
+   STORAGE OVERVIEW CARD
+   ============================================ */
+
+.storage-overview-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+.storage-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+/* Main Storage Display */
+.storage-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.storage-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.circular-chart {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: var(--border-default);
+    stroke-width: 3;
+}
+
+.circle {
+    fill: none;
+    stroke: var(--accent-info);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease;
+}
+
+.storage-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.storage-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.storage-total,
+.storage-available {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.storage-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.storage-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* File Type Breakdown */
+.storage-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.breakdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.breakdown-item {
+    display: grid;
+    grid-template-columns: 32px 1fr 100px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    border: 1px solid var(--border-default);
+}
+
+.breakdown-item:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
+}
+
+.breakdown-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.breakdown-icon .material-symbols-rounded {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.breakdown-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.breakdown-icon.purple {
+    background-color: var(--accent-purple);
+}
+
+.breakdown-icon.green {
+    background-color: var(--accent-green);
+}
+
+.breakdown-icon.orange {
+    background-color: var(--accent-orange);
+}
+
+.breakdown-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.breakdown-icon.teal {
+    background-color: var(--accent-teal);
+}
+
+.breakdown-label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.breakdown-value {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: right;
+    font-weight: 500;
+}
+
+.breakdown-bar {
+    grid-column: 1 / -1;
+    height: 6px;
+    background-color: var(--border-default);
+    border-radius: var(--radius-progress);
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    border-radius: var(--radius-progress);
+    transition: width 0.5s ease;
+}
+
+.breakdown-fill.blue {
+    background-color: var(--accent-blue);
+}
+
+.breakdown-fill.purple {
+    background-color: var(--accent-purple);
+}
+
+.breakdown-fill.green {
+    background-color: var(--accent-green);
+}
+
+.breakdown-fill.orange {
+    background-color: var(--accent-orange);
+}
+
+.breakdown-fill.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.breakdown-fill.teal {
+    background-color: var(--accent-teal);
+}
+
+/* ============================================
+   SUGGESTED ACTIONS CARD
+   ============================================ */
+
+.suggested-actions-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+/* Actions List */
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Individual Action Item */
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-default);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.action-item:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
+}
+
+/* Action Icon */
+.action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.action-icon .material-symbols-rounded {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.action-icon.orange {
+    background-color: var(--accent-orange);
+}
+
+.action-icon.purple {
+    background-color: var(--accent-purple);
+}
+
+.action-icon.green {
+    background-color: var(--accent-green);
+}
+
+.action-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.action-icon.gray {
+    background-color: var(--accent-gray);
+}
+
+.action-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.action-icon.teal {
+    background-color: var(--accent-teal);
+}
+
+/* Action Info */
+.action-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.action-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.action-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Action Button */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.action-btn:hover {
+    background-color: var(--accent-primary);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+.action-btn .material-symbols-rounded {
+    font-size: 1.1rem;
+}
+
+/* Dismiss All Button */
+.suggested-actions-card .btn-link:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--status-error);
+}
+
+/* ============================================
+   QUICK TOOLS - 2x4 Grid of Tool Cards
+   ============================================ */
+
+.quick-tools-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+/* Grid Container */
+.quick-tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    gap: 12px;
+}
+
+/* Individual Tool Item */
+.quick-tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--border-default);
+    transition: all var(--transition-fast);
+}
+
+.quick-tool-item:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
+}
+
+.quick-tool-item:hover .tool-icon .material-symbols-rounded {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+/* Tool Icon Container */
+.tool-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tool-icon .material-symbols-rounded {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    transition: transform var(--transition-fast);
+}
+
+/* Icon Color Variants */
+.tool-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.tool-icon.purple {
+    background-color: var(--accent-purple);
+}
+
+.tool-icon.green {
+    background-color: var(--accent-green);
+}
+
+.tool-icon.orange {
+    background-color: var(--accent-orange);
+}
+
+.tool-icon.gray {
+    background-color: var(--accent-gray);
+}
+
+.tool-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.tool-icon.teal {
+    background-color: var(--accent-teal);
+}
+
+/* Tool Info */
+.tool-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tool-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.tool-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* ============================================
+   RECENT OPERATIONS
+   ============================================ */
+
+.recent-ops-card {
+    min-height: 400px;
+    max-height: 600px;
+}
+
+/* Operations List */
+.operations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Individual Operation Item */
+.operation-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--border-default);
+    transition: all var(--transition-fast);
+}
+
+.operation-item:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-primary);
+}
+
+/* Operation Icon */
+.op-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.op-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.op-icon.purple {
+    background-color: var(--accent-purple);
+}
+
+.op-icon.green {
+    background-color: var(--accent-green);
+}
+
+.op-icon.orange {
+    background-color: var(--accent-orange);
+}
+
+.op-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.op-icon.teal {
+    background-color: var(--accent-teal);
+}
+
+.op-icon.gray {
+    background-color: var(--accent-gray);
+}
+
+.op-icon .material-symbols-rounded {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+}
+
+/* Operation Details */
+.op-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.op-details h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.op-details p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Operation Meta (time + badge) */
+.op-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.op-time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+/* Status Badge */
+.badge-success {
+    display: inline-block;
+    background-color: rgba(34, 197, 94, 0.15);
+    color: var(--status-success);
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}

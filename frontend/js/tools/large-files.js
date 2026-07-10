@@ -1,6 +1,6 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { formatBytes, renderToolResultList } from './tool-ui.js';
-import { openPathSelector } from './file-browser.js';
+import { openPathSelector } from '../pages/browse-files.js';
 
 export async function setupLargeFilesTool() {
   const form = document.getElementById('large-files-form');

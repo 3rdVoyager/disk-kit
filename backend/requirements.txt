@@ -1,2 +1,4 @@
 flask==3.0.3
 pywebview==6.2.1
+waitress==3.0.2
+send2trash==1.8.3

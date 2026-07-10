@@ -7,7 +7,7 @@ from pathlib import Path
 import os
 from flask import jsonify
 
-from path_utils import sanitize_path, get_allowed_roots, is_path_allowed
+from backend.path_utils import sanitize_path, get_blocked_paths, is_path_blocked, validate_path_access
 
 
 def _parse_positive_int(raw_value, default_value, max_value):
@@ -30,7 +30,7 @@ def _parse_positive_float(raw_value, default_value, max_value):
         return default_value
 
 
-def list_large_files_api(request, load_settings):
+def large_files_api(request, load_settings):
     """
     API endpoint handler for scanning large files.
     Query params:
@@ -46,22 +46,26 @@ def list_large_files_api(request, load_settings):
     settings = load_settings()
     default_path = settings.get("general", {}).get("defaultPath", "C:/Users")
     target_path = sanitize_path(path_param, default_path)
-    allowed_roots = get_allowed_roots(settings)
+    resolved, error = validate_path_access(target_path, settings)
+    if error:
+        return jsonify({"error": error[0]}), error[1]
 
-    if not is_path_allowed(target_path, allowed_roots):
-        return jsonify({"error": "Access denied"}), 403
-
-    if not target_path.exists() or not target_path.is_dir():
+    if not resolved.exists() or not resolved.is_dir():
         return jsonify({
             "error": "Directory not found",
-            "path": str(target_path).replace("\\", "/")
+            "path": str(resolved).replace("\\", "/")
         }), 404
 
+    blocked_paths = get_blocked_paths(settings)
     scanned_files = 0
     scanned_dirs = 0
     items = []
 
-    for root, dirs, files in os.walk(target_path, topdown=True, followlinks=False):
+    for root, dirs, files in os.walk(resolved, topdown=True, followlinks=False):
+        dirs[:] = [
+            d for d in dirs
+            if not is_path_blocked(Path(root) / d, blocked_paths)
+        ]
         scanned_dirs += 1
         scanned_files += len(files)
 
@@ -89,7 +93,7 @@ def list_large_files_api(request, load_settings):
     items = items[:limit]
 
     return jsonify({
-        "path": str(target_path).replace("\\", "/"),
+        "path": str(resolved).replace("\\", "/"),
         "minSizeMB": min_size_mb,
         "limit": limit,
         "totalMatches": total_matches,

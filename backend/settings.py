@@ -1,12 +1,27 @@
 import json
+import os
+import sys
 from pathlib import Path
 
-SETTINGS_FILE = Path(__file__).parent / 'settings.json'
+
+def _settings_file_path():
+    """Use a writable user directory when running as a packaged EXE."""
+    if getattr(sys, 'frozen', False):
+        base = Path(os.environ.get('LOCALAPPDATA', Path.home())) / 'DiskKit'
+        base.mkdir(parents=True, exist_ok=True)
+        return base / 'settings.json'
+    return Path(__file__).parent / 'settings.json'
+
+
+SETTINGS_FILE = _settings_file_path()
 
 DEFAULT_SETTINGS = {
     "general": {
         "theme": "dark",
         "defaultPath": "C:/Users"
+    },
+    "security": {
+        "blockedPaths": []
     },
     "quickTools": []
 }
