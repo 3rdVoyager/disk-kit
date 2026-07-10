@@ -55,6 +55,15 @@ export async function loadFileBrowser(path = '', containerId = 'file-list') {
     currentFilePath = path;
     setLastPath(path);
   }
+  // Update refresh button to show loading state
+  const refreshBtn = document.querySelector('.btn-tool[title="Refresh"]');
+  if (refreshBtn) {
+    const icon = refreshBtn.querySelector('.material-symbols-rounded');
+    if (icon) {
+      icon.classList.add('spin');
+      icon.textContent = 'sync';
+    }
+  }
 
   try {
     const targetPath = isSelector ? (path || getLastPath() || '') : currentFilePath;
@@ -116,6 +125,17 @@ export async function loadFileBrowser(path = '', containerId = 'file-list') {
     fileList.innerHTML = `<li class="file-item"><span class="file-name error">Error loading directory: ${escapeHtml(err.message)}</span></li>`;
     console.error('File browser error:', err);
   } finally {
+        // Update refresh button to show normal state after loading completes
+    const refreshBtn = document.querySelector('.btn-tool[title="Refresh"]');
+    if (refreshBtn) {
+      const icon = refreshBtn.querySelector('.material-symbols-rounded');
+      if (icon) {
+        setTimeout(() => {
+          icon.classList.remove('spin');
+          icon.textContent = 'refresh';
+        }, 250);
+      }
+    }
     if (!isSelector) {
       updateNavigationButtons();
     }
@@ -328,10 +348,14 @@ function setupSelectorListeners() {
  * Set up file browser button event listeners
  */
 export function setupFileBrowserButtonListeners() {
+  const refreshBtn = document.querySelector(".btn-tool[title='Refresh']");
   const deleteBtn = document.querySelector('.btn-tool[title="Delete"]');
   const viewBtn = document.querySelector('.btn-icon[title="View"]');
   const searchInput = document.querySelector('.browser-search-input');
   
+  if (refreshBtn) refreshBtn.addEventListener('click', () => {
+    loadFileBrowser(currentFilePath);
+  });
   if (deleteBtn) deleteBtn.addEventListener('click', deleteSelectedFile);
   if (viewBtn) viewBtn.addEventListener('click', toggleFileView);
   if (searchInput) {
