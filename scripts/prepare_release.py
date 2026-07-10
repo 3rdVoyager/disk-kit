@@ -28,6 +28,24 @@ def print_header(text):
     print("=" * 60 + "\n")
 
 
+def clean_build_artifacts():
+    """Remove intermediate build folders after release artifacts are created."""
+    print("Cleaning intermediate build folders...")
+    for dir_name in ("dist", "build", "installer"):
+        dir_path = ROOT_DIR / dir_name
+        if dir_path.exists():
+            shutil.rmtree(dir_path)
+            print(f"  [OK] Removed {dir_name}/")
+        else:
+            print(f"  - {dir_name}/ doesn't exist")
+
+    for spec_file in ROOT_DIR.glob("*.spec"):
+        spec_file.unlink()
+        print(f"  [OK] Removed {spec_file.name}")
+
+    print()
+
+
 def clean_dist():
     """Clean distribution directories"""
     print("Cleaning distribution directories...")
@@ -190,6 +208,8 @@ def create_installer():
         if candidate:
             return candidate
         fallback_paths = [
+            r"C:\Program Files (x86)\Inno Setup 7\ISCC.exe",
+            r"C:\Program Files\Inno Setup 7\ISCC.exe",
             r"C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
             r"C:\Program Files\Inno Setup 6\ISCC.exe",
             r"C:\Program Files (x86)\Inno Setup 5\ISCC.exe",
@@ -205,7 +225,9 @@ def create_installer():
     if not iscc:
         print("[WARN] Inno Setup not found!")
         print("   Download from: https://jrsoftware.org/isdl.php")
-        print("   Install and run this script again to create the installer.")
+        print("   Install Inno Setup 6 or 7 and run this script again.")
+        print("   Note: the portable ZIP never includes an install wizard.")
+        print("   Only DiskKit-Setup-<version>.exe is the full installer.")
         return None
 
     print(f"Found Inno Setup: {iscc}")
@@ -279,6 +301,7 @@ def main():
     print("  3. Create portable ZIP distribution")
     print("  4. Optionally create Inno Setup installer")
     print("  5. Generate release notes")
+    print("  6. Remove intermediate dist/, build/, and installer/ folders")
     print()
     
     # Step 1: Clean
@@ -297,6 +320,9 @@ def main():
     
     # Step 5: Create release notes
     create_release_notes()
+
+    # Step 6: Remove intermediate build output (keeps releases/)
+    clean_build_artifacts()
     
     # Summary
     print_header("Release Preparation Complete!")
@@ -309,9 +335,13 @@ def main():
             print(f"  * {file_path.name} ({size_mb:.1f} MB)")
     
     print("\nNext steps:")
-    print("  1. Test the EXE: dist/DiskKit.exe")
-    print(f"  2. Test the installer: installer/DiskKit-Setup-{APP_VERSION}.exe")
-    print("  3. Upload to GitHub Releases or your distribution platform")
+    if installer_path:
+        print(f"  1. Test the installer (setup wizard): releases/DiskKit-Setup-{APP_VERSION}.exe")
+        print(f"  2. Optional portable test: extract releases/DiskKit-Portable-{APP_VERSION}-*.zip")
+    else:
+        print("  1. Install Inno Setup 7, rerun this script, then test releases/DiskKit-Setup-*.exe")
+        print("  2. Portable ZIP has no wizard — extract and run DiskKit.exe directly")
+    print("  3. Upload artifacts from releases/ to GitHub Releases")
     print("  4. Update APP_VERSION, DiskKit.iss, and docs/release/release-notes.template.md if needed")
     print()
 

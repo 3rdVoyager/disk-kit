@@ -11,7 +11,7 @@ This guide defines the official v1 release process.
 ## Prerequisites
 
 - Python 3.14+
-- Inno Setup 6+ installed (`ISCC.exe`)
+- Inno Setup 6+ or 7 installed (`ISCC.exe`)
   - Download: [https://jrsoftware.org/isdl.php](https://jrsoftware.org/isdl.php)
 
 ## One Command Release Build
@@ -26,13 +26,17 @@ This command will:
 3. Build installer from `DiskKit.iss` (when Inno Setup is installed)
 4. Create portable ZIP
 5. Generate release notes
+6. Remove intermediate `dist/`, `build/`, and `installer/` folders (final artifacts stay in `releases/`)
 
 ## Output Artifacts
 
-- `installer/DiskKit-Setup-<version>.exe`
-- `releases/DiskKit-Setup-<version>.exe` (copied for publishing)
+All publishable files end up in `releases/`:
+
+- `releases/DiskKit-Setup-<version>.exe`
 - `releases/DiskKit-Portable-<version>-<date>.zip`
 - `releases/RELEASE_NOTES_v<version>.txt`
+
+Intermediate folders (`dist/`, `build/`, `installer/`) are removed automatically at the end of the release script.
 
 ## Release Priority
 
@@ -139,7 +143,7 @@ Sign both installer and EXE:
 
 ```bash
 signtool.exe sign /f certificate.pfx /p "<password>" /tr http://timestamp.digicert.com /td sha256 /fd sha256 dist/DiskKit.exe
-signtool.exe sign /f certificate.pfx /p "<password>" /tr http://timestamp.digicert.com /td sha256 /fd sha256 installer/DiskKit-Setup-0.6.0.exe
+signtool.exe sign /f certificate.pfx /p "<password>" /tr http://timestamp.digicert.com /td sha256 /fd sha256 releases/DiskKit-Setup-0.6.0.exe
 ```
 
 ## Publishing

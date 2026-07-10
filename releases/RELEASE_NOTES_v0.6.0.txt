@@ -1,5 +1,5 @@
 Disk Kit v0.6.0 - Release Notes
-Released: July 09, 2026
+Released: July 10, 2026
 
 ## Installation
 
