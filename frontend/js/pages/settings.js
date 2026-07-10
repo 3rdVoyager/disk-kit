@@ -1,4 +1,5 @@
-import { apiFetch, getNestedValue, setNestedValue } from '../utils.js';
+import { apiFetch, getNestedValue, setNestedValue, setWorkingPath } from '../utils.js';
+import { openPathSelector } from '../popups/folder-picker.js';
 
 let currentSettings = null;
 
@@ -19,6 +20,16 @@ function gatherBlockedPaths(data) {
   setNestedValue(data, 'security.blockedPaths', paths);
 }
 
+function updateDangerZoneState() {
+  const disableCheckbox = document.getElementById('disablePathProtections');
+  const blockedPaths = document.getElementById('blockedPaths');
+  const enabled = Boolean(disableCheckbox?.checked);
+  if (blockedPaths) {
+    blockedPaths.disabled = enabled;
+    blockedPaths.closest('.form-group')?.classList.toggle('is-disabled', enabled);
+  }
+}
+
 function populateSettingsForm(settings) {
   currentSettings = settings;
   const form = document.getElementById('settings-form');
@@ -36,6 +47,7 @@ function populateSettingsForm(settings) {
     }
   });
   populateBlockedPaths(settings);
+  updateDangerZoneState();
 }
 
 function gatherSettingsForm() {
@@ -71,12 +83,26 @@ async function loadSettings() {
 
 async function saveSettings() {
   const data = gatherSettingsForm();
+  const enablingDangerMode = Boolean(data?.security?.disablePathProtections)
+    && !Boolean(currentSettings?.security?.disablePathProtections);
+  if (enablingDangerMode) {
+    const confirmed = window.confirm(
+      'Disable path protections?\n\nYou will be able to browse and delete files anywhere on your computer, including system folders. Turn this off again in Settings when you are done.'
+    );
+    if (!confirmed) return;
+  }
+
   try {
     const result = await apiFetch('/api/settings', {
       method: 'POST',
       body: data
     });
     currentSettings = result.settings;
+    const defaultPath = result.settings?.general?.defaultPath;
+    if (defaultPath) {
+      // Settings already persisted — only sync local working path + breadcrumb.
+      await setWorkingPath(defaultPath, { persistSettings: false });
+    }
     showSettingsMessage('Settings saved.', 'success');
   } catch (err) {
     console.error(err);
@@ -88,6 +114,10 @@ async function resetSettings() {
   try {
     const result = await apiFetch('/api/settings/reset', { method: 'POST' });
     populateSettingsForm(result.settings);
+    const defaultPath = result.settings?.general?.defaultPath;
+    if (defaultPath) {
+      await setWorkingPath(defaultPath, { persistSettings: false });
+    }
     showSettingsMessage('Settings reset to defaults.', 'success');
   } catch (err) {
     console.error(err);
@@ -110,8 +140,18 @@ export function setupSettingsTool() {
     saveSettings();
   });
   const resetBtn = document.getElementById('reset-settings');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => resetSettings());
-  }
+  if (resetBtn) resetBtn.addEventListener('click', () => resetSettings());
+
+  const browseBtn = document.getElementById('settings-browse');
+  const pathInput = document.getElementById('defaultPath');
+  browseBtn?.addEventListener('click', () => {
+    openPathSelector((path) => {
+      if (pathInput) pathInput.value = path;
+    });
+  });
+
+  const disableCheckbox = document.getElementById('disablePathProtections');
+  disableCheckbox?.addEventListener('change', updateDangerZoneState);
+
   loadSettings();
 }

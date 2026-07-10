@@ -5,12 +5,18 @@ Core file system browsing and deletion handlers for the Disk Kit application.
 
 import errno
 import logging
+import os
+import sys
 
 from flask import jsonify
+
+from backend.operations import log_operation
 from send2trash import send2trash
 
 from backend.path_utils import (
     get_allowed_roots,
+    get_default_working_path,
+    is_protections_disabled,
     sanitize_path,
     validate_path_access,
 )
@@ -73,7 +79,7 @@ def list_files_api(request, load_settings):
     path_param = request.args.get('path', '')
 
     settings = load_settings()
-    default_path = settings.get('general', {}).get('defaultPath', 'C:/')
+    default_path = str(get_default_working_path(settings)).replace('\\', '/')
 
     target_path = sanitize_path(path_param, default_path)
     resolved, error = validate_path_access(target_path, settings)
@@ -87,12 +93,24 @@ def list_files_api(request, load_settings):
         }), 404
 
     items = get_directory_contents(resolved)
+    protections_off = is_protections_disabled(settings)
     for item in items:
-        _, item_error = validate_path_access(item['fullPath'], settings)
-        item['accessRestricted'] = bool(item_error)
+        if protections_off:
+            item['accessRestricted'] = False
+        else:
+            _, item_error = validate_path_access(item['fullPath'], settings)
+            item['accessRestricted'] = bool(item_error)
+
+    if protections_off:
+        root = ''
+    else:
+        allowed_roots = get_allowed_roots(settings)
+        root = str(allowed_roots[0]).replace('\\', '/') if allowed_roots else default_path
 
     return jsonify({
         'path': str(resolved).replace('\\', '/'),
+        'root': root,
+        'protectionsDisabled': protections_off,
         'items': items
     })
 
@@ -117,13 +135,21 @@ def delete_files_api(request, load_settings):
         if not resolved.exists():
             return jsonify({'error': 'Path not found'}), 404
 
-        allowed_roots = get_allowed_roots(settings)
-        if any(resolved == root for root in allowed_roots):
-            return jsonify({'error': 'Cannot delete allowed root'}), 403
+        if not is_protections_disabled(settings):
+            allowed_roots = get_allowed_roots(settings)
+            if any(resolved == root for root in allowed_roots):
+                return jsonify({'error': 'Cannot delete allowed root'}), 403
 
         send2trash(str(resolved))
 
-        return jsonify({'success': True, 'path': str(resolved).replace('\\', '/')})
+        display_path = str(resolved).replace('\\', '/')
+        log_operation(
+            'delete',
+            f'Moved to Recycle Bin: {resolved.name}',
+            detail=f'in {resolved.parent}'.replace('\\', '/'),
+        )
+
+        return jsonify({'success': True, 'path': display_path})
 
     except PermissionError as err:
         return jsonify({'error': f'Permission denied: {err}'}), 403
@@ -133,3 +159,37 @@ def delete_files_api(request, load_settings):
             return jsonify({'error': f'Permission denied: {err.strerror or err}'}), 403
         LOGGER.exception('Failed to move path to Recycle Bin')
         return jsonify({'error': str(err) or 'Failed to move to Recycle Bin'}), 500
+
+
+def open_file_api(request, load_settings):
+    """Open a file with the system default application."""
+    try:
+        data = request.get_json()
+        if not data or 'path' not in data:
+            return jsonify({'error': 'Missing path field'}), 400
+
+        settings = load_settings()
+        default_path = settings.get('general', {}).get('defaultPath', 'C:/Users')
+        target_path = sanitize_path(data['path'], default_path)
+        resolved, error = validate_path_access(target_path, settings)
+        if error:
+            return jsonify({'error': _access_error_message(error)}), error[1]
+
+        if not resolved.exists():
+            return jsonify({'error': 'Path not found'}), 404
+        if resolved.is_dir():
+            return jsonify({'error': 'Cannot open a folder with Open'}), 400
+
+        if sys.platform == 'win32':
+            os.startfile(str(resolved))
+        else:
+            import subprocess
+            opener = 'open' if sys.platform == 'darwin' else 'xdg-open'
+            subprocess.run([opener, str(resolved)], check=False)
+
+        return jsonify({'success': True, 'path': str(resolved).replace('\\', '/')})
+    except OSError as err:
+        return jsonify({'error': str(err)}), 500
+    except Exception:
+        LOGGER.exception('Failed to open file')
+        return jsonify({'error': 'Failed to open file'}), 500

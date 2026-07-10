@@ -1,0 +1,18 @@
+.onboarding-step {
+  display: none;
+}
+
+.onboarding-step.active {
+  display: block;
+}
+
+.onboarding-step p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.onboarding-progress {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}

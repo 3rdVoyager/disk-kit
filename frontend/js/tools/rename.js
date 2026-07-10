@@ -1,6 +1,6 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { renderToolResultList } from './tool-ui.js';
-import { openPathSelector } from '../pages/browse-files.js';
+import { openPathSelector } from '../popups/folder-picker.js';
 
 async function runBatchRename(dryRun) {
   const pathInput = document.getElementById('rename-path');

@@ -74,6 +74,8 @@ Release notes are generated from a template file, not edited in Python.
    ```
 4. Review generated file in `releases/` before publishing
 
+Note: The app shows a first-run onboarding walkthrough (not a separate Help dialog). Release notes should mention onboarding when it changes.
+
 ### Template placeholders
 
 The release script replaces these automatically:

@@ -5,37 +5,37 @@
 .all-tools-container {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    padding: 24px;
+    gap: var(--space-md);
+    padding: var(--space-md);
     border: 1px solid var(--border-default);
-    border-radius: var(--radius-cards);
+    border-radius: var(--radius);
 }
 
 .all-tools-container h2 {
-    font-size: 1.8rem;
-    margin: 0 0 4px 0;
+    font-size: var(--font-size-lg);
+    margin: 0 0 var(--space-xs) 0;
     font-weight: 600;
 }
 
 .all-tools-subtitle {
     color: var(--text-secondary);
-    margin: 0 0 8px 0;
-    font-size: 0.95rem;
+    margin: 0 0 var(--space-xs) 0;
+    font-size: var(--font-size-sm);
 }
 
 /* Section Styling */
 .tools-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-sm);
 }
 
 .tools-section-title {
-    font-size: 1.1rem;
+    font-size: var(--font-size);
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
-    padding-bottom: 8px;
+    padding-bottom: var(--space-xs);
     border-bottom: 1px solid var(--border-default);
 }
 
@@ -43,38 +43,40 @@
 .tools-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: var(--space-sm);
 }
 
 /* Individual Tool Card */
 .tool-card {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px;
+    gap: var(--space-sm);
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-sm);
     background-color: var(--bg-elevated);
-    border-radius: var(--radius-default);
+    border-radius: var(--radius);
     border: 1px solid transparent;
     cursor: pointer;
     transition: all var(--transition-fast);
+    min-height: var(--row-height);
 }
 
 .tool-card:hover {
     background-color: var(--bg-elevated-hover);
     border-color: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .tool-card:hover .tool-card-icon .material-symbols-rounded {
-    transform: rotate(-10deg) scale(1.1);
+    transform: rotate(-5deg) scale(1.05);
 }
 
 /* Tool Card Icon Container */
 .tool-card-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-default);
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +84,7 @@
 }
 
 .tool-card-icon .material-symbols-rounded {
-    font-size: 1.5rem;
+    font-size: var(--icon);
     color: var(--text-primary);
     transition: transform var(--transition-fast);
 }
@@ -123,8 +125,8 @@
 /* Tool Card Checkbox - Always shown */
 .tool-card-checkbox {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: var(--space-xs);
+    right: var(--space-xs);
     display: block;
     cursor: pointer;
 }
@@ -135,8 +137,8 @@
 
 /* Custom checkbox styling */
 .tool-card-checkbox input {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     cursor: pointer;
     accent-color: var(--accent-primary);
 }
@@ -152,15 +154,15 @@
 }
 
 .tool-card-info h4 {
-    font-size: 0.95rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0 0 4px 0;
+    margin: 0 0 1px 0;
 }
 
 .tool-card-info p {
-    font-size: 0.82rem;
+    font-size: var(--font-size-sm);
     color: var(--text-secondary);
     margin: 0;
-    line-height: 1.35;
+    line-height: 1.25;
 }

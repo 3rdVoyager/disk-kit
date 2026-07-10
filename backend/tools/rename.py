@@ -5,6 +5,7 @@ Preview and apply deterministic file renaming rules.
 
 from flask import jsonify
 
+from backend.operations import log_operation
 from backend.path_utils import sanitize_path, validate_path_access
 
 
@@ -116,6 +117,13 @@ def rename_api(request, load_settings):
                 "status": "error",
                 "message": str(err),
             })
+
+    if not dry_run and rename_count > 0:
+        log_operation(
+            'rename',
+            f'Renamed {rename_count} file{"s" if rename_count != 1 else ""}',
+            detail=f'in {resolved}'.replace('\\', '/'),
+        )
 
     return jsonify({
         "path": str(resolved).replace("\\", "/"),

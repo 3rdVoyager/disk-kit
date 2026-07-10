@@ -1,0 +1,97 @@
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dialog-overlay.active {
+  opacity: 1;
+}
+
+.dialog-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px var(--shadow-color);
+  max-width: 480px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+}
+
+.dialog-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.dialog-body {
+  padding: var(--space-md);
+}
+
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--border-default);
+}
+
+.footer-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  border: 1px solid var(--border-default);
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

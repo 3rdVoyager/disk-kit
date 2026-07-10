@@ -1,6 +1,6 @@
-<div class="dashboard-grid">
+<div class="browse-files-layout">
       <!-- File Browser Card -->
-      <div class="dashboard-card file-browser-card">
+      <div class="browse-card file-browser-card">
         <div class="browser-toolbar">
           <div class="toolbar-left">
             <button class="btn-tool" title="Refresh">
@@ -9,13 +9,11 @@
             <button class="btn-tool" title="Back">
               <span class="material-symbols-rounded">arrow_back</span>
             </button>
-            <button class="btn-tool" title="Forward">
-              <span class="material-symbols-rounded">arrow_forward</span>
-            </button>
             <button class="btn-tool" title="Move to Recycle Bin">
               <span class="material-symbols-rounded">delete</span>
             </button>
           </div>
+          <div class="toolbar-breadcrumb">Loading...</div>
           <div class="toolbar-search">
             <span class="material-symbols-rounded">search</span>
             <input type="text" class="browser-search-input" placeholder="Search files in this directory..." />
@@ -27,7 +25,7 @@
           </div>
         </div>
         <div class="file-list-header">
-          <span class="col-icon">Icon</span>
+          <span class="col-icon" aria-hidden="true"></span>
           <span class="col-name">Name</span>
           <span class="col-date">Date Modified</span>
           <span class="col-type">Type</span>
@@ -39,7 +37,7 @@
       </div>
 
       <!-- File Details Panel -->
-      <div class="dashboard-card details-card">
+      <div class="browse-card details-card is-empty" id="details-panel">
         <div class="details-header">
           <div class="file-thumbnail">
             <span class="material-symbols-rounded">insert_drive_file</span>
@@ -47,6 +45,7 @@
           <div class="file-info">
             <h3 id="detail-filename">Select a file</h3>
             <p class="details-file-type" id="detail-filetype">--</p>
+            <p class="details-empty-hint" id="detail-hint">Click a file or folder in the list to see its details and actions.</p>
           </div>
         </div>
         <div class="details-meta">
@@ -68,9 +67,8 @@
           </div>
         </div>
         <div class="details-actions">
-          <button class="btn-action">Open</button>
-          <button class="btn-action">Open Containing Folder</button>
-          <button class="btn-action">Copy Path</button>
+          <button type="button" class="btn-action" data-action="open">Open</button>
+          <button type="button" class="btn-action" data-action="copy-path">Copy Path</button>
         </div>
       </div>
     </div>

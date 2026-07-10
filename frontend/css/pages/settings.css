@@ -1,65 +1,68 @@
 .settings-page {
-  padding: 24px;
+  padding: var(--space-md);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-default);
+  border-radius: var(--radius);
 }
 
 .settings-header {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-md);
 }
 
 .settings-header h2 {
-  margin: 0 0 4px 0;
-  font-size: 24px;
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--font-size-lg);
 }
 
 .settings-header p {
   margin: 0;
   color: var(--text-primary);
+  font-size: var(--font-size-sm);
 }
 
 .settings-section {
-  margin-bottom: 24px;
-  padding: 16px;
-  border-radius: 8px;
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
   border: 1px solid var(--border-default);
 }
 
 .settings-section h3 {
-  margin: 0 0 16px 0;
-  font-size: 18px;
+  margin: 0 0 var(--space-sm) 0;
+  font-size: var(--font-size);
 }
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 4px;
-  font-size: 14px;
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-size-sm);
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
   border: 1px solid var(--border-default);
   background: var(--input-bg);
   color: var(--text-primary);
   font-family: inherit;
+  font-size: var(--font-size-sm);
+  min-height: var(--btn-height);
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 72px;
 }
 
 .form-hint {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: var(--space-xs) 0 0;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary, var(--text-primary));
   opacity: 0.85;
 }
@@ -67,42 +70,48 @@
 .checkbox-group label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-xs);
   cursor: pointer;
+  font-size: var(--font-size-sm);
 }
 
 .checkbox-group input[type="checkbox"] {
-  width: auto;
+  width: 14px;
+  height: 14px;
 }
 
 .settings-actions {
   display: flex;
-  gap: 12px;
+  gap: var(--space-sm);
   align-items: center;
-  margin-top: 24px;
+  margin-top: var(--space-md);
 }
 
 .btn-primary {
-  padding: 10px 16px;
+  padding: var(--space-xs) var(--space-sm);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--accent-primary);
   color: var(--text-primary);
   cursor: pointer;
+  font-size: var(--font-size-sm);
+  min-height: var(--btn-height);
 }
 
 .btn-secondary {
-  padding: 10px 16px;
+  padding: var(--space-xs) var(--space-sm);
   border: 1px solid var(--border-default);
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: transparent;
   color: var(--text-primary);
   cursor: pointer;
+  font-size: var(--font-size-sm);
+  min-height: var(--btn-height);
 }
 
 .settings-message {
-  margin-left: 12px;
-  font-size: 14px;
+  margin-left: var(--space-sm);
+  font-size: var(--font-size-sm);
 }
 
 .settings-message.success {
@@ -111,4 +120,28 @@
 
 .settings-message.error {
   color: var(--status-error);
+}
+
+.settings-danger {
+  border-color: color-mix(in srgb, var(--status-error) 45%, var(--border-default));
+}
+
+.settings-danger h3 {
+  color: var(--status-error);
+}
+
+.danger-zone-intro {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--status-error);
+}
+
+.form-group.is-disabled label,
+.form-group.is-disabled .form-hint {
+  opacity: 0.55;
+}
+
+.form-group.is-disabled textarea {
+  opacity: 0.55;
+  cursor: not-allowed;
 }

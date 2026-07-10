@@ -18,11 +18,14 @@ Released: {{date}}
 
 ## What's New in v{{version}}
 - Waitress production server (no Flask dev-server warning)
-- Browse Files moves items to Recycle Bin instead of permanent delete
+- Browse Files moves items to the Recycle Bin instead of permanent delete
 - Blocked paths setting to protect sensitive folders
 - Symlink-resolved path security across all file tools
-- Dashboard with storage overview
-- Browse Files tool
+- Dashboard with live drive usage stats and quick links to storage tools
+- First-run onboarding walkthrough
+- Global file search from the header
+- Recent operations history for tool actions
+- Browse Files detail panel: Open file and Copy Path
 - Large Files finder
 - Batch Rename tool
 - Duplicate Finder
@@ -30,7 +33,9 @@ Released: {{date}}
 - Settings management
 
 ## Known Issues
-- None at this time
+- Global search is capped at 500 results and searches from your working path
+- Operation history covers rename, organize, and Recycle Bin delete actions only
+- Duplicate Finder lists matches but does not delete duplicates from the results view
 
 ## Support
 - GitHub Issues: https://github.com/3rdVoyager/disk-kit/issues

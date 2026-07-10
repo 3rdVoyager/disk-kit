@@ -7,6 +7,10 @@ browser and all backend tools.
 from pathlib import Path
 
 FALLBACK_ALLOWED_ROOT = Path('C:/Users')
+GENERIC_USERS_ROOTS = {
+    FALLBACK_ALLOWED_ROOT,
+    Path('C:/Users/'),
+}
 
 # Always denied regardless of sandbox or user blocklist settings.
 SYSTEM_BLOCKED_ROOTS = [
@@ -38,22 +42,65 @@ def is_path_within(target_path, root_path):
         return False
 
 
+def get_user_home():
+    """Return the current user's home directory."""
+    return normalize_path(Path.home())
+
+
+def get_default_working_path(settings):
+    """
+    Resolve the configured default path for scans and file tools.
+    Legacy generic Users roots map to the signed-in user's profile.
+    """
+    raw_root = settings.get('general', {}).get('defaultPath')
+    candidate = normalize_path(raw_root) if raw_root else None
+    home = get_user_home()
+
+    if candidate and candidate.exists() and candidate.is_dir():
+        if candidate in GENERIC_USERS_ROOTS:
+            return home
+        return candidate
+    return home
+
+
+def get_folder_scan_root(settings):
+    """Resolve the path used for largest-folder storage scans."""
+    raw_root = settings.get('general', {}).get('folderScanPath')
+    if raw_root and str(raw_root).strip():
+        candidate = normalize_path(raw_root)
+        if candidate.exists() and candidate.is_dir():
+            if candidate in GENERIC_USERS_ROOTS:
+                return get_user_home()
+            return candidate
+    return get_default_working_path(settings)
+
+
 def get_allowed_roots(settings):
     """
     Resolve allowed roots from settings.
-    Falls back to C:/Users when no valid root exists.
+    Falls back to the current user's home when no valid root exists.
     """
     raw_root = settings.get('general', {}).get('defaultPath')
     candidate = normalize_path(raw_root) if raw_root else None
     if candidate and candidate.exists() and candidate.is_dir():
+        if candidate in GENERIC_USERS_ROOTS:
+            return [get_user_home()]
         return [candidate]
-    return [normalize_path(FALLBACK_ALLOWED_ROOT)]
+    return [get_user_home()]
+
+
+def is_protections_disabled(settings):
+    """Whether the user has opted out of sandbox and blocklist protections."""
+    return bool(settings.get('security', {}).get('disablePathProtections'))
 
 
 def get_blocked_paths(settings):
     """
     User-configured blocked paths plus always-on system blocked roots.
     """
+    if is_protections_disabled(settings):
+        return []
+
     blocked = []
     for raw in settings.get('security', {}).get('blockedPaths', []):
         if not raw or not str(raw).strip():
@@ -88,6 +135,9 @@ def validate_path_access(target_path, settings):
     Returns (resolved_path, None) on success or (None, (error_message, status_code)).
     """
     resolved = resolve_path_for_access(target_path)
+    if is_protections_disabled(settings):
+        return resolved, None
+
     allowed_roots = get_allowed_roots(settings)
     blocked_paths = get_blocked_paths(settings)
 

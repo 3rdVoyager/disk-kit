@@ -11,8 +11,11 @@
     <link rel="stylesheet" href="css/pages/browse-files.css" />
     <link rel="stylesheet" href="css/pages/alltools.css" />
     <link rel="stylesheet" href="css/pages/settings.css" />
+    <link rel="stylesheet" href="css/pages/storage-overview.css" />
     <link rel="stylesheet" href="css/tools/tool-pages.css" />
-    <link rel="stylesheet" href="css/components/help-dialog.css" />
+    <link rel="stylesheet" href="css/popups/dialog.css" />
+    <link rel="stylesheet" href="css/popups/onboarding.css" />
+    <link rel="stylesheet" href="css/popups/folder-picker.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
       rel="stylesheet"
@@ -21,27 +24,23 @@
   </head>
   <body>
     <main>
-      <!-- Persistent Header Bar (outside #content so it persists) -->
       <header class="global-header">
         <div class="header-left">
-          <span class="breadcrumb-path">This PC > C: > Projects > DiskKit</span>
-          <a class="btn-link" href="#browse-files">Change Path</a>
+          <span class="breadcrumb-path">Loading...</span>
+          <button type="button" class="btn-link" id="change-path-btn">Change Path</button>
         </div>
         <div class="header-right">
           <div class="search-bar">
             <span class="material-symbols-rounded">search</span>
-            <input type="text" placeholder="Search files and folders..." />
+            <input type="text" id="global-search-input" placeholder="Search files and folders..." autocomplete="off" />
+            <div id="global-search-results" class="global-search-results" hidden></div>
           </div>
-          <button class="header-icon" title="Help">
-            <span class="material-symbols-rounded">help</span>
-          </button>
           <button class="header-icon" title="Theme">
             <span class="material-symbols-rounded">dark_mode</span>
           </button>
         </div>
       </header>
 
-      <!-- Sidebar Navigation -->
       <section id="sidebar">
         <h2>
           <span class="sidebar-title">Disk Kit</span
@@ -71,17 +70,20 @@
           </li>
           <li>
             <h3 class="nav-title">Quick Tools</h3>
-            <ul id="quick-tools">
-              <!-- Populated dynamically by JavaScript -->
-            </ul>
+            <ul id="quick-tools"></ul>
           </li>
           <li>
             <h3 class="nav-title">System</h3>
             <ul id="system">
               <li>
+                <a class="nav-link" href="#storage-overview"
+                  ><span class="nav-icon material-symbols-rounded">storage</span
+                  ><span class="nav-text">Storage Overview</span></a
+                >
+              </li>
+              <li>
                 <a class="nav-link" href="#settings"
-                  ><span class="nav-icon material-symbols-rounded"
-                    >settings</span
+                  ><span class="nav-icon material-symbols-rounded">settings</span
                   ><span class="nav-text">Settings</span></a
                 >
               </li>
@@ -89,13 +91,13 @@
           </li>
           <li>
             <div class="sidebar-social">
-              <a class="social-link" href="https://github.com/3rdVoyager/disk-kit" title="GitHub">
+              <a class="social-link" href="https://github.com/3rdVoyager/disk-kit" title="GitHub" target="_blank" rel="noopener">
                 <span class="material-symbols-rounded">code</span>
               </a>
-              <a class="social-link" href="https://discord.gg/Voyager3" title="Discord">
+              <a class="social-link" href="https://discord.gg/Voyager3" title="Discord" target="_blank" rel="noopener">
                 <span class="material-symbols-rounded">group</span>
               </a>
-              <a class="social-link" href="https://github.com/3rdVoyager/disk-kit/releases" title="What's New">
+              <a class="social-link" href="https://github.com/3rdVoyager/disk-kit/releases" title="What's New" target="_blank" rel="noopener">
                 <span class="material-symbols-rounded">info</span>
               </a>
             </div>
@@ -103,14 +105,17 @@
         </ul>
       </section>
 
-      <!-- Main Content Area (this gets swapped by JS) -->
       <section id="content">
         <div class="dashboard-grid">
-          <!-- Storage Overview Card -->
           <div class="dashboard-card storage-overview-card">
             <div class="card-header-row">
               <h3>Storage Overview</h3>
-              <a class="btn-link" href="#browse-files">Browse Files</a>
+              <div class="card-header-actions">
+                <button type="button" class="btn-icon" id="storage-refresh-btn" title="Rescan largest folders">
+                  <span class="material-symbols-rounded">refresh</span>
+                </button>
+                <a class="btn-link" href="#storage-overview">View Details</a>
+              </div>
             </div>
             <div class="storage-content">
               <div class="storage-main">
@@ -121,282 +126,73 @@
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
+                      id="storage-ring-fill"
                       class="circle"
-                      stroke-dasharray="75, 100"
+                      stroke-dasharray="0, 100"
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                   </svg>
-                  <div class="storage-percentage">75%</div>
+                  <div class="storage-percentage" id="storage-percentage">--</div>
                 </div>
                 <div class="storage-info">
                   <div class="storage-total">
-                    <span class="storage-label">Total Used</span>
-                    <span class="storage-value">756 GB</span>
+                    <span class="storage-label">Drive Used</span>
+                    <span class="storage-value" id="storage-used">--</span>
                   </div>
                   <div class="storage-available">
-                    <span class="storage-label">Available</span>
-                    <span class="storage-value">244 GB</span>
+                    <span class="storage-label">Drive Free</span>
+                    <span class="storage-value" id="storage-free">--</span>
                   </div>
                 </div>
               </div>
               <div class="storage-breakdown">
-                <ul class="breakdown-list">
-                  <li class="breakdown-item">
-                    <span class="breakdown-icon blue"
-                      ><span class="material-symbols-rounded">image</span></span
-                    >
-                    <span class="breakdown-label">Images</span>
-                    <span class="breakdown-value">312 GB</span>
-                    <div class="breakdown-bar">
-                      <div class="breakdown-fill blue" style="width: 41%"></div>
-                    </div>
-                  </li>
-                  <li class="breakdown-item">
-                    <span class="breakdown-icon purple"
-                      ><span class="material-symbols-rounded">movie</span></span
-                    >
-                    <span class="breakdown-label">Videos</span>
-                    <span class="breakdown-value">287 GB</span>
-                    <div class="breakdown-bar">
-                      <div
-                        class="breakdown-fill purple"
-                        style="width: 38%"
-                      ></div>
-                    </div>
-                  </li>
-                  <li class="breakdown-item">
-                    <span class="breakdown-icon green"
-                      ><span class="material-symbols-rounded"
-                        >description</span
-                      ></span
-                    >
-                    <span class="breakdown-label">Documents</span>
-                    <span class="breakdown-value">98 GB</span>
-                    <div class="breakdown-bar">
-                      <div
-                        class="breakdown-fill green"
-                        style="width: 13%"
-                      ></div>
-                    </div>
-                  </li>
-                  <li class="breakdown-item">
-                    <span class="breakdown-icon yellow"
-                      ><span class="material-symbols-rounded"
-                        >folder</span
-                      ></span
-                    >
-                    <span class="breakdown-label">Other</span>
-                    <span class="breakdown-value">59 GB</span>
-                    <div class="breakdown-bar">
-                      <div
-                        class="breakdown-fill orange"
-                        style="width: 8%"
-                      ></div>
-                    </div>
-                  </li>
+                <div class="storage-breakdown-header">
+                  <p class="storage-drive-label" id="storage-drive-label">Scanning path...</p>
+                  <button type="button" class="btn-link" id="storage-browse-path-btn">Browse...</button>
+                </div>
+                <ul class="breakdown-list" id="storage-folder-breakdown">
+                  <li class="breakdown-empty">Scanning folders...</li>
                 </ul>
+                <p class="breakdown-note" id="storage-folder-note" hidden></p>
               </div>
             </div>
           </div>
 
-          <!-- Suggested Actions Card -->
-          <div class="dashboard-card suggested-actions-card">
+          <div class="dashboard-card getting-started-card">
             <div class="card-header-row">
-              <h3>Suggested Actions</h3>
-              <a class="btn-link" href="#alltools">Open Tools</a>
+              <h3>Getting Started</h3>
+              <a class="btn-link" href="#alltools">All Tools</a>
             </div>
-            <ul class="actions-list">
-              <li class="action-item">
-                <div class="action-icon purple">
-                  <span class="material-symbols-rounded">auto_fix_high</span>
-                </div>
-                <div class="action-info">
-                  <h4>Organize Downloads</h4>
-                  <p>12 files could be sorted into folders</p>
-                </div>
-              </li>
-              <li class="action-item">
-                <div class="action-icon orange">
-                  <span class="material-symbols-rounded">inventory_2</span>
-                </div>
-                <div class="action-info">
-                  <h4>Compress old projects</h4>
-                  <p>Save 8.2 GB by compressing 3 folders</p>
-                </div>
-              </li>
-              <li class="action-item">
-                <div class="action-icon green">
-                  <span class="material-symbols-rounded">find_replace</span>
-                </div>
-                <div class="action-info">
-                  <h4>Remove duplicates</h4>
-                  <p>2.4 GB can be freed</p>
-                </div>
-              </li>
-              <li class="action-item">
-                <div class="action-icon blue">
-                  <span class="material-symbols-rounded">edit</span>
-                </div>
-                <div class="action-info">
-                  <h4>Batch rename photos</h4>
-                  <p>24 images in Camera Roll</p>
-                </div>
-              </li>
-              <li class="action-item">
-                <div class="action-icon orange">
-                  <span class="material-symbols-rounded">storage</span>
-                </div>
-                <div class="action-info">
-                  <h4>Review large files</h4>
-                  <p>15 files over 100 MB</p>
-                </div>
-              </li>
-            </ul>
+            <ol class="getting-started-steps">
+              <li>Browse your files from the sidebar or dashboard.</li>
+              <li>Run a tool — Large Files, Rename, Duplicates, or Organize.</li>
+              <li>Pin favorites to Quick Tools from the All Tools page.</li>
+            </ol>
+            <div class="getting-started-actions">
+              <button type="button" class="btn-primary" id="take-tour-btn">Take a tour</button>
+              <a class="btn-secondary-link" href="#browse-files">Browse Files</a>
+            </div>
           </div>
 
-          <!-- Quick Tools Card -->
           <section class="dashboard-card quick-tools-card">
             <div class="card-header-row">
               <h3>Quick Tools</h3>
               <a class="btn-link" href="#alltools">View All</a>
             </div>
-            <ul class="quick-tools-grid" id="dashboard-quick-tools">
-              <!-- Dynamically rendered by renderDashboardQuickTools() -->
-            </ul>
+            <ul class="quick-tools-grid" id="dashboard-quick-tools"></ul>
           </section>
 
-          <!-- Recent Operations Card -->
           <section class="dashboard-card recent-ops-card">
             <div class="card-header-row">
               <h3>Recent Operations</h3>
               <a class="btn-link" href="#alltools">View Available Tools</a>
             </div>
-            <ul class="operations-list">
-              <li class="operation-item">
-                <div class="op-icon blue">
-                  <span class="material-symbols-rounded">edit</span>
-                </div>
-                <div class="op-details">
-                  <h4>Renamed 24 files</h4>
-                  <p>in D:\Projects\DiskKit\assets</p>
-                </div>
-                <div class="op-meta">
-                  <span class="op-time">2 minutes ago</span>
-                  <span class="badge-success">Completed</span>
-                </div>
-              </li>
-              <li class="operation-item">
-                <div class="op-icon purple">
-                  <span class="material-symbols-rounded">transform</span>
-                </div>
-                <div class="op-details">
-                  <h4>Converted 15 images</h4>
-                  <p>to WebP format</p>
-                </div>
-                <div class="op-meta">
-                  <span class="op-time">15 minutes ago</span>
-                  <span class="badge-success">Completed</span>
-                </div>
-              </li>
-              <li class="operation-item">
-                <div class="op-icon orange">
-                  <span class="material-symbols-rounded">inventory_2</span>
-                </div>
-                <div class="op-details">
-                  <h4>Compressed project.zip</h4>
-                  <p>1.2 GB</p>
-                </div>
-                <div class="op-meta">
-                  <span class="op-time">1 hour ago</span>
-                  <span class="badge-success">Completed</span>
-                </div>
-              </li>
-              <li class="operation-item">
-                <div class="op-icon green">
-                  <span class="material-symbols-rounded">find_replace</span>
-                </div>
-                <div class="op-details">
-                  <h4>Found 32 duplicates</h4>
-                  <p>2.4 GB can be freed</p>
-                </div>
-                <div class="op-meta">
-                  <span class="op-time">3 hours ago</span>
-                  <span class="badge-success">Completed</span>
-                </div>
-              </li>
-              <li class="operation-item">
-                <div class="op-icon green">
-                  <span class="material-symbols-rounded">delete_sweep</span>
-                </div>
-                <div class="op-details">
-                  <h4>Removed 18 empty folders</h4>
-                  <p>in D:\Projects\DiskKit</p>
-                </div>
-                <div class="op-meta">
-                  <span class="op-time">5 hours ago</span>
-                  <span class="badge-success">Completed</span>
-                </div>
-              </li>
+            <ul class="operations-list" id="recent-operations">
+              <li class="operation-empty">Loading history...</li>
             </ul>
           </section>
         </div>
       </section>
     </main>
-
-    <!-- Help Dialog -->
-    <div id="help-dialog" class="dialog-overlay" style="display: none;">
-      <div class="dialog-content">
-        <div class="dialog-header">
-          <h2>Help & Tips</h2>
-          <button class="dialog-close" id="help-close">
-            <span class="material-symbols-rounded">close</span>
-          </button>
-        </div>
-        <div class="dialog-body">
-          <div class="help-tabs">
-            <button class="help-tab active" data-tab="gettingStarted">Getting Started</button>
-            <button class="help-tab" data-tab="tools">Tools</button>
-            <button class="help-tab" data-tab="tips">Tips</button>
-          </div>
-          <div class="help-content" id="help-content">
-            <!-- Content loaded dynamically -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Browser Selector Dialog -->
-    <div id="browser-selector-dialog" class="dialog-overlay" style="display: none;">
-      <div class="dialog-content browser-selector-content">
-        <div class="dialog-header">
-          <h2>Select Path</h2>
-          <button class="dialog-close" id="browser-selector-close">
-            <span class="material-symbols-rounded">close</span>
-          </button>
-        </div>
-        <div class="dialog-body">
-          <div class="browser-selector-ui">
-            <div class="browser-selector-nav">
-              <button class="btn-icon" id="selector-back" title="Back"><span class="material-symbols-rounded">arrow_back</span></button>
-              <button class="btn-icon" id="selector-forward" title="Forward"><span class="material-symbols-rounded">arrow_forward</span></button>
-              <div class="selector-breadcrumb">This PC > C:</div>
-            </div>
-            <div class="browser-selector-list-container">
-              <ul id="selector-file-list" class="file-list"></ul>
-            </div>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <div class="selected-path-display">
-            <span class="label">Selected:</span>
-            <span id="selector-current-path">C:\Users</span>
-          </div>
-          <div class="footer-actions">
-            <button class="btn-secondary" id="selector-cancel">Cancel</button>
-            <button class="btn-primary" id="selector-confirm">Select Folder</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

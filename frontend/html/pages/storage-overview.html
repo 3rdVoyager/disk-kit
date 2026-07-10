@@ -1,0 +1,97 @@
+<section class="storage-overview-page">
+  <div class="storage-overview-header">
+    <div>
+      <h2>Storage Overview</h2>
+      <p>Drive usage for C: and largest folders under your configured path.</p>
+    </div>
+    <button type="button" class="btn-icon" id="detail-storage-refresh-btn" title="Rescan storage">
+      <span class="material-symbols-rounded">refresh</span>
+    </button>
+  </div>
+
+  <div class="storage-overview-grid">
+    <section class="storage-panel storage-drive-panel">
+      <div class="storage-panel-header">
+        <h3>Drive Usage</h3>
+        <span class="storage-drive-badge" id="detail-storage-drive">C:</span>
+      </div>
+
+      <div class="storage-drive-layout">
+        <div class="storage-ring storage-ring-large">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path
+              class="circle-bg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path
+              id="detail-storage-ring-fill"
+              class="circle"
+              stroke-dasharray="0, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+          </svg>
+          <div class="storage-percentage" id="detail-storage-percentage">--</div>
+        </div>
+
+        <div class="storage-stat-grid">
+          <div class="storage-stat-card">
+            <span class="storage-stat-label">Total Capacity</span>
+            <span class="storage-stat-value" id="detail-storage-total">--</span>
+          </div>
+          <div class="storage-stat-card">
+            <span class="storage-stat-label">Used</span>
+            <span class="storage-stat-value" id="detail-storage-used">--</span>
+          </div>
+          <div class="storage-stat-card">
+            <span class="storage-stat-label">Free</span>
+            <span class="storage-stat-value" id="detail-storage-free">--</span>
+          </div>
+          <div class="storage-stat-card">
+            <span class="storage-stat-label">Free Space</span>
+            <span class="storage-stat-value" id="detail-storage-free-percent">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="storage-usage-bar" aria-hidden="true">
+        <div class="storage-usage-bar-used" id="detail-storage-used-bar"></div>
+      </div>
+      <div class="storage-usage-legend">
+        <span><span class="legend-swatch legend-used"></span> Used</span>
+        <span><span class="legend-swatch legend-free"></span> Free</span>
+      </div>
+      <p class="storage-updated" id="detail-storage-updated">Scanning...</p>
+    </section>
+
+    <section class="storage-panel storage-folders-panel">
+      <div class="storage-panel-header">
+        <div>
+          <h3>Largest Folders</h3>
+          <p class="storage-scan-path">Scanning <span id="detail-storage-scan-path">--</span></p>
+        </div>
+        <button type="button" class="btn-link" id="detail-storage-browse-path-btn">Browse...</button>
+      </div>
+
+      <div class="storage-folder-table-wrap">
+        <table class="storage-folder-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Folder</th>
+              <th>Path</th>
+              <th>Size</th>
+              <th>Share</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody id="detail-storage-folder-list">
+            <tr>
+              <td colspan="6" class="storage-folder-empty">Scanning folders...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="breakdown-note" id="detail-storage-folder-note" hidden></p>
+    </section>
+  </div>
+</section>

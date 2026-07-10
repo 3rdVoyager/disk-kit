@@ -1,6 +1,6 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { formatBytes, renderToolResultList } from './tool-ui.js';
-import { openPathSelector } from '../pages/browse-files.js';
+import { openPathSelector } from '../popups/folder-picker.js';
 
 export function setupDuplicatesTool() {
   const form = document.getElementById('duplicates-form');

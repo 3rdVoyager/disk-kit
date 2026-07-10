@@ -6,6 +6,7 @@ Organize files into category folders using extension-based rules.
 import shutil
 from flask import jsonify
 
+from backend.operations import log_operation
 from backend.path_utils import sanitize_path, validate_path_access
 
 
@@ -72,7 +73,10 @@ def organize_api(request, load_settings):
             "path": str(resolved).replace("\\", "/")
         }), 404
 
-    items = sorted([item for item in resolved.iterdir() if item.is_file()], key=lambda item: item.name.lower())
+    items = sorted(
+        [item for item in resolved.iterdir() if item.is_file()],
+        key=lambda item: (_category_for_file(item), item.name.lower()),
+    )
     operations = []
     moved_count = 0
     skipped_count = 0
@@ -107,6 +111,13 @@ def organize_api(request, load_settings):
             error_count += 1
 
         operations.append(operation)
+
+    if not dry_run and moved_count > 0:
+        log_operation(
+            'organize',
+            f'Organized {moved_count} file{"s" if moved_count != 1 else ""}',
+            detail=f'in {resolved}'.replace('\\', '/'),
+        )
 
     return jsonify({
         "path": str(resolved).replace("\\", "/"),

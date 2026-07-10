@@ -8,7 +8,10 @@ if __package__ is None:
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 from backend.settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
-from backend.pages.browse_files import list_files_api, delete_files_api
+from backend.pages.browse_files import list_files_api, delete_files_api, open_file_api
+from backend.pages.storage import storage_api
+from backend.pages.search import search_files_api
+from backend.operations import get_operations_api, append_operation_api
 from backend.tools.large_files import large_files_api
 from backend.tools.rename import rename_api
 from backend.tools.duplicates import duplicates_api
@@ -88,6 +91,34 @@ def list_files():
 def delete_files():
     """Move a file or directory to the Recycle Bin"""
     return delete_files_api(request, load_settings)
+
+@app.route('/api/files/open', methods=['POST'])
+def open_file():
+    """Open a file with the system default application."""
+    return open_file_api(request, load_settings)
+
+@app.route('/api/storage', methods=['GET'])
+def storage():
+    """Drive usage for the configured default path."""
+    return storage_api(request, load_settings)
+
+@app.route('/api/search', methods=['GET'])
+def search_files():
+    """Recursive filename search under a validated path."""
+    return search_files_api(request, load_settings)
+
+@app.route('/api/operations', methods=['GET'])
+def get_operations():
+    """Return recent operation history."""
+    return jsonify(get_operations_api(request))
+
+@app.route('/api/operations', methods=['POST'])
+def append_operation():
+    """Append an operation entry (internal/client use)."""
+    result = append_operation_api(request)
+    if isinstance(result, tuple):
+        return jsonify(result[0]), result[1]
+    return jsonify(result)
 
 @app.route('/api/large-files', methods=['GET'])
 def large_files():

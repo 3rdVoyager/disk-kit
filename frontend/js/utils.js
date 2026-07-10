@@ -1,11 +1,5 @@
 // Utility Functions for Disk Kit
-// Common helper functions used across modules
 
-/**
- * Escape HTML special characters to prevent XSS
- * @param {string} text - Text to escape
- * @returns {string} - Escaped text
- */
 export function escapeHtml(text) {
   if (text === null || text === undefined) return '';
   const div = document.createElement('div');
@@ -13,70 +7,49 @@ export function escapeHtml(text) {
   return div.innerHTML;
 }
 
-/**
- * API fetch wrapper with JSON handling
- * @param {string} path - API endpoint path
- * @param {Object} options - Fetch options
- * @returns {Promise<Object|Array>} - Parsed JSON response
- */
 export async function apiFetch(path, options = {}) {
   const base = window.location.origin || 'http://localhost:5000';
   const url = `${base}${path}`;
   const defaults = {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
   };
   const config = Object.assign({}, defaults, options);
   if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
-      config.body = JSON.stringify(config.body);
+    config.body = JSON.stringify(config.body);
   }
   const response = await fetch(url, config);
   if (!response.ok) {
-      const errorText = await response.text();
-      let message = `HTTP ${response.status}`;
-      try {
-          const err = JSON.parse(errorText);
-          message = err.error || message;
-      } catch {
-          // ignore
-      }
-      throw new Error(message);
+    const errorText = await response.text();
+    let message = `HTTP ${response.status}`;
+    try {
+      const err = JSON.parse(errorText);
+      message = err.error || message;
+    } catch {
+      // ignore
+    }
+    throw new Error(message);
   }
   if (response.status === 204) return null;
   return response.json();
 }
 
-/**
- * Get nested value from object using dot notation
- * @param {Object} obj - Source object
- * @param {string} path - Dot-separated path
- * @returns {*} - Value at path or undefined
- */
 export function getNestedValue(obj, path) {
   return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
 }
 
-/**
- * Set nested value in object using dot notation
- * @param {Object} obj - Target object
- * @param {string} path - Dot-separated path
- * @param {*} value - Value to set
- */
 export function setNestedValue(obj, path, value) {
   const parts = path.split('.');
   const last = parts.pop();
   const target = parts.reduce((acc, part) => {
-      if (!(part in acc)) acc[part] = {};
-      return acc[part];
+    if (!(part in acc)) acc[part] = {};
+    return acc[part];
   }, obj);
   target[last] = value;
 }
 
-/**
- * Shared path state management
- */
 const LAST_PATH_KEY = 'disk-kit-last-path';
 
 export function getLastPath() {
@@ -84,7 +57,86 @@ export function getLastPath() {
 }
 
 export function setLastPath(path) {
-  if (path) {
-    localStorage.setItem(LAST_PATH_KEY, path);
+  if (path) localStorage.setItem(LAST_PATH_KEY, path);
+}
+
+export function updateBreadcrumb(path) {
+  const parts = path ? path.split('/').filter(Boolean) : [];
+  const text = parts.length ? `This PC > ${parts.join(' > ')}` : 'This PC';
+
+  const toolbarBreadcrumb = document.querySelector('#content .toolbar-breadcrumb');
+  if (toolbarBreadcrumb) {
+    toolbarBreadcrumb.textContent = text;
+    return;
   }
+
+  const breadcrumb = document.querySelector('.breadcrumb-path');
+  if (!breadcrumb) return;
+  breadcrumb.textContent = text;
+}
+
+export async function getConfiguredDefaultPath() {
+  try {
+    const settings = await apiFetch('/api/settings');
+    const path = settings?.general?.defaultPath;
+    return path ? path.replace(/\\/g, '/') : '';
+  } catch {
+    return '';
+  }
+}
+
+export async function getConfiguredFolderScanPath() {
+  try {
+    const settings = await apiFetch('/api/settings');
+    const scanPath = settings?.general?.folderScanPath;
+    const defaultPath = settings?.general?.defaultPath;
+    const path = scanPath && String(scanPath).trim() ? scanPath : defaultPath;
+    return path ? path.replace(/\\/g, '/') : '';
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Resolve the path to open in the file browser.
+ * Prefers an explicit path, then last visited, then settings defaultPath.
+ */
+export async function resolveBrowserPath(explicitPath = '') {
+  const normalized = (explicitPath || getLastPath() || '').replace(/\\/g, '/');
+  if (normalized) return normalized;
+  return getConfiguredDefaultPath();
+}
+
+/**
+ * Set the app working path used by tools (unless a tool overrides via folder picker).
+ * Updates localStorage, header breadcrumb, and optionally persists settings.defaultPath.
+ */
+export async function setWorkingPath(path, { persistSettings = true } = {}) {
+  if (!path) return;
+  const normalized = path.replace(/\\/g, '/');
+  setLastPath(normalized);
+  updateBreadcrumb(normalized);
+
+  if (!persistSettings) return;
+
+  try {
+    await apiFetch('/api/settings', {
+      method: 'POST',
+      body: { general: { defaultPath: normalized } },
+    });
+  } catch (err) {
+    console.error('Failed to persist working path:', err);
+  }
+}
+
+export function formatBytes(bytes) {
+  if (!bytes || bytes <= 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  let value = bytes;
+  let unitIndex = 0;
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+  return `${value.toFixed(value >= 10 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
 }

@@ -19,12 +19,31 @@
     --border-accent: #3b82f6;    /* Accent border (btn-action hover, links) */
     
     /* Border Radius */
-    --radius-cards: 12px;            /* Large cards (dashboard, file browser) */
-    --radius-default: 10px;          /* Default for most components */
-    --radius-md: 8px;                /* Medium radius (items, buttons, badges) */
-    --radius-sm: 6px;                /* Small radius (tool buttons, file items) */
-    --radius-xs: 4px;                /* Extra small (links, subtle elements) */
-    --radius-progress: 3px;          /* Progress bars and fill elements */
+    --radius: 8px;              /* cards, buttons, inputs, list rows */
+    --radius-progress: 2px;     /* thin progress / breakdown bars */
+
+    /* ============================================
+       DENSITY / TYPOGRAPHY
+       ============================================ */
+    --font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-size-sm: calc(12 / 14 * 1rem);   /* meta, labels, secondary text */
+    --font-size: 15px;                       /* body and UI text (root anchor) */
+    --font-size-lg: calc(17 / 14 * 1rem);   /* headings */
+
+    --space-xs: calc(4 / 14 * 1rem);        /* tight padding and micro gaps */
+    --space-sm: calc(8 / 14 * 1rem);        /* default gaps and padding */
+    --space-md: 1rem;                       /* section spacing and margins */
+
+    --sidebar-width: 210px;
+    --sidebar-collapsed-width: 54px;
+    --header-height: 42px;
+    --content-padding: var(--space-md);
+
+    --icon: calc(15 / 14 * 1rem);
+    --icon-lg: calc(19 / 14 * 1rem);        /* large icons (e.g. grid view tiles) */
+
+    --btn-height: calc(30 / 14 * 1rem);
+    --row-height: calc(26 / 14 * 1rem);
     /* ============================================
        TEXT
        ============================================ */
