@@ -13,6 +13,7 @@ from backend.operations import get_operations_api
 from backend.tools.rename import rename_api
 from backend.tools.duplicates import duplicates_api
 from backend.tools.convert import convert_api
+from backend.version import APP_VERSION
 
 BACKEND_DIR = Path(__file__).resolve().parent
 if getattr(sys, 'frozen', False):
@@ -81,6 +82,12 @@ def find_duplicates():
 def convert_files():
     """Batch convert files."""
     return convert_api(request, load_settings)
+
+
+@app.route('/api/version', methods=['GET'])
+def get_version():
+    """Return the current application version."""
+    return jsonify({'version': APP_VERSION})
 
 
 @app.route('/')

@@ -3,6 +3,10 @@ import { openPathSelector } from '../popups/folder-picker.js';
 import { renderToolResultList } from './tool-ui.js';
 
 const COMING_SOON_COPY = {
+  documents: {
+    title: 'Document conversion coming soon',
+    text: 'PDF to Image, Image to PDF, and Text to PDF conversion is planned for a future update.',
+  },
   audio: {
     title: 'Audio conversion coming soon',
     text: 'Batch audio conversion (MP3, WAV, FLAC, and more) is on the way.',
@@ -118,7 +122,7 @@ function switchConvertTab(category) {
     tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
-  const isComingSoon = category === 'audio' || category === 'video';
+  const isComingSoon = category === 'audio' || category === 'video' || category === 'documents';
   panels.images.hidden = category !== 'images';
   panels.comingSoon.hidden = !isComingSoon;
 

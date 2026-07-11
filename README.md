@@ -5,12 +5,12 @@ Disk Kit is a locally hosted desktop-style file toolkit with a Flask backend and
 ## Current v1 Scope
 
 Implemented and supported now:
-- Dashboard shell UI
+- Dashboard with tool shortcuts and future roadmap
 - Browse Files (list directories, inspect files, move items to Recycle Bin within configured root)
 - Convert Files (batch images to WebP/JPG/PNG)
-- Batch Rename (preview/apply)
-- Duplicate Finder
-- Settings (theme, default root path, blocked paths)
+- Batch Rename (preview/apply with collision detection)
+- Duplicate Finder (exact match)
+- Settings (theme, default root path, blocked paths, version check)
 
 Planned items shown in older docs/UI are not part of shipped v1 unless listed above.
 
@@ -80,6 +80,7 @@ Settings are stored in:
 
 ## API Endpoints
 
+- `GET /api/version`
 - `GET /api/settings`
 - `POST /api/settings`
 - `POST /api/settings/reset`

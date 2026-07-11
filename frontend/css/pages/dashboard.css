@@ -38,7 +38,12 @@
 }
 
 .dashboard-grid .recent-ops-card {
-    grid-column: 1 / -1;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.dashboard-grid .roadmap-card {
+    grid-column: 2;
     grid-row: 2;
 }
 
@@ -142,6 +147,66 @@
     color: var(--text-secondary);
     font-size: var(--font-size-sm);
     text-align: center;
+}
+
+/* ============================================
+   ROADMAP CARD
+   ============================================ */
+
+.roadmap-card {
+    min-height: 260px;
+}
+
+.roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xs);
+    flex: 1;
+}
+
+.roadmap-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-sm);
+    background-color: var(--bg-sidebar);
+    border-radius: var(--radius);
+    text-decoration: none;
+    border: 1px solid var(--border-default);
+    transition: all var(--transition-fast);
+    color: inherit;
+}
+
+.roadmap-item:hover {
+    background-color: var(--bg-elevated-hover);
+    border-color: var(--accent-info);
+    transform: translateY(-1px);
+}
+
+.roadmap-item .material-symbols-rounded {
+    font-size: var(--icon);
+    color: var(--text-secondary);
+    width: 24px;
+    text-align: center;
+}
+
+.roadmap-item:hover .material-symbols-rounded {
+    color: var(--accent-info);
+}
+
+.roadmap-info h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1px 0;
+}
+
+.roadmap-info p {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.2;
 }
 
 /* ============================================

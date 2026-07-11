@@ -13,24 +13,20 @@ Released: {{date}}
 2. Run DiskKit.exe
 
 ## System Requirements
-- Windows 7 or later (64-bit)
+- Windows 10 or later (64-bit)
 - No additional software required
 
 ## What's New in v{{version}}
-- Waitress production server (no Flask dev-server warning)
-- Browse Files with detail panel (Open file, Copy Path, Recycle Bin delete)
-- Convert Files — batch image conversion (WebP, JPEG, PNG)
-- Batch Rename with preview
-- Duplicate Finder
-- Dashboard with tool shortcuts and recent operations history
-- First-run onboarding walkthrough
-- Settings (theme, default path, blocked paths)
-- Symlink-resolved path security across all file tools
+- **Batch Image Conversion** — Convert folders of images to WebP, JPEG, or PNG with quality and resize controls.
+- **Enhanced Batch Rename** — Powerful preview, collision detection, and numbered renaming with padded indices.
+- **Duplicate Finder** — Find exact copies of files using size and SHA-256 hash comparisons.
+- **Automated Update Checks** — Stay informed when new versions are released via a subtle in-app notification.
+- **Roadmap & Coming Soon** — Visual placeholders in the sidebar and dashboard showcase future capabilities like ZIP archiving and Smart Sort.
+- **Stability & Security** — Production-ready Waitress server and strict path access controls for safety.
 
 ## Known Issues
-- Operation history covers convert, rename, and Recycle Bin delete actions only
-- Duplicate Finder lists matches but does not delete duplicates from the results view
-- Audio and video conversion tabs show a coming-soon placeholder
+- Duplicate Finder lists matches but does not yet delete duplicates from the results view.
+- Document, Audio, and Video conversion tabs show placeholders for future updates.
 
 ## Support
 - GitHub Issues: https://github.com/3rdVoyager/disk-kit/issues

@@ -2,6 +2,28 @@ import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { renderToolResultList } from './tool-ui.js';
 import { openPathSelector } from '../popups/folder-picker.js';
 
+let lastPreviewPayload = null;
+
+function renderRenameResults(resultsEl, items) {
+  renderToolResultList(resultsEl, items, (item) => {
+    const statusClass = item.status === 'error' || item.status === 'conflict'
+      ? 'status-error'
+      : (item.status === 'skipped' ? 'status-skipped' : 'status-ok');
+    
+    const message = item.message ? `<span class="item-message">(${item.message})</span>` : '';
+
+    return `
+      <div class="result-item-main">
+        <span class="item-name" title="Old name: ${item.oldName}">${item.oldName}</span>
+        <span class="material-symbols-rounded">arrow_forward</span>
+        <span class="item-name" title="New name: ${item.newName}">${item.newName}</span>
+        <span class="item-status ${statusClass}">${item.status.toUpperCase()}</span>
+        ${message}
+      </div>
+    `;
+  });
+}
+
 async function runBatchRename(dryRun) {
   const pathInput = document.getElementById('rename-path');
   const modeSelect = document.getElementById('rename-mode');
@@ -14,19 +36,34 @@ async function runBatchRename(dryRun) {
     dryRun
   };
 
+  // Validation
   if (payload.mode === 'replace') {
     payload.findText = document.getElementById('rename-find')?.value || '';
     payload.replaceText = document.getElementById('rename-replace')?.value || '';
+    if (!payload.findText && !dryRun) {
+      summaryEl.textContent = 'Error: "Find text" cannot be empty for applying rename.';
+      summaryEl.classList.add('status-error');
+      return;
+    }
   } else if (payload.mode === 'prefix-suffix') {
     payload.prefix = document.getElementById('rename-prefix')?.value || '';
     payload.suffixText = document.getElementById('rename-suffix')?.value || '';
   } else if (payload.mode === 'numbering') {
     payload.baseName = document.getElementById('rename-base')?.value || 'file';
-    payload.startIndex = document.getElementById('rename-start')?.value || '1';
-    payload.padWidth = document.getElementById('rename-pad')?.value || '3';
+    payload.startIndex = parseInt(document.getElementById('rename-start')?.value || '1', 10);
+    payload.padWidth = parseInt(document.getElementById('rename-pad')?.value || '3', 10);
+  }
+
+  if (!dryRun && lastPreviewPayload) {
+    const hasChanged = JSON.stringify(lastPreviewPayload) !== JSON.stringify({ ...payload, dryRun: true });
+    if (hasChanged) {
+      const confirmed = window.confirm('Your settings have changed since the last preview. Apply anyway?');
+      if (!confirmed) return;
+    }
   }
 
   summaryEl.textContent = dryRun ? 'Generating preview...' : 'Applying rename...';
+  summaryEl.classList.remove('status-error');
   resultsEl.innerHTML = '';
 
   try {
@@ -34,13 +71,19 @@ async function runBatchRename(dryRun) {
       method: 'POST',
       body: payload
     });
-    summaryEl.textContent = `${dryRun ? 'Preview' : 'Completed'}: ${result.renamedCount} renamed, ${result.skippedCount} skipped, ${result.errorCount} errors.`;
-    renderToolResultList(resultsEl, result.items, item => `
-      <strong>${escapeHtml(item.oldName)} -> ${escapeHtml(item.newName)}</strong>
-      <small>${escapeHtml(item.status)}${item.message ? ` — ${escapeHtml(item.message)}` : ''}</small>
-    `);
+
+    if (dryRun) {
+      lastPreviewPayload = { ...payload, dryRun: true };
+      summaryEl.textContent = `Preview: Found ${result.totalFiles} file(s). ${result.renamedCount} will be renamed, ${result.skippedCount} skipped.`;
+    } else {
+      lastPreviewPayload = null;
+      summaryEl.textContent = `Completed: Renamed ${result.renamedCount} file(s), ${result.skippedCount} skipped, ${result.errorCount} errors.`;
+    }
+
+    renderRenameResults(resultsEl, result.items);
   } catch (err) {
     summaryEl.textContent = `Batch rename failed: ${err.message}`;
+    summaryEl.classList.add('status-error');
   }
 }
 
@@ -59,8 +102,9 @@ export function setupRenameTool() {
   browseBtn?.addEventListener('click', () => {
     openPathSelector((path) => {
       if (pathInput) pathInput.value = path;
-    });
+    }, { startPath: pathInput?.value || getLastPath() });
   });
+
   const previewBtn = document.getElementById('rename-preview-btn');
   const groups = {
     'replace': document.getElementById('rename-fields-replace'),
@@ -72,7 +116,7 @@ export function setupRenameTool() {
     const mode = modeSelect.value;
     Object.entries(groups).forEach(([groupMode, el]) => {
       if (!el) return;
-      el.style.display = groupMode === mode ? 'contents' : 'none';
+      el.hidden = groupMode !== mode;
     });
   };
 

@@ -12,6 +12,8 @@ import { loadPopups } from './popups/load-popups.js';
 import { setupRenameTool } from './tools/rename.js';
 import { setupDuplicatesTool } from './tools/duplicates.js';
 import { setupConvertTool } from './tools/convert.js';
+import { setupComingSoonTool } from './tools/coming-soon.js';
+import { checkForUpdates } from './updates.js';
 import { setupSettingsTool } from './pages/settings.js';
 import { setupOnboarding } from './popups/onboarding.js';
 
@@ -49,6 +51,7 @@ const DASHBOARD_CARD_COLORS = {
 };
 
 function getViewHtmlPath(routeId) {
+  if (routeId.startsWith('coming-soon-')) return 'html/tools/coming-soon.html';
   const folder = PAGE_ROUTES.has(routeId) ? 'pages' : 'tools';
   return `html/${folder}/${routeId}.html`;
 }
@@ -171,6 +174,7 @@ async function loadContent(toolName, pushHistory = true) {
     if (toolName === 'convert') setTimeout(() => setupConvertTool(), 0);
     if (toolName === 'rename') setTimeout(() => setupRenameTool(), 0);
     if (toolName === 'duplicates') setTimeout(() => setupDuplicatesTool(), 0);
+    if (toolName.startsWith('coming-soon-')) setTimeout(() => setupComingSoonTool(), 0);
 
     if (pushHistory) history.pushState(null, null, `#${toolName}`);
   } catch (err) {
@@ -288,6 +292,7 @@ async function bootstrap() {
     await loadTheme();
     await initWorkingPath();
     renderDashboardHome();
+    checkForUpdates();
 
     const hash = window.location.hash.slice(1);
     if (hash) navigateTo(hash);

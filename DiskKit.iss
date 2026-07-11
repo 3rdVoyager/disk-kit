@@ -3,7 +3,7 @@
 ;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" DiskKit.iss
 
 #define AppName "Disk Kit"
-#define AppVersion "0.6.0"
+#define AppVersion "1.7.0"
 #define AppPublisher "3rdVoyager"
 #define AppExeName "DiskKit.exe"
 

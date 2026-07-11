@@ -1,5 +1,6 @@
 import { apiFetch, getNestedValue, setNestedValue, setWorkingPath } from '../utils.js';
 import { openPathSelector } from '../popups/folder-picker.js';
+import { checkForUpdates } from '../updates.js';
 
 let currentSettings = null;
 
@@ -152,6 +153,14 @@ export function setupSettingsTool() {
 
   const disableCheckbox = document.getElementById('disablePathProtections');
   disableCheckbox?.addEventListener('change', updateDangerZoneState);
+
+  document.getElementById('check-updates-btn')?.addEventListener('click', () => checkForUpdates(true));
+  
+  // Update version display from backend
+  apiFetch('/api/version').then(data => {
+    const el = document.getElementById('about-version-display');
+    if (el) el.textContent = data.version;
+  }).catch(() => {});
 
   loadSettings();
 }

@@ -16,7 +16,12 @@ from datetime import datetime
 # Resolve project root
 ROOT_DIR = Path(__file__).resolve().parents[1]
 os.chdir(ROOT_DIR)
-APP_VERSION = "0.6.0"
+
+# Add project root to sys.path to allow backend imports
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from backend.version import APP_VERSION
 PINNED_PYINSTALLER = "6.21.0"
 RELEASE_NOTES_TEMPLATE = ROOT_DIR / "docs" / "release" / "release-notes.template.md"
 

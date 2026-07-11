@@ -23,6 +23,74 @@ main {
     transition: left 0.3s ease;
 }
 
+.update-banner {
+    position: fixed;
+    top: var(--header-height);
+    left: var(--sidebar-width);
+    right: 0;
+    background-color: var(--accent-info);
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    z-index: 90;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+}
+
+.sidebar-collapsed .update-banner {
+    left: var(--sidebar-collapsed-width);
+}
+
+.update-banner-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.update-banner-content p {
+    margin: 0;
+    flex: 1;
+    font-size: var(--font-size-sm);
+}
+
+.update-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.btn-banner-primary {
+    background: white;
+    color: var(--accent-info);
+    border: none;
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.btn-banner-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-banner-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.btn-banner-close:hover {
+    opacity: 1;
+}
+
+
 .header-left {
     display: flex;
     align-items: center;
@@ -122,6 +190,11 @@ main {
     padding-top: calc(var(--header-height) + var(--content-padding));
     transition: margin-left 0.3s ease;
 }
+
+body.has-update-banner #content {
+    padding-top: calc(var(--header-height) + var(--content-padding) + 32px);
+}
+
 
 #content:has(.browse-files-layout) {
     display: flex;
@@ -318,6 +391,24 @@ header,
 #sidebar a.selected {
     background: var(--bg-selected);
     color: var(--text-primary);
+}
+
+.nav-link-soon {
+    opacity: 0.7;
+}
+
+.nav-link-soon .nav-text::after {
+    content: "soon";
+    font-size: 0.65em;
+    background: var(--bg-header);
+    border: 1px solid var(--border-default);
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-style: normal;
+    text-transform: uppercase;
+    font-weight: 600;
+    vertical-align: middle;
 }
 
 #sidebar a.selected:active {

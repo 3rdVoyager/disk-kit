@@ -85,30 +85,35 @@ def rename_api(request, load_settings):
     for index, item in enumerate(files):
         try:
             new_name = _build_new_name(item, index, data)
+            
+            item_result = {
+                "oldName": item.name,
+                "newName": new_name or item.name,
+                "status": "pending",
+            }
+
             if not new_name:
+                item_result["status"] = "skipped"
+                item_result["message"] = "No changes needed"
                 skipped_count += 1
+                results.append(item_result)
                 continue
 
             destination = item.with_name(new_name)
             if destination.exists():
-                results.append({
-                    "oldName": item.name,
-                    "newName": new_name,
-                    "status": "conflict",
-                    "message": "Destination already exists",
-                })
+                item_result["status"] = "conflict"
+                item_result["message"] = "Destination already exists"
                 error_count += 1
+                results.append(item_result)
                 continue
 
             if not dry_run:
                 item.rename(destination)
 
             rename_count += 1
-            results.append({
-                "oldName": item.name,
-                "newName": new_name,
-                "status": "renamed" if not dry_run else "preview",
-            })
+            item_result["status"] = "renamed" if not dry_run else "preview"
+            results.append(item_result)
+
         except Exception as err:
             error_count += 1
             results.append({
