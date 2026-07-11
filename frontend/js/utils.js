@@ -85,18 +85,6 @@ export async function getConfiguredDefaultPath() {
   }
 }
 
-export async function getConfiguredFolderScanPath() {
-  try {
-    const settings = await apiFetch('/api/settings');
-    const scanPath = settings?.general?.folderScanPath;
-    const defaultPath = settings?.general?.defaultPath;
-    const path = scanPath && String(scanPath).trim() ? scanPath : defaultPath;
-    return path ? path.replace(/\\/g, '/') : '';
-  } catch {
-    return '';
-  }
-}
-
 /**
  * Resolve the path to open in the file browser.
  * Prefers an explicit path, then last visited, then settings defaultPath.

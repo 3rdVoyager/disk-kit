@@ -18,7 +18,7 @@ function getElements() {
 const STEP_TITLES = [
   'Welcome to Disk Kit',
   'Browse Files',
-  'Quick Tools',
+  'Tools',
   'Ready to go',
 ];
 

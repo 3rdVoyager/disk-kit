@@ -2,7 +2,7 @@
 // Contains all file browser related functionality
 
 // Import dependencies
-import { escapeHtml, apiFetch, setLastPath, getLastPath, updateBreadcrumb, resolveBrowserPath } from '../utils.js';
+import { escapeHtml, apiFetch, setLastPath, getLastPath, updateBreadcrumb, resolveBrowserPath, formatBytes } from '../utils.js';
 
 // ============================================================
 // File Browser State
@@ -133,7 +133,7 @@ export async function loadFileBrowser(path = '', containerId = 'file-list') {
     // Render file list
     fileList.innerHTML = response.items.map(item => {
       const date = new Date(item.modified).toLocaleString();
-      const size = item.type === 'directory' ? '--' : formatFileSize(item.size);
+      const size = item.type === 'directory' ? '--' : formatBytes(item.size);
       const typeLabel = item.type === 'directory' ? 'File Folder' : 'File';
       const icon = item.type === 'directory' ? 'folder' : getFileIcon(item.name);
       
@@ -218,17 +218,6 @@ export async function goBack(containerId = 'file-list') {
 }
 
 /**
- * Set up file browser navigation controls
- */
-export function setupFileBrowserNavigation() {
-  updateNavigationButtons();
-}
-
-// ============================================================
-// File Browser - UI Functions
-// ============================================================
-
-/**
  * Select a file item in the list
  * @param {HTMLElement} item - The file item element
  * @param {string} containerId - The container ID
@@ -284,11 +273,7 @@ export function filterFileList() {
   
   items.forEach(item => {
     const name = item.querySelector('.file-name')?.textContent?.trim().toLowerCase() || '';
-    if (!query || name.includes(query)) {
-      item.style.display = '';
-    } else {
-      item.style.display = 'none';
-    }
+    item.classList.toggle('filtered-out', Boolean(query && !name.includes(query)));
   });
 }
 
@@ -311,6 +296,7 @@ export function toggleFileView() {
     container.classList.toggle('grid-view', !isListView);
   }
   fileList.classList.toggle('grid-view', !isListView);
+  filterFileList();
 }
 
 /**
@@ -444,7 +430,7 @@ export function showFileDetails(data) {
     if (data.type === 'directory') {
       sizeEl.textContent = '--';
     } else if (data.size) {
-      sizeEl.textContent = formatFileSize(parseInt(data.size));
+      sizeEl.textContent = formatBytes(parseInt(data.size));
     } else {
       sizeEl.textContent = '--';
     }
@@ -466,17 +452,4 @@ export function showFileDetails(data) {
   if (hintEl) hintEl.style.display = 'none';
 
   updateDetailActionStates();
-}
-
-/**
- * Format file size in human-readable format
- * @param {number} bytes - File size in bytes
- * @returns {string} - Formatted file size
- */
-export function formatFileSize(bytes) {
-  if (bytes === 0 || bytes === undefined) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }

@@ -9,13 +9,10 @@ from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 from backend.settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
 from backend.pages.browse_files import list_files_api, delete_files_api, open_file_api
-from backend.pages.storage import storage_api
-from backend.pages.search import search_files_api
-from backend.operations import get_operations_api, append_operation_api
-from backend.tools.large_files import large_files_api
+from backend.operations import get_operations_api
 from backend.tools.rename import rename_api
 from backend.tools.duplicates import duplicates_api
-from backend.tools.organize import organize_api
+from backend.tools.convert import convert_api
 
 BACKEND_DIR = Path(__file__).resolve().parent
 if getattr(sys, 'frozen', False):
@@ -28,13 +25,6 @@ LOGGER = logging.getLogger(__name__)
 
 def api_error(message, status_code):
     return jsonify({'error': message}), status_code
-@app.route('/')
-def index():
-    return send_from_directory(STATIC_FOLDER, 'dashboard.html')
-
-@app.route('/<path:path>')
-def static_files(path):
-    return send_from_directory(STATIC_FOLDER, path)
 
 @app.route('/api/settings', methods=['GET'])
 def get_settings():
@@ -57,31 +47,6 @@ def reset_settings():
     save_settings(DEFAULT_SETTINGS)
     return jsonify({'success': True, 'settings': DEFAULT_SETTINGS})
 
-@app.route('/api/settings/defaults', methods=['GET'])
-def get_defaults():
-    return jsonify(DEFAULT_SETTINGS)
-
-@app.route('/api/quick-tools', methods=['GET'])
-def get_quick_tools():
-    settings = load_settings()
-    return jsonify({'quickTools': settings.get('quickTools', DEFAULT_SETTINGS.get('quickTools', []))})
-
-@app.route('/api/quick-tools', methods=['POST'])
-def update_quick_tools():
-    try:
-        data = request.get_json()
-        if not data or 'quickTools' not in data:
-            return api_error('Missing quickTools field', 400)
-        
-        # Update only the quickTools field
-        current_settings = load_settings()
-        current_settings['quickTools'] = data['quickTools']
-        save_settings(current_settings)
-        return jsonify({'success': True, 'quickTools': current_settings['quickTools']})
-    except Exception:
-        LOGGER.exception('Failed to update quick tools')
-        return api_error('Internal server error', 500)
-
 @app.route('/api/files', methods=['GET'])
 def list_files():
     """List files and directories at the given path"""
@@ -97,33 +62,10 @@ def open_file():
     """Open a file with the system default application."""
     return open_file_api(request, load_settings)
 
-@app.route('/api/storage', methods=['GET'])
-def storage():
-    """Drive usage for the configured default path."""
-    return storage_api(request, load_settings)
-
-@app.route('/api/search', methods=['GET'])
-def search_files():
-    """Recursive filename search under a validated path."""
-    return search_files_api(request, load_settings)
-
 @app.route('/api/operations', methods=['GET'])
 def get_operations():
     """Return recent operation history."""
     return jsonify(get_operations_api(request))
-
-@app.route('/api/operations', methods=['POST'])
-def append_operation():
-    """Append an operation entry (internal/client use)."""
-    result = append_operation_api(request)
-    if isinstance(result, tuple):
-        return jsonify(result[0]), result[1]
-    return jsonify(result)
-
-@app.route('/api/large-files', methods=['GET'])
-def large_files():
-    """Scan for files above a minimum size threshold."""
-    return large_files_api(request, load_settings)
 
 @app.route('/api/batch-rename', methods=['POST'])
 def batch_rename():
@@ -135,10 +77,20 @@ def find_duplicates():
     """Find duplicate files by size and hash."""
     return duplicates_api(request, load_settings)
 
-@app.route('/api/organize', methods=['POST'])
-def smart_organize():
-    """Preview/apply smart organization rules."""
-    return organize_api(request, load_settings)
+@app.route('/api/convert', methods=['POST'])
+def convert_files():
+    """Batch convert files."""
+    return convert_api(request, load_settings)
+
+
+@app.route('/')
+def index():
+    return send_from_directory(STATIC_FOLDER, 'dashboard.html')
+
+
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(STATIC_FOLDER, path)
 
 
 @app.errorhandler(Exception)

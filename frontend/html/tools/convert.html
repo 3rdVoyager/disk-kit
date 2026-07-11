@@ -1,0 +1,108 @@
+<section class="tool-page convert-page">
+  <div class="tool-page-header">
+    <h2>Convert Files</h2>
+    <p>Batch convert images. Originals are kept unless you choose to recycle them.</p>
+  </div>
+
+  <div class="convert-tabs" role="tablist" aria-label="Conversion categories">
+    <button class="convert-tab active" type="button" role="tab" aria-selected="true" data-category="images" data-panel="panel-images">Images</button>
+    <button class="convert-tab convert-tab-soon" type="button" role="tab" aria-selected="false" data-category="audio" data-panel="panel-coming-soon">Audio</button>
+    <button class="convert-tab convert-tab-soon" type="button" role="tab" aria-selected="false" data-category="video" data-panel="panel-coming-soon">Video</button>
+  </div>
+
+  <div class="convert-panels">
+    <div class="convert-panel active" id="panel-images" role="tabpanel">
+      <form id="convert-form" class="convert-form">
+        <section class="convert-section">
+          <h3 class="convert-section-title">Source</h3>
+          <div class="convert-field convert-field-full">
+            <label for="convert-path">Folder</label>
+            <div class="input-group">
+              <input id="convert-path" type="text" placeholder="Leave empty to use default path" />
+              <button type="button" class="btn-browse" id="convert-browse" title="Browse...">
+                <span class="material-symbols-rounded">folder_open</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="convert-section">
+          <h3 class="convert-section-title">Conversion</h3>
+          <div class="convert-field-grid">
+            <div class="convert-field">
+              <label for="convert-format">Output format</label>
+              <select id="convert-format">
+                <option value="webp">WebP — best space savings</option>
+                <option value="jpeg">JPEG — high compatibility</option>
+                <option value="png">PNG — lossless</option>
+              </select>
+            </div>
+            <div class="convert-field">
+              <label for="convert-quality">Quality</label>
+              <div class="range-group">
+                <input id="convert-quality" type="range" min="1" max="100" value="85" />
+                <span id="quality-value">85</span>
+              </div>
+            </div>
+            <div class="convert-field">
+              <label for="convert-max-width">Max width (px) <span class="field-optional">optional</span></label>
+              <input id="convert-max-width" type="number" min="1" placeholder="Leave blank to keep original" />
+            </div>
+            <div class="convert-field">
+              <label for="convert-max-height">Max height (px) <span class="field-optional">optional</span></label>
+              <input id="convert-max-height" type="number" min="1" placeholder="Leave blank to keep original" />
+            </div>
+          </div>
+        </section>
+
+        <section class="convert-section">
+          <h3 class="convert-section-title">Output</h3>
+          <div class="convert-field convert-field-full">
+            <label for="convert-output-mode">Save converted files to</label>
+            <select id="convert-output-mode">
+              <option value="subfolder">_converted subfolder (recommended)</option>
+              <option value="same_dir">Same folder as source</option>
+              <option value="custom">Custom folder…</option>
+            </select>
+          </div>
+          <div class="convert-field convert-field-full" id="custom-path-row" hidden>
+            <label for="convert-custom-path">Custom output folder <span class="field-optional">optional</span></label>
+            <div class="input-group">
+              <input id="convert-custom-path" type="text" placeholder="Only needed when using a custom folder" />
+              <button type="button" class="btn-browse" id="convert-custom-browse" title="Browse...">
+                <span class="material-symbols-rounded">folder_open</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="convert-section convert-options">
+          <label class="convert-option">
+            <input id="convert-strip-metadata" type="checkbox" checked />
+            <span>Strip metadata (EXIF, etc.)</span>
+          </label>
+          <label class="convert-option">
+            <input id="convert-delete-originals" type="checkbox" />
+            <span>Move originals to Recycle Bin after successful conversion</span>
+          </label>
+        </section>
+
+        <div class="convert-actions">
+          <button type="button" class="btn-secondary" id="convert-preview-btn">Preview</button>
+          <button type="submit" class="btn-primary" id="convert-run-btn">Convert All</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="convert-panel" id="panel-coming-soon" role="tabpanel" hidden>
+      <div class="coming-soon-message">
+        <span class="material-symbols-rounded">construction</span>
+        <h3 id="coming-soon-title">Coming Soon</h3>
+        <p id="coming-soon-text">Support for this file category is currently under development.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="convert-summary" class="tool-summary convert-summary"></div>
+  <div id="convert-results" class="tool-results"></div>
+</section>

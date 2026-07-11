@@ -28,13 +28,11 @@ def default_settings():
         "general": {
             "theme": "dark",
             "defaultPath": _detect_default_path(),
-            "folderScanPath": "",
         },
         "security": {
             "blockedPaths": [],
             "disablePathProtections": False,
         },
-        "quickTools": []
     }
 
 

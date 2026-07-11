@@ -57,18 +57,3 @@ def get_operations_api(request):
         limit = 20
     operations = _load_operations()[:limit]
     return {'operations': operations}
-
-
-def append_operation_api(request):
-    data = request.get_json() or {}
-    op_type = data.get('type', 'general')
-    title = data.get('title', '')
-    if not title:
-        return {'error': 'Missing title'}, 400
-    entry = log_operation(
-        op_type,
-        title,
-        detail=data.get('detail', ''),
-        status=data.get('status', 'completed'),
-    )
-    return {'success': True, 'operation': entry}

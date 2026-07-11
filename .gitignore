@@ -219,3 +219,5 @@ __marimo__/
 
 # Learning
 /learning/
+backend/settings.json
+backend/operations.json

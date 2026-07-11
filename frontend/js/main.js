@@ -2,41 +2,50 @@
 import {
   loadFileBrowser,
   goBack,
-  setupFileBrowserNavigation,
-  setupFileBrowserButtonListeners,
   selectFileItem,
+  setupFileBrowserButtonListeners,
 } from './pages/browse-files.js';
 
 import { openPathSelector } from './popups/folder-picker.js';
 import { loadPopups } from './popups/load-popups.js';
 
-import { setupLargeFilesTool } from './tools/large-files.js';
 import { setupRenameTool } from './tools/rename.js';
 import { setupDuplicatesTool } from './tools/duplicates.js';
-import { setupOrganizeTool } from './tools/organize.js';
+import { setupConvertTool } from './tools/convert.js';
 import { setupSettingsTool } from './pages/settings.js';
-import { setupStorageOverviewPage } from './pages/storage-overview.js';
 import { setupOnboarding } from './popups/onboarding.js';
-import { loadDashboardStorage, setupStorageRefreshButton, setupFolderScanPathPicker } from './storage.js';
 
 import { escapeHtml, apiFetch, getLastPath, setWorkingPath, getConfiguredDefaultPath, resolveBrowserPath } from './utils.js';
 
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
-const quickToolsList = document.getElementById('quick-tools');
-const quickToolsSection = quickToolsList ? quickToolsList.closest('li') : null;
 let originalHomeHTML = '';
 
-const DEFAULT_QUICK_TOOLS = ['large-files', 'rename', 'duplicates', 'organize'];
-let cachedQuickTools = null;
-const QUICK_TOOL_EXCLUDED = new Set(['home', 'alltools', 'browse-files', 'settings', 'storage-overview']);
-const PAGE_ROUTES = new Set(['browse-files', 'settings', 'alltools', 'storage-overview']);
+const TOOL_IDS = ['convert', 'rename', 'duplicates'];
+const PAGE_ROUTES = new Set(['browse-files', 'settings']);
 
 const OP_ICONS = {
   rename: { icon: 'edit', color: 'blue' },
-  organize: { icon: 'auto_fix_high', color: 'purple' },
   delete: { icon: 'delete_sweep', color: 'green' },
   duplicates: { icon: 'find_replace', color: 'green' },
+  convert: { icon: 'transform', color: 'orange' },
+};
+
+const TOOL_META = {
+  convert: { icon: 'transform', label: 'Convert Files', description: 'Batch convert images' },
+  rename: { icon: 'edit', label: 'Batch Rename', description: 'Preview and apply rename rules' },
+  duplicates: { icon: 'find_replace', label: 'Duplicate Finder', description: 'Find exact duplicate files' },
+  settings: { icon: 'settings', label: 'Settings', description: 'Configure application settings' },
+  'browse-files': { icon: 'folder', label: 'Browse Files', description: 'Browse and navigate files' },
+  home: { icon: 'home', label: 'Dashboard', description: 'Return to the dashboard' },
+};
+
+const DASHBOARD_CARD_COLORS = {
+  convert: 'orange',
+  rename: 'blue',
+  duplicates: 'green',
+  'browse-files': 'blue',
+  settings: 'gray',
 };
 
 function getViewHtmlPath(routeId) {
@@ -44,82 +53,12 @@ function getViewHtmlPath(routeId) {
   return `html/${folder}/${routeId}.html`;
 }
 
-function isQuickToolEligible(toolId) {
-  return Boolean(TOOL_META[toolId]) && !QUICK_TOOL_EXCLUDED.has(toolId);
-}
-
-async function getQuickTools() {
-  try {
-    if (cachedQuickTools !== null) return cachedQuickTools;
-    const response = await apiFetch('/api/quick-tools');
-    const incomingTools = Array.isArray(response.quickTools) ? response.quickTools : DEFAULT_QUICK_TOOLS;
-    const validTools = incomingTools.filter(toolId => isQuickToolEligible(toolId));
-    cachedQuickTools = validTools.length > 0 ? validTools : DEFAULT_QUICK_TOOLS;
-    if (validTools.length !== incomingTools.length || validTools.length === 0) {
-      await saveQuickTools(cachedQuickTools);
-    }
-    return cachedQuickTools;
-  } catch (err) {
-    console.error('Failed to load quick tools:', err);
-    return DEFAULT_QUICK_TOOLS;
-  }
-}
-
-async function saveQuickTools(tools) {
-  try {
-    await apiFetch('/api/quick-tools', { method: 'POST', body: { quickTools: tools } });
-    cachedQuickTools = tools;
-  } catch (err) {
-    console.error('Failed to save quick tools:', err);
-  }
-}
-
-const TOOL_META = {
-  'large-files':    { icon: 'storage',           label: 'Large Files',        description: 'Find files taking up space' },
-  rename:         { icon: 'edit',              label: 'Batch Rename',       description: 'Preview and apply rename rules' },
-  duplicates:     { icon: 'find_replace',      label: 'Duplicate Finder',   description: 'Find exact duplicate files' },
-  organize:       { icon: 'auto_fix_high',     label: 'Smart Organize',     description: 'Sort files into category folders' },
-  settings:       { icon: 'settings',          label: 'Settings',           description: 'Configure application settings' },
-  'browse-files': { icon: 'folder',            label: 'Browse Files',       description: 'Browse and navigate files' },
-  alltools:       { icon: 'apps',              label: 'All Tools',          description: 'Explore all available tools' },
-  home:           { icon: 'home',              label: 'Dashboard',          description: 'Return to the dashboard' },
-};
-
-const DASHBOARD_CARD_COLORS = {
-  'large-files': 'orange',
-  rename: 'blue',
-  duplicates: 'green',
-  organize: 'purple',
-  'browse-files': 'blue',
-  settings: 'gray',
-  alltools: 'gray',
-};
-
-async function renderQuickTools() {
-  const tools = await getQuickTools();
-  quickToolsList.innerHTML = '';
-  if (quickToolsSection) {
-    quickToolsSection.style.display = tools.length > 0 ? '' : 'none';
-  }
-  if (tools.length === 0) return;
-
-  tools.forEach(toolId => {
-    const meta = TOOL_META[toolId];
-    if (!meta) return;
-    const li = document.createElement('li');
-    li.innerHTML = `<a class="nav-link" href="#${toolId}"><span class="nav-icon material-symbols-rounded">${meta.icon}</span><span class="nav-text">${meta.label}</span></a>`;
-    quickToolsList.appendChild(li);
-  });
-}
-
-async function renderDashboardQuickTools() {
+function renderDashboardQuickTools() {
   const grid = document.getElementById('dashboard-quick-tools');
   if (!grid) return;
 
-  const tools = await getQuickTools();
   grid.innerHTML = '';
-
-  tools.forEach(toolId => {
+  TOOL_IDS.forEach((toolId) => {
     const meta = TOOL_META[toolId];
     if (!meta) return;
     const color = DASHBOARD_CARD_COLORS[toolId] || 'gray';
@@ -137,20 +76,6 @@ async function renderDashboardQuickTools() {
     `;
     grid.appendChild(li);
   });
-
-  const moreLi = document.createElement('li');
-  moreLi.className = 'quick-tool-item';
-  moreLi.setAttribute('data-tool', 'alltools');
-  moreLi.innerHTML = `
-    <div class="tool-icon gray">
-      <span class="material-symbols-rounded">apps</span>
-    </div>
-    <div class="tool-info">
-      <h4>More Tools</h4>
-      <p>Explore all available tools</p>
-    </div>
-  `;
-  grid.appendChild(moreLi);
 }
 
 function formatRelativeTime(isoString) {
@@ -201,41 +126,13 @@ async function renderRecentOperations() {
 }
 
 function renderDashboardHome() {
-  const onFolderNavigate = async (folderPath) => {
-    await setWorkingPath(folderPath, { persistSettings: false });
-    navigateTo('browse-files');
-  };
-
   renderDashboardQuickTools();
-  setupStorageRefreshButton('storage-refresh-btn', (options) =>
-    loadDashboardStorage({ ...options, onNavigate: onFolderNavigate }),
-  );
-  setupFolderScanPathPicker('storage-browse-path-btn', (options) =>
-    loadDashboardStorage({ ...options, onNavigate: onFolderNavigate }),
-  );
-  loadDashboardStorage({ onNavigate: onFolderNavigate });
   renderRecentOperations();
-}
-
-async function toggleQuickTool(toolId, checked) {
-  if (!isQuickToolEligible(toolId)) return;
-  const tools = await getQuickTools();
-  const newTools = [...tools];
-  if (checked) {
-    if (!newTools.includes(toolId)) newTools.push(toolId);
-  } else {
-    const idx = newTools.indexOf(toolId);
-    if (idx > -1) newTools.splice(idx, 1);
-  }
-  await saveQuickTools(newTools);
-  renderQuickTools();
-  renderDashboardQuickTools();
 }
 
 async function init() {
   originalHomeHTML = contentSection.innerHTML;
   if (navLinks.length > 0) navLinks[0].classList.add('selected');
-  await renderQuickTools();
 }
 
 async function loadContent(toolName, pushHistory = true) {
@@ -243,6 +140,16 @@ async function loadContent(toolName, pushHistory = true) {
     document.body.classList.remove('page-browse-files');
     contentSection.innerHTML = originalHomeHTML;
     renderDashboardHome();
+    return;
+  }
+
+  // Legacy routes removed in v1 simplification
+  if (toolName === 'alltools' || toolName === 'storage-overview' || toolName === 'large-files' || toolName === 'organize') {
+    toolName = 'home';
+    document.body.classList.remove('page-browse-files');
+    contentSection.innerHTML = originalHomeHTML;
+    renderDashboardHome();
+    history.replaceState(null, null, '#home');
     return;
   }
 
@@ -260,28 +167,16 @@ async function loadContent(toolName, pushHistory = true) {
         setupFileBrowserButtonListeners();
       }, 0);
     }
-    if (toolName === 'alltools') setTimeout(() => initializeAllToolsCheckboxes(), 0);
     if (toolName === 'settings') setTimeout(() => setupSettingsTool(), 0);
-    if (toolName === 'storage-overview') {
-      setTimeout(() => setupStorageOverviewPage(navigateTo), 0);
-    }
-    if (toolName === 'large-files') setTimeout(() => setupLargeFilesTool(), 0);
+    if (toolName === 'convert') setTimeout(() => setupConvertTool(), 0);
     if (toolName === 'rename') setTimeout(() => setupRenameTool(), 0);
     if (toolName === 'duplicates') setTimeout(() => setupDuplicatesTool(), 0);
-    if (toolName === 'organize') setTimeout(() => setupOrganizeTool(), 0);
 
     if (pushHistory) history.pushState(null, null, `#${toolName}`);
   } catch (err) {
     console.error('Failed to load tool:', toolName, err);
     contentSection.innerHTML = `<h2>Load Failed</h2><p>Could not load <strong>${toolName}</strong>.<br><small>${err.message}</small></p>`;
   }
-}
-
-async function initializeAllToolsCheckboxes() {
-  const tools = await getQuickTools();
-  document.querySelectorAll('.quick-tool-toggle').forEach(checkbox => {
-    checkbox.checked = tools.includes(checkbox.getAttribute('data-tool'));
-  });
 }
 
 function navigateTo(toolName) {
@@ -310,21 +205,7 @@ function setupGlobalNavigation() {
     }
     const card = e.target.closest('.quick-tool-item');
     if (card) {
-      navigateTo(card.getAttribute('data-tool') || 'alltools');
-      return;
-    }
-    const toolCard = e.target.closest('.tool-card');
-    if (toolCard && !e.target.closest('.tool-card-checkbox, input, label')) {
-      const toolName = toolCard.getAttribute('data-tool');
-      if (toolName) navigateTo(toolName);
-    }
-  });
-}
-
-function setupToggleListeners() {
-  document.addEventListener('change', async (e) => {
-    if (e.target.classList.contains('quick-tool-toggle')) {
-      await toggleQuickTool(e.target.getAttribute('data-tool'), e.target.checked);
+      navigateTo(card.getAttribute('data-tool') || 'home');
     }
   });
 }
@@ -357,7 +238,6 @@ function applyTheme(theme) {
     const iconSpan = themeBtn.querySelector('.material-symbols-rounded');
     if (iconSpan) iconSpan.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
   }
-  localStorage.setItem('disk-kit-theme', theme);
 }
 
 async function toggleTheme() {
@@ -380,7 +260,6 @@ function setupChangePath() {
     e.preventDefault();
     openPathSelector(async (path) => {
       await setWorkingPath(path);
-      await loadDashboardStorage({ forceRefresh: true });
     });
   });
 }
@@ -397,97 +276,15 @@ async function initWorkingPath() {
   }
 }
 
-let searchTimeout = null;
-
-function setupGlobalSearch() {
-  const input = document.getElementById('global-search-input');
-  const resultsEl = document.getElementById('global-search-results');
-  if (!input || !resultsEl) return;
-
-  const hideResults = () => {
-    resultsEl.hidden = true;
-    resultsEl.innerHTML = '';
-  };
-
-  input.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    const query = input.value.trim();
-    if (!query) {
-      hideResults();
-      return;
-    }
-    searchTimeout = setTimeout(async () => {
-      try {
-        const path = getLastPath();
-        const params = new URLSearchParams({ q: query, limit: '50' });
-        if (path) params.set('path', path);
-        const data = await apiFetch(`/api/search?${params.toString()}`);
-        if (!data.items?.length) {
-          resultsEl.innerHTML = '<div class="search-result-empty">No matches found</div>';
-        } else {
-          resultsEl.innerHTML = data.items.map(item => `
-            <button type="button" class="search-result-item" data-path="${escapeHtml(item.fullPath)}" data-type="${item.type}">
-              <span class="material-symbols-rounded">${item.type === 'directory' ? 'folder' : 'insert_drive_file'}</span>
-              <span class="search-result-name">${escapeHtml(item.name)}</span>
-              <span class="search-result-path">${escapeHtml(item.fullPath)}</span>
-            </button>
-          `).join('') + (data.truncated ? '<div class="search-result-empty">Results capped — refine your search</div>' : '');
-        }
-        resultsEl.hidden = false;
-      } catch (err) {
-        resultsEl.innerHTML = `<div class="search-result-empty">${escapeHtml(err.message)}</div>`;
-        resultsEl.hidden = false;
-      }
-    }, 300);
-  });
-
-  resultsEl.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.search-result-item');
-    if (!btn) return;
-    const fullPath = btn.dataset.path;
-    const isDir = btn.dataset.type === 'directory';
-    // Working path is the folder itself, or the parent folder for a file.
-    const workingPath = isDir ? fullPath : (fullPath.split('/').slice(0, -1).join('/') || fullPath);
-    hideResults();
-    input.value = '';
-    await setWorkingPath(workingPath);
-    navigateTo('browse-files');
-    setTimeout(async () => {
-      await loadFileBrowser(workingPath);
-      setupFileBrowserButtonListeners();
-      if (!isDir) {
-        const fileList = document.getElementById('file-list');
-        const items = fileList?.querySelectorAll('.file-item') || [];
-        const match = [...items].find(el => el.dataset.path === fullPath);
-        if (match) {
-          selectFileItem(match);
-          match.scrollIntoView({ block: 'nearest' });
-        }
-      }
-    }, 100);
-  });
-
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') hideResults();
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-bar')) hideResults();
-  });
-}
-
 async function bootstrap() {
   try {
     await loadPopups();
     await init();
     setupGlobalNavigation();
-    setupToggleListeners();
     setupMenuToggle();
     setupThemeToggle();
     setupChangePath();
-    setupGlobalSearch();
     setupOnboarding();
-    setupFileBrowserNavigation();
     await loadTheme();
     await initWorkingPath();
     renderDashboardHome();

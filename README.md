@@ -7,12 +7,10 @@ Disk Kit is a locally hosted desktop-style file toolkit with a Flask backend and
 Implemented and supported now:
 - Dashboard shell UI
 - Browse Files (list directories, inspect files, move items to Recycle Bin within configured root)
-- Large Files scanner
+- Convert Files (batch images to WebP/JPG/PNG)
 - Batch Rename (preview/apply)
 - Duplicate Finder
-- Smart Organize (preview/apply)
 - Settings (theme, default root path, blocked paths)
-- Quick Tools customization
 
 Planned items shown in older docs/UI are not part of shipped v1 unless listed above.
 
@@ -61,23 +59,20 @@ python scripts/prepare_release.py
 
 ## Settings
 
-Settings are stored in `backend/settings.json`:
+Settings are stored in:
+- **Development:** `backend/settings.json` (auto-created on first run)
+- **Packaged App:** `%LOCALAPPDATA%\DiskKit\settings.json`
 
 ```json
 {
   "general": {
     "theme": "dark",
-    "defaultPath": "C:/Users"
+    "defaultPath": "C:/Users/YourName"
   },
   "security": {
-    "blockedPaths": []
-  },
-  "quickTools": [
-    "large-files",
-    "rename",
-    "duplicates",
-    "organize"
-  ]
+    "blockedPaths": [],
+    "disablePathProtections": false
+  }
 }
 ```
 
@@ -88,20 +83,18 @@ Settings are stored in `backend/settings.json`:
 - `GET /api/settings`
 - `POST /api/settings`
 - `POST /api/settings/reset`
-- `GET /api/settings/defaults`
-- `GET /api/quick-tools`
-- `POST /api/quick-tools`
 - `GET /api/files`
 - `POST /api/files/delete`
-- `GET /api/large-files`
+- `POST /api/files/open`
+- `GET /api/operations`
+- `POST /api/convert`
 - `POST /api/batch-rename`
 - `GET /api/duplicates`
-- `POST /api/organize`
 
 ## Development Notes
 
 - Server runs via Waitress on `127.0.0.1:5000` with `debug=False`.
-- Runtime dependencies include `flask`, `waitress`, `send2trash`, and `pywebview`.
+- Runtime dependencies include `flask`, `waitress`, `send2trash`, `Pillow`, and `pywebview`.
 - Frontend lives under `frontend/`.
 - Backend tool handlers live under `backend/tools/`; core modules (file browser, settings, path utilities) live directly in `backend/`.
 

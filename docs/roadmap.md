@@ -13,8 +13,8 @@ Safety and stability hardening for core file workflows.
 **What exists now**
 - Dashboard shell and navigation
 - Browse Files with guarded Recycle Bin operations
-- Large Files, Batch Rename, Duplicate Finder, Smart Organize
-- Settings (theme, default path, blocked paths) and quick-tools persistence
+- Convert Files, Batch Rename, Duplicate Finder
+- Settings (theme, default path, blocked paths)
 - Centralized path security (`validate_path_access`) across all file tools
 - Waitress production server for desktop and dev modes
 - Desktop wrapper (`pywebview`) + PyInstaller build
@@ -36,7 +36,7 @@ Focus: make current features safer and more supportable.
 - System path deny list (`C:/Windows`, `C:/Program Files`)
 
 **Remaining for later patch releases**
-- Smoke tests for core workflows (browse, delete, large files, rename, duplicates, organize)
+- Smoke tests for core workflows (browse, delete, convert, rename, duplicates)
 - Packaging reliability checks (install, launch, uninstall)
 - Expanded-access / danger mode for system-level tools (post-v1)
 

@@ -35,41 +35,16 @@ main {
     font-weight: 500;
 }
 
+.breadcrumb-label {
+    font-size: var(--font-size);
+    color: var(--text-secondary);
+    margin-right: var(--space-xs);
+}
+
 .header-right {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius);
-    padding: var(--space-xs) var(--space-sm);
-    min-width: 400px;
-    height: var(--btn-height);
-    position: relative;
-}
-
-.search-bar .material-symbols-rounded {
-    font-size: var(--icon);
-    color: var(--text-secondary);
-}
-
-.search-bar input {
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: var(--font-size);
-    outline: none;
-    width: 100%;
-}
-
-.search-bar input::placeholder {
-    color: var(--text-secondary);
 }
 
 .header-icon {
@@ -100,58 +75,6 @@ main {
     background: none;
     border: none;
     font: inherit;
-}
-
-.global-search-results {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    max-height: 320px;
-    overflow-y: auto;
-    background: var(--bg-card);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius);
-    box-shadow: 0 4px 16px var(--shadow-color);
-    z-index: 200;
-}
-
-.search-result-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    width: 100%;
-    padding: var(--space-xs) var(--space-sm);
-    border: none;
-    background: none;
-    color: var(--text-primary);
-    cursor: pointer;
-    text-align: left;
-    font-size: var(--font-size-sm);
-}
-
-.search-result-item:hover {
-    background: var(--bg-hover);
-}
-
-.search-result-name {
-    font-weight: 500;
-    flex-shrink: 0;
-}
-
-.search-result-path {
-    color: var(--text-secondary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: var(--font-size-sm);
-}
-
-.search-result-empty {
-    padding: var(--space-sm);
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    text-align: center;
 }
 
 /* Social Media Links in Sidebar */

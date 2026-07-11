@@ -63,18 +63,6 @@ def get_default_working_path(settings):
     return home
 
 
-def get_folder_scan_root(settings):
-    """Resolve the path used for largest-folder storage scans."""
-    raw_root = settings.get('general', {}).get('folderScanPath')
-    if raw_root and str(raw_root).strip():
-        candidate = normalize_path(raw_root)
-        if candidate.exists() and candidate.is_dir():
-            if candidate in GENERIC_USERS_ROOTS:
-                return get_user_home()
-            return candidate
-    return get_default_working_path(settings)
-
-
 def get_allowed_roots(settings):
     """
     Resolve allowed roots from settings.
