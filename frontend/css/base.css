@@ -23,6 +23,11 @@ h3 {
     color: var(--text-primary);
 }
 
+h4 {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
 p {
     font-size: var(--font-size);
     color: var(--text-primary);
@@ -39,5 +44,48 @@ body {
     font-size: var(--icon);
     color: var(--text-primary);
     display: inline-block;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 20;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 28;
+}
+
+/* Pill bars — standardized bordered row tiles */
+.quick-tool-item,
+.roadmap-item,
+.operation-item,
+.tool-results-item,
+.onboarding-feature,
+.onboarding-tool-card {
+    display: flex;
+    align-items: center;
+    gap: var(--pill-bar-gap);
+    padding-block: var(--pill-bar-padding-y);
+    padding-inline: var(--pill-bar-padding-x);
+    min-height: var(--pill-bar-min-height);
+    background-color: var(--pill-bar-bg);
+    border: var(--pill-bar-border);
+    border-radius: var(--pill-bar-radius);
+    transition: var(--pill-bar-transition);
+}
+
+.file-item {
+    gap: var(--pill-bar-gap);
+    padding-block: var(--pill-bar-padding-y);
+    padding-inline: var(--pill-bar-padding-x);
+    min-height: var(--pill-bar-min-height);
+    border-radius: var(--pill-bar-radius);
+    transition: var(--pill-bar-transition);
+}
+
+.quick-tool-item:hover,
+.roadmap-item:hover,
+.operation-item:hover,
+.tool-results-item:hover,
+.onboarding-feature:hover,
+.onboarding-tool-card:hover,
+.file-list.grid-view .file-item:hover {
+    background-color: var(--pill-bar-bg-hover);
+    border-color: var(--pill-bar-border-hover);
+}
+
+.file-item:hover {
+    background-color: var(--pill-bar-bg-hover);
 }

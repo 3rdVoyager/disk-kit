@@ -6,9 +6,9 @@ Roadmap aligned to current implementation status and release posture.
 
 ## Current Position
 
-### v1.7.0 (Current Version)
+### v0.8.0 (Current Version)
 
-Toolkit-first release with image conversion, batch rename, and duplicate finder.
+First public toolkit release — image conversion, batch rename, and duplicate finder.
 
 **What exists now**
 - Dashboard with tool shortcuts and "On the Roadmap" future-view
@@ -26,7 +26,7 @@ Toolkit-first release with image conversion, batch rename, and duplicate finder.
 
 ## Milestones
 
-### v1.7.0 - Toolkit Foundation (shipped)
+### v0.8.0 - Toolkit Foundation (current)
 
 Focus: Ship the core three tools with professional UX and safety.
 
@@ -35,9 +35,11 @@ Focus: Ship the core three tools with professional UX and safety.
 - Enhanced Batch Rename UI
 - Update check notification system
 - Coming Soon placeholders for future tools
-- Semantic git history retagging (v0.1.0 to v1.6.0)
+- Desktop packaging and release automation
+- Theme in Settings with system default
+- Set default path from file browser toolbar
 
-### v1.8.0 - Workflow Polish
+### v0.9.0 - Workflow Polish
 
 Focus: Round out practical daily-use workflows.
 
@@ -49,9 +51,9 @@ Focus: Round out practical daily-use workflows.
 
 ---
 
-### v2.0.0 - Advanced Toolkit
+### v1.0.0 - Stable Release
 
-Focus: Professional-grade features and scale.
+Focus: Production-ready toolkit with a stable feature set and release process.
 
 **Deliverables**
 - **Smart Sort** rules (auto-organize)

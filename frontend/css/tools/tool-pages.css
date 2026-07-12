@@ -112,13 +112,9 @@
 }
 
 .tool-results-item {
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--bg-elevated);
-  font-size: var(--font-size-sm);
-  line-height: 1.4;
-  flex-shrink: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    flex-shrink: 0;
 }
 
 .tool-results-item strong {
@@ -357,7 +353,7 @@
 }
 
 .coming-soon-message .material-symbols-rounded {
-  font-size: 48px;
+  font-size: 54px;
   margin-bottom: var(--space-md);
   opacity: 0.5;
 }
@@ -365,6 +361,79 @@
 .coming-soon-message h3 {
   margin: 0 0 var(--space-xs);
   color: var(--text-primary);
+}
+
+/* Standalone coming-soon tool pages */
+#content:has(.coming-soon-page) {
+  display: flex;
+  flex-direction: column;
+}
+
+.coming-soon-page {
+  flex: 1;
+  min-height: 0;
+}
+
+.coming-soon-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
+  margin-top: var(--space-sm);
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+  min-height: min(420px, calc(100vh - 220px));
+}
+
+.coming-soon-icon-wrap {
+  width: 78px;
+  height: 78px;
+  border-radius: var(--radius);
+  background: var(--bg-header);
+  border: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coming-soon-icon-wrap .material-symbols-rounded {
+  font-size: 42px;
+  color: var(--accent-info);
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-info);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.coming-soon-description {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size);
+  line-height: 1.5;
+}
+
+.coming-soon-actions {
+  margin-top: var(--space-sm);
+}
+
+.coming-soon-actions .btn-primary {
+  text-decoration: none;
+  display: inline-block;
 }
 
 .range-group {

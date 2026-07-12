@@ -1,6 +1,7 @@
 # Disk Kit - Desktop Application Entry Point
 # This file launches Disk Kit as a native desktop app using PyWebView
 
+import ctypes
 import sys
 import threading
 import webview
@@ -8,11 +9,31 @@ from pathlib import Path
 from waitress import serve
 
 # Project root: source tree in dev, PyInstaller extract dir when frozen
-ROOT_DIR = Path(getattr(sys, '_MEIPASS', Path(__file__).parent))
+APP_DIR = Path(__file__).resolve().parent
+ROOT_DIR = Path(getattr(sys, '_MEIPASS', APP_DIR))
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from backend.main import app
+from backend.assets import ensure_windows_icon, sync_frontend_logo
+
+
+def _resolve_icon_path() -> Path | None:
+    icon = ensure_windows_icon(APP_DIR)
+    return icon.resolve() if icon else None
+
+
+def _prepare_brand_assets() -> None:
+    sync_frontend_logo(APP_DIR)
+
+
+def _set_windows_app_id() -> None:
+    if sys.platform != 'win32':
+        return
+    try:
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('3rdVoyager.DiskKit')
+    except Exception:
+        pass
 
 
 def run_server():
@@ -41,8 +62,15 @@ def create_window():
 
 
 if __name__ == '__main__':
+    _set_windows_app_id()
+    _prepare_brand_assets()
+
     server_thread = threading.Thread(target=run_server, daemon=True)
     server_thread.start()
 
     window = create_window()
-    webview.start()
+    start_kwargs = {}
+    icon_path = _resolve_icon_path()
+    if icon_path:
+        start_kwargs['icon'] = str(icon_path)
+    webview.start(**start_kwargs)

@@ -305,6 +305,45 @@ export function toggleFileView() {
 export function updateNavigationButtons() {
   const backBtn = document.querySelector('.btn-tool[title="Back"]');
   if (backBtn) backBtn.classList.toggle('disabled', !canNavigateUp(currentFilePath));
+
+  const defaultPathBtn = document.getElementById('set-default-path-btn');
+  if (defaultPathBtn) defaultPathBtn.classList.toggle('disabled', !currentFilePath);
+}
+
+/**
+ * Save the current browse location as the app default path.
+ */
+export async function setCurrentPathAsDefault() {
+  if (!currentFilePath) return;
+
+  const confirmed = window.confirm(
+    `Set this folder as your default path?\n\n${currentFilePath}\n\nTools will use this location when no specific path is entered.`
+  );
+  if (!confirmed) return;
+
+  const defaultPathBtn = document.getElementById('set-default-path-btn');
+  const icon = defaultPathBtn?.querySelector('.material-symbols-rounded');
+
+  try {
+    await apiFetch('/api/settings', {
+      method: 'POST',
+      body: { general: { defaultPath: currentFilePath } },
+    });
+    setLastPath(currentFilePath);
+
+    if (defaultPathBtn && icon) {
+      const originalTitle = defaultPathBtn.title;
+      defaultPathBtn.title = 'Default path set';
+      icon.textContent = 'check';
+      setTimeout(() => {
+        defaultPathBtn.title = originalTitle;
+        icon.textContent = 'home_pin';
+      }, 1500);
+    }
+  } catch (err) {
+    console.error('Failed to set default path:', err);
+    alert(`Could not set default path: ${err.message}`);
+  }
 }
 
 // ============================================================
@@ -320,6 +359,7 @@ export function setupFileBrowserButtonListeners() {
   if (fileList) fileList.dataset.listenersAttached = 'true';
   const refreshBtn = document.querySelector(".btn-tool[title='Refresh']");
   const deleteBtn = document.querySelector('.btn-tool[title="Move to Recycle Bin"]');
+  const defaultPathBtn = document.getElementById('set-default-path-btn');
   const viewBtn = document.querySelector('.btn-icon[title="View"]');
   const searchInput = document.querySelector('.browser-search-input');
   const openBtn = document.querySelector('.details-actions .btn-action[data-action="open"]');
@@ -327,6 +367,7 @@ export function setupFileBrowserButtonListeners() {
 
   if (refreshBtn) refreshBtn.addEventListener('click', () => loadFileBrowser(currentFilePath));
   if (deleteBtn) deleteBtn.addEventListener('click', deleteSelectedFile);
+  if (defaultPathBtn) defaultPathBtn.addEventListener('click', setCurrentPathAsDefault);
   if (viewBtn) viewBtn.addEventListener('click', toggleFileView);
   if (searchInput) searchInput.addEventListener('input', filterFileList);
 
@@ -356,6 +397,7 @@ export function setupFileBrowserButtonListeners() {
   }
 
   updateDetailActionStates();
+  updateNavigationButtons();
 }
 
 function updateDetailActionStates() {

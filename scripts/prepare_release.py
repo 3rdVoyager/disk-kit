@@ -22,6 +22,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from backend.version import APP_VERSION
+from backend.assets import ensure_windows_icon, resolve_logo_path, resolve_original_logo_path, sync_frontend_logo
 PINNED_PYINSTALLER = "6.21.0"
 RELEASE_NOTES_TEMPLATE = ROOT_DIR / "docs" / "release" / "release-notes.template.md"
 
@@ -114,7 +115,21 @@ def build_exe():
         return False
 
     print("Building EXE with PyInstaller...")
-    icon_path = ROOT_DIR / "icon.ico"
+    logo_path = resolve_original_logo_path(ROOT_DIR) or resolve_logo_path(ROOT_DIR)
+    icon_path = None
+    if logo_path:
+        print(f"Using logo asset: assets/{logo_path.name}")
+        synced_logo = sync_frontend_logo(ROOT_DIR)
+        if synced_logo:
+            print(f"  [OK] Synced {synced_logo.relative_to(ROOT_DIR)} for UI")
+        icon_path = ensure_windows_icon(ROOT_DIR)
+        if icon_path:
+            print(f"  [OK] Prepared {icon_path.relative_to(ROOT_DIR)} for Windows builds")
+    else:
+        icon_path = ROOT_DIR / "assets" / "icon.ico"
+        if icon_path.exists():
+            print(f"Using existing {icon_path.relative_to(ROOT_DIR)}")
+
     cmd = [
         sys.executable, "-m", "PyInstaller",
         "--onefile",
@@ -123,10 +138,13 @@ def build_exe():
         "--clean",
     ]
 
-    if icon_path.exists():
-        cmd.extend(["--icon", str(icon_path)])
+    if icon_path and icon_path.exists():
+        cmd.extend(["--icon", str(icon_path), "--add-data", "assets;assets"])
+    elif logo_path:
+        cmd.extend(["--add-data", "assets;assets"])
+        print("[WARN] Could not build icon.ico; EXE will use the default Windows icon")
     else:
-        print("[WARN] icon.ico not found, using default icon")
+        print("[WARN] No logo found in assets/; using default icon")
 
     cmd.extend([
         "--paths", str(ROOT_DIR),
@@ -145,6 +163,7 @@ def build_exe():
         "--add-data", "frontend/css;frontend/css",
         "--add-data", "frontend/js;frontend/js",
         "--add-data", "frontend/html;frontend/html",
+        "--add-data", "docs/release/version.json;docs/release",
         "diskkit_app.py"
     ])
 

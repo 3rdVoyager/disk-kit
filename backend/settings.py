@@ -26,7 +26,7 @@ def _detect_default_path():
 def default_settings():
     return {
         "general": {
-            "theme": "dark",
+            "theme": "system",
             "defaultPath": _detect_default_path(),
         },
         "security": {

@@ -92,7 +92,7 @@
    ============================================ */
 
 .getting-started-card {
-    min-height: 260px;
+    min-height: 200px;
 }
 
 .getting-started-steps {
@@ -154,7 +154,7 @@
    ============================================ */
 
 .roadmap-card {
-    min-height: 260px;
+    min-height: 200px;
 }
 
 .roadmap-grid {
@@ -162,32 +162,22 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-xs);
     flex: 1;
+    align-content: start;
 }
 
 .roadmap-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding-block: var(--space-xs);
-    padding-inline: var(--space-sm);
-    background-color: var(--bg-sidebar);
-    border-radius: var(--radius);
     text-decoration: none;
-    border: 1px solid var(--border-default);
-    transition: all var(--transition-fast);
     color: inherit;
 }
 
 .roadmap-item:hover {
-    background-color: var(--bg-elevated-hover);
-    border-color: var(--accent-info);
     transform: translateY(-1px);
 }
 
 .roadmap-item .material-symbols-rounded {
     font-size: var(--icon);
     color: var(--text-secondary);
-    width: 24px;
+    width: 28px;
     text-align: center;
 }
 
@@ -214,7 +204,7 @@
    ============================================ */
 
 .quick-tools-card {
-    min-height: 260px;
+    min-height: 200px;
 }
 
 /* Grid Container */
@@ -223,26 +213,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-xs);
     flex: 1;
+    align-content: start;
 }
 
 /* Individual Tool Item */
 .quick-tool-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding-block: 2px;
-    padding-inline: var(--space-sm);
-    background-color: var(--bg-sidebar);
-    border-radius: var(--radius);
     cursor: pointer;
-    border: 1px solid var(--border-default);
-    transition: all var(--transition-fast);
-    min-height: var(--row-height);
-}
-
-.quick-tool-item:hover {
-    background-color: var(--bg-elevated-hover);
-    border-color: var(--accent-primary);
 }
 
 .quick-tool-item:hover .tool-icon .material-symbols-rounded {
@@ -251,8 +227,8 @@
 
 /* Tool Icon Container */
 .tool-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: var(--radius);
     display: flex;
     align-items: center;
@@ -320,7 +296,7 @@
    ============================================ */
 
 .recent-ops-card {
-    min-height: 260px;
+    min-height: 200px;
 }
 
 /* Operations List */
@@ -333,22 +309,10 @@
     overflow-y: auto;
 }
 
-/* Individual Operation Item */
-.operation-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-xs) var(--space-sm);
-    background-color: var(--bg-sidebar);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-default);
-    min-height: var(--row-height);
-}
-
 /* Operation Icon */
 .op-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: var(--radius);
     display: flex;
     align-items: center;

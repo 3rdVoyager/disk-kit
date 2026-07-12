@@ -67,12 +67,7 @@ export function updateBreadcrumb(path) {
   const toolbarBreadcrumb = document.querySelector('#content .toolbar-breadcrumb');
   if (toolbarBreadcrumb) {
     toolbarBreadcrumb.textContent = text;
-    return;
   }
-
-  const breadcrumb = document.querySelector('.breadcrumb-path');
-  if (!breadcrumb) return;
-  breadcrumb.textContent = text;
 }
 
 export async function getConfiguredDefaultPath() {
@@ -93,28 +88,6 @@ export async function resolveBrowserPath(explicitPath = '') {
   const normalized = (explicitPath || getLastPath() || '').replace(/\\/g, '/');
   if (normalized) return normalized;
   return getConfiguredDefaultPath();
-}
-
-/**
- * Set the app working path used by tools (unless a tool overrides via folder picker).
- * Updates localStorage, header breadcrumb, and optionally persists settings.defaultPath.
- */
-export async function setWorkingPath(path, { persistSettings = true } = {}) {
-  if (!path) return;
-  const normalized = path.replace(/\\/g, '/');
-  setLastPath(normalized);
-  updateBreadcrumb(normalized);
-
-  if (!persistSettings) return;
-
-  try {
-    await apiFetch('/api/settings', {
-      method: 'POST',
-      body: { general: { defaultPath: normalized } },
-    });
-  } catch (err) {
-    console.error('Failed to persist working path:', err);
-  }
 }
 
 export function formatBytes(bytes) {

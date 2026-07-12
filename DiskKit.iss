@@ -3,7 +3,7 @@
 ;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" DiskKit.iss
 
 #define AppName "Disk Kit"
-#define AppVersion "1.7.0"
+#define AppVersion "0.8.0"
 #define AppPublisher "3rdVoyager"
 #define AppExeName "DiskKit.exe"
 
@@ -24,6 +24,7 @@ OutputBaseFilename=DiskKit-Setup-{#AppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=assets\icon.ico
 UninstallDisplayIcon={app}\{#AppExeName}
 UninstallDisplayName=Disk Kit
 MinVersion=6.1sp1

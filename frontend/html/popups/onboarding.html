@@ -6,22 +6,91 @@
         <span class="material-symbols-rounded">close</span>
       </button>
     </div>
-    <div class="dialog-body">
+    <div class="dialog-body onboarding-body">
       <div class="onboarding-step active" data-step="0">
-        <p>Disk Kit helps you browse, organize, and clean up files on your PC with a focused set of tools.</p>
+        <div class="onboarding-hero">
+          <span class="material-symbols-rounded onboarding-hero-icon">inventory_2</span>
+          <p class="onboarding-lead">Disk Kit is a local file toolkit for everyday cleanup and organization on your PC.</p>
+        </div>
+        <ul class="onboarding-bullets">
+          <li>Browse folders safely within your chosen working directory</li>
+          <li>Convert, rename, and find duplicate files in batch</li>
+          <li>Everything runs locally — your files never leave your machine</li>
+        </ul>
       </div>
+
       <div class="onboarding-step" data-step="1">
-        <p>Use <strong>Browse Files</strong> to navigate folders, view details, and move items to the Recycle Bin.</p>
+        <div class="onboarding-feature">
+          <span class="material-symbols-rounded onboarding-feature-icon">folder</span>
+          <div>
+            <h3>Browse Files</h3>
+            <p>Navigate folders, inspect file details, open files with your default apps, and move items to the Recycle Bin when you need to clean up.</p>
+          </div>
+        </div>
+        <p class="onboarding-hint">Use the sidebar or dashboard to open Browse Files anytime.</p>
       </div>
+
       <div class="onboarding-step" data-step="2">
-        <p>Open any tool from the sidebar — <strong>Convert Files</strong>, <strong>Batch Rename</strong>, or <strong>Duplicate Finder</strong>.</p>
+        <h3 class="onboarding-subtitle">Your toolkit</h3>
+        <div class="onboarding-tool-grid">
+          <div class="onboarding-tool-card">
+            <span class="material-symbols-rounded">transform</span>
+            <h4>Convert Files</h4>
+            <p>Batch convert images to WebP, JPEG, or PNG.</p>
+          </div>
+          <div class="onboarding-tool-card">
+            <span class="material-symbols-rounded">edit</span>
+            <h4>Batch Rename</h4>
+            <p>Preview rename rules before applying them.</p>
+          </div>
+          <div class="onboarding-tool-card">
+            <span class="material-symbols-rounded">find_replace</span>
+            <h4>Duplicate Finder</h4>
+            <p>Find exact copies by size and hash.</p>
+          </div>
+        </div>
       </div>
+
       <div class="onboarding-step" data-step="3">
-        <p>You're ready to go. Change your working folder anytime with <strong>Change Path</strong> in the header.</p>
+        <h3 class="onboarding-subtitle">Set up your workspace</h3>
+        <p class="onboarding-setup-intro">Choose where Disk Kit should work by default. You can change this later in <strong>Settings</strong>.</p>
+        <div class="onboarding-setup-form">
+          <div class="onboarding-field">
+            <label for="onboarding-default-path">Default folder</label>
+            <div class="input-group">
+              <input id="onboarding-default-path" type="text" placeholder="C:/Users/you" />
+              <button type="button" class="btn-browse" id="onboarding-browse" title="Browse...">
+                <span class="material-symbols-rounded">folder_open</span>
+              </button>
+            </div>
+            <p class="form-hint">Tools use this folder when no specific path is entered.</p>
+          </div>
+          <div class="onboarding-field">
+            <label for="onboarding-theme">Theme</label>
+            <select id="onboarding-theme">
+              <option value="system">System</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
+        <p class="onboarding-error" id="onboarding-error" hidden></p>
+      </div>
+
+      <div class="onboarding-step" data-step="4">
+        <div class="onboarding-hero onboarding-hero-success">
+          <span class="material-symbols-rounded onboarding-hero-icon">check_circle</span>
+          <p class="onboarding-lead">You're ready to go!</p>
+        </div>
+        <ul class="onboarding-bullets">
+          <li>Open a tool from the sidebar or dashboard quick links</li>
+          <li>Open <strong>Settings</strong> from the sidebar to change your default folder or theme</li>
+          <li>Check <strong>On the Roadmap</strong> on the dashboard for upcoming features</li>
+        </ul>
       </div>
     </div>
     <div class="dialog-footer onboarding-footer">
-      <span class="onboarding-progress" id="onboarding-progress">Step 1 of 4</span>
+      <span class="onboarding-progress" id="onboarding-progress">Step 1 of 5</span>
       <div class="footer-actions">
         <button type="button" class="btn-secondary" id="onboarding-back" disabled>Back</button>
         <button type="button" class="btn-primary" id="onboarding-next">Next</button>

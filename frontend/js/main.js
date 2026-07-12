@@ -6,7 +6,6 @@ import {
   setupFileBrowserButtonListeners,
 } from './pages/browse-files.js';
 
-import { openPathSelector } from './popups/folder-picker.js';
 import { loadPopups } from './popups/load-popups.js';
 
 import { setupRenameTool } from './tools/rename.js';
@@ -14,10 +13,12 @@ import { setupDuplicatesTool } from './tools/duplicates.js';
 import { setupConvertTool } from './tools/convert.js';
 import { setupComingSoonTool } from './tools/coming-soon.js';
 import { checkForUpdates } from './updates.js';
+import { resolveAppVersion } from './version.js';
 import { setupSettingsTool } from './pages/settings.js';
 import { setupOnboarding } from './popups/onboarding.js';
+import { initThemeFromSettings } from './theme.js';
 
-import { escapeHtml, apiFetch, getLastPath, setWorkingPath, getConfiguredDefaultPath, resolveBrowserPath } from './utils.js';
+import { escapeHtml, apiFetch, getLastPath, setLastPath, getConfiguredDefaultPath, resolveBrowserPath } from './utils.js';
 
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
@@ -225,59 +226,10 @@ function setupMenuToggle() {
   });
 }
 
-async function loadTheme() {
-  try {
-    const settings = await apiFetch('/api/settings');
-    applyTheme(settings?.general?.theme || 'dark');
-  } catch (err) {
-    console.error('Failed to load theme:', err);
-    applyTheme('dark');
-  }
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const themeBtn = document.querySelector('.header-icon[title="Theme"]');
-  if (themeBtn) {
-    const iconSpan = themeBtn.querySelector('.material-symbols-rounded');
-    if (iconSpan) iconSpan.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
-  }
-}
-
-async function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  applyTheme(newTheme);
-  try {
-    await apiFetch('/api/settings', { method: 'POST', body: { general: { theme: newTheme } } });
-  } catch (err) {
-    console.error('Failed to save theme:', err);
-  }
-}
-
-function setupThemeToggle() {
-  document.querySelector('.header-icon[title="Theme"]')?.addEventListener('click', () => toggleTheme());
-}
-
-function setupChangePath() {
-  document.getElementById('change-path-btn')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    openPathSelector(async (path) => {
-      await setWorkingPath(path);
-    });
-  });
-}
-
 async function initWorkingPath() {
-  const last = getLastPath();
-  if (last) {
-    await setWorkingPath(last, { persistSettings: false });
-    return;
-  }
+  if (getLastPath()) return;
   const defaultPath = await getConfiguredDefaultPath();
-  if (defaultPath) {
-    await setWorkingPath(defaultPath, { persistSettings: false });
-  }
+  if (defaultPath) setLastPath(defaultPath);
 }
 
 async function bootstrap() {
@@ -286,12 +238,11 @@ async function bootstrap() {
     await init();
     setupGlobalNavigation();
     setupMenuToggle();
-    setupThemeToggle();
-    setupChangePath();
     setupOnboarding();
-    await loadTheme();
+    await initThemeFromSettings();
     await initWorkingPath();
     renderDashboardHome();
+    await resolveAppVersion();
     checkForUpdates();
 
     const hash = window.location.hash.slice(1);

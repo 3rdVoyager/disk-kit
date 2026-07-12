@@ -29,21 +29,37 @@
     --font-size-sm: calc(12 / 14 * 1rem);   /* meta, labels, secondary text */
     --font-size: 15px;                       /* body and UI text (root anchor) */
     --font-size-lg: calc(17 / 14 * 1rem);   /* headings */
+    --font-size-logo: calc(30 / 14 * 1rem);   /* hero / empty-state spacing */
 
     --space-xs: calc(4 / 14 * 1rem);        /* tight padding and micro gaps */
     --space-sm: calc(8 / 14 * 1rem);        /* default gaps and padding */
     --space-md: 1rem;                       /* section spacing and margins */
+    --space-lg: calc(16 / 14 * 1rem);       /* larger section spacing */
+    --space-xl: calc(24 / 14 * 1rem);       /* hero / empty-state spacing */
 
-    --sidebar-width: 210px;
+    --sidebar-width: 250px;
     --sidebar-collapsed-width: 54px;
-    --header-height: 42px;
     --content-padding: var(--space-md);
 
-    --icon: calc(15 / 14 * 1rem);
-    --icon-lg: calc(19 / 14 * 1rem);        /* large icons (e.g. grid view tiles) */
+    --icon: calc(17 / 14 * 1rem);
+    --icon-lg: calc(21 / 14 * 1rem);        /* large icons (e.g. grid view tiles) */
 
+    --button-height-lg: calc(40 / 14 * 1rem);
     --btn-height: calc(30 / 14 * 1rem);
     --row-height: calc(26 / 14 * 1rem);
+
+    /* Pill bars — bordered interactive row tiles */
+    --pill-bar-bg: var(--bg-sidebar);
+    --pill-bar-bg-hover: var(--bg-elevated-hover);
+    --pill-bar-border-color: var(--border-default);
+    --pill-bar-border: 1px solid var(--pill-bar-border-color);
+    --pill-bar-border-hover: var(--accent-primary);
+    --pill-bar-radius: var(--radius);
+    --pill-bar-padding-y: calc(6 / 14 * 1rem);
+    --pill-bar-padding-x: calc(10 / 14 * 1rem);
+    --pill-bar-gap: var(--space-sm);
+    --pill-bar-min-height: var(--row-height);
+    --pill-bar-transition: all var(--transition-fast);
     /* ============================================
        TEXT
        ============================================ */

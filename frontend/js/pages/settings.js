@@ -1,6 +1,8 @@
-import { apiFetch, getNestedValue, setNestedValue, setWorkingPath } from '../utils.js';
+import { apiFetch, getNestedValue, setNestedValue, setLastPath } from '../utils.js';
 import { openPathSelector } from '../popups/folder-picker.js';
 import { checkForUpdates } from '../updates.js';
+import { setCachedAppVersion } from '../version.js';
+import { applyTheme } from '../theme.js';
 
 let currentSettings = null;
 
@@ -101,9 +103,9 @@ async function saveSettings() {
     currentSettings = result.settings;
     const defaultPath = result.settings?.general?.defaultPath;
     if (defaultPath) {
-      // Settings already persisted — only sync local working path + breadcrumb.
-      await setWorkingPath(defaultPath, { persistSettings: false });
+      setLastPath(defaultPath);
     }
+    applyTheme(result.settings?.general?.theme);
     showSettingsMessage('Settings saved.', 'success');
   } catch (err) {
     console.error(err);
@@ -117,8 +119,9 @@ async function resetSettings() {
     populateSettingsForm(result.settings);
     const defaultPath = result.settings?.general?.defaultPath;
     if (defaultPath) {
-      await setWorkingPath(defaultPath, { persistSettings: false });
+      setLastPath(defaultPath);
     }
+    applyTheme(result.settings?.general?.theme);
     showSettingsMessage('Settings reset to defaults.', 'success');
   } catch (err) {
     console.error(err);
@@ -154,10 +157,15 @@ export function setupSettingsTool() {
   const disableCheckbox = document.getElementById('disablePathProtections');
   disableCheckbox?.addEventListener('change', updateDangerZoneState);
 
+  document.getElementById('theme')?.addEventListener('change', (e) => {
+    applyTheme(e.target.value);
+  });
+
   document.getElementById('check-updates-btn')?.addEventListener('click', () => checkForUpdates(true));
   
   // Update version display from backend
   apiFetch('/api/version').then(data => {
+    setCachedAppVersion(data.version);
     const el = document.getElementById('about-version-display');
     if (el) el.textContent = data.version;
   }).catch(() => {});

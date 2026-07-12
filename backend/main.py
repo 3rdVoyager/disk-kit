@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import logging
 import sys
 
@@ -7,6 +8,7 @@ if __package__ is None:
 
 from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
+from backend.assets import assets_dir, ensure_logo, resolve_logo_path
 from backend.settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
 from backend.pages.browse_files import list_files_api, delete_files_api, open_file_api
 from backend.operations import get_operations_api
@@ -18,10 +20,22 @@ from backend.version import APP_VERSION
 BACKEND_DIR = Path(__file__).resolve().parent
 if getattr(sys, 'frozen', False):
     STATIC_FOLDER = Path(sys._MEIPASS) / 'frontend'
+    APP_ROOT = Path(sys._MEIPASS)
 else:
     STATIC_FOLDER = BACKEND_DIR.parent / 'frontend'
+    APP_ROOT = BACKEND_DIR.parent
 app = Flask(__name__, static_folder=str(STATIC_FOLDER))
 LOGGER = logging.getLogger(__name__)
+
+
+def _app_root() -> Path:
+    return APP_ROOT if getattr(sys, 'frozen', False) else BACKEND_DIR.parent
+
+
+def _send_asset(path: Path):
+    response = send_from_directory(path.parent, path.name)
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 
 def api_error(message, status_code):
@@ -90,9 +104,53 @@ def get_version():
     return jsonify({'version': APP_VERSION})
 
 
+def _update_manifest_path():
+    if getattr(sys, 'frozen', False):
+        return Path(sys._MEIPASS) / 'docs' / 'release' / 'version.json'
+    return BACKEND_DIR.parent / 'docs' / 'release' / 'version.json'
+
+
+@app.route('/api/update-manifest', methods=['GET'])
+def get_update_manifest():
+    """Return the bundled update manifest for local/dev fallback."""
+    manifest_path = _update_manifest_path()
+    if manifest_path.exists():
+        return jsonify(json.loads(manifest_path.read_text(encoding='utf-8')))
+    return jsonify({
+        'version': APP_VERSION,
+        'downloadUrl': 'https://github.com/3rdVoyager/disk-kit/releases/latest',
+        'notes': '',
+    })
+
+
 @app.route('/')
 def index():
     return send_from_directory(STATIC_FOLDER, 'dashboard.html')
+
+
+@app.route('/assets/<path:filename>')
+def asset_files(filename):
+    directory = assets_dir(_app_root())
+    file_path = (directory / filename).resolve()
+    if not file_path.is_file() or directory.resolve() not in file_path.parents:
+        return '', 404
+    return _send_asset(file_path)
+
+
+@app.route('/logo')
+def logo():
+    logo_path = ensure_logo(_app_root())
+    if logo_path is None:
+        return '', 404
+    return _send_asset(logo_path)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    logo_path = ensure_logo(_app_root())
+    if logo_path is None:
+        return '', 404
+    return _send_asset(logo_path)
 
 
 @app.route('/<path:path>')
