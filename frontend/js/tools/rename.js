@@ -1,6 +1,7 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { renderToolResultList } from './tool-ui.js';
 import { setupPathBrowse } from '../path-picker.js';
+import { setupToolSteps, setupChipSelect } from './tool-steps.js';
 
 let lastPreviewPayload = null;
 
@@ -118,6 +119,10 @@ export function setupRenameTool() {
 
   modeSelect.addEventListener('change', syncModeFields);
   syncModeFields();
+
+  const workspace = form.querySelector('.tool-workspace');
+  if (workspace) setupToolSteps(workspace);
+  setupChipSelect({ groupSelector: '[data-chip-for="rename-mode"]', selectId: 'rename-mode' });
 
   previewBtn?.addEventListener('click', () => runBatchRename(true));
   form.addEventListener('submit', async (event) => {

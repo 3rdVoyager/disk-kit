@@ -72,41 +72,6 @@
             </ul>
           </li>
           <li>
-            <h3 class="nav-title">Coming Soon</h3>
-            <ul>
-              <li>
-                <a
-                  class="nav-link nav-link-soon"
-                  href="#coming-soon-empty-folders"
-                  ><span class="nav-icon material-symbols-rounded"
-                    >folder_off</span
-                  ><span class="nav-text">Empty Folders</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link nav-link-soon" href="#coming-soon-documents"
-                  ><span class="nav-icon material-symbols-rounded"
-                    >description</span
-                  ><span class="nav-text">Convert Docs</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link nav-link-soon" href="#coming-soon-smart-sort"
-                  ><span class="nav-icon material-symbols-rounded"
-                    >auto_fix_high</span
-                  ><span class="nav-text">Smart Sort</span></a
-                >
-              </li>
-              <li>
-                <a class="nav-link nav-link-soon" href="#coming-soon-storage"
-                  ><span class="nav-icon material-symbols-rounded"
-                    >analytics</span
-                  ><span class="nav-text">Storage Insights</span></a
-                >
-              </li>
-            </ul>
-          </li>
-          <li>
             <h3 class="nav-title">System</h3>
             <ul>
               <li>
@@ -161,76 +126,98 @@
         </ul>
       </section>
       <section id="content">
-        <div class="dashboard-grid">
-          <div class="dashboard-card getting-started-card">
-            <div class="card-header-row">
-              <h3>Getting Started</h3>
-            </div>
+        <div class="dashboard-stack">
+          <section class="dashboard-card getting-started-card">
+            <header class="card-header">
+              <div class="card-header-icon getting-started-icon">
+                <span class="material-symbols-rounded">rocket_launch</span>
+              </div>
+              <div class="card-header-text">
+                <h3>Getting Started</h3>
+                <p class="card-subtitle">
+                  Set up your workspace and run your first tool in a few minutes.
+                </p>
+              </div>
+            </header>
             <ol class="getting-started-steps">
-              <li>
-                Set your default folder in <strong>Settings</strong> (or paste a
-                path in any tool).
+              <li class="step-item">
+                <span class="step-number" aria-hidden="true">1</span>
+                <div class="step-content">
+                  <strong>Choose a default folder</strong>
+                  <p>
+                    Open <a href="#settings">Settings</a> and pick where Disk
+                    Kit should work by default. You can also paste a path
+                    directly into any tool.
+                  </p>
+                </div>
               </li>
-              <li>Run a tool — Convert, Rename, or Duplicates.</li>
-              <li>
-                Change your default folder anytime in
-                <strong>Settings</strong>.
+              <li class="step-item">
+                <span class="step-number" aria-hidden="true">2</span>
+                <div class="step-content">
+                  <strong>Run a tool</strong>
+                  <p>
+                    Convert images, batch-rename files, or find exact duplicate
+                    copies — everything runs locally on your machine.
+                  </p>
+                </div>
+              </li>
+              <li class="step-item">
+                <span class="step-number" aria-hidden="true">3</span>
+                <div class="step-content">
+                  <strong>Review your history</strong>
+                  <p>
+                    Completed runs appear below in Recent Operations so you can
+                    track what Disk Kit has done.
+                  </p>
+                </div>
               </li>
             </ol>
             <div class="getting-started-actions">
               <button type="button" class="btn-primary" id="take-tour-btn">
+                <span class="material-symbols-rounded">play_circle</span>
                 Take a tour
               </button>
+              <a href="#settings" class="btn-secondary-link">
+                <span class="material-symbols-rounded">settings</span>
+                Open Settings
+              </a>
             </div>
-          </div>
+          </section>
+
           <section class="dashboard-card quick-tools-card">
-            <div class="card-header-row">
-              <h3>Tools</h3>
-            </div>
-            <ul class="quick-tools-grid" id="dashboard-quick-tools"></ul>
+            <header class="card-header">
+              <div class="card-header-icon tools-icon">
+                <span class="material-symbols-rounded">handyman</span>
+              </div>
+              <div class="card-header-text">
+                <h3>Tools</h3>
+                <p class="card-subtitle">
+                  Batch file utilities for everyday cleanup — click any tool to
+                  open it.
+                </p>
+              </div>
+            </header>
+            <ul class="quick-tools-list" id="dashboard-quick-tools"></ul>
           </section>
+
           <section class="dashboard-card recent-ops-card">
-            <div class="card-header-row">
-              <h3>Recent Operations</h3>
-            </div>
+            <header class="card-header">
+              <div class="card-header-icon ops-icon">
+                <span class="material-symbols-rounded">history</span>
+              </div>
+              <div class="card-header-text">
+                <h3>Recent Operations</h3>
+                <p class="card-subtitle">
+                  Your last 10 completed runs across all tools.
+                </p>
+              </div>
+            </header>
             <ul class="operations-list" id="recent-operations">
-              <li class="operation-empty">Loading history...</li>
+              <li class="operation-empty">
+                <span class="material-symbols-rounded">hourglass_empty</span>
+                <span>Loading history...</span>
+              </li>
             </ul>
-          </section>
-          <section class="dashboard-card roadmap-card">
-            <div class="card-header-row">
-              <h3>On the Roadmap</h3>
-            </div>
-            <div class="roadmap-grid">
-              <a href="#coming-soon-empty-folders" class="roadmap-item">
-                <span class="material-symbols-rounded">folder_off</span>
-                <div class="roadmap-info">
-                  <h4>Empty Folder Finder</h4>
-                  <p>Find and remove empty directories</p>
-                </div>
-              </a>
-              <a href="#coming-soon-documents" class="roadmap-item">
-                <span class="material-symbols-rounded">description</span>
-                <div class="roadmap-info">
-                  <h4>Document Conversion</h4>
-                  <p>PDF, images, and text formats</p>
-                </div>
-              </a>
-              <a href="#coming-soon-smart-sort" class="roadmap-item">
-                <span class="material-symbols-rounded">auto_fix_high</span>
-                <div class="roadmap-info">
-                  <h4>Smart Sort</h4>
-                  <p>Auto-sort by file type</p>
-                </div>
-              </a>
-              <a href="#coming-soon-storage" class="roadmap-item">
-                <span class="material-symbols-rounded">analytics</span>
-                <div class="roadmap-info">
-                  <h4>Storage Insights</h4>
-                  <p>Drive usage & large folders</p>
-                </div>
-              </a>
-            </div>
           </section>
         </div>
       </section>

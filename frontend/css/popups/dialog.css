@@ -1,7 +1,7 @@
 .dialog-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-scrim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,13 +82,19 @@
 
 .btn-primary {
   background: var(--accent-primary);
-  color: var(--text-primary);
-  border-color: var(--accent-primary);
+  color: var(--text-on-brand);
+  border-color: var(--accent-700);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--accent-700);
+  border-color: var(--accent-700);
 }
 
 .btn-secondary {
   background: var(--bg-elevated);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 .btn-secondary:disabled {

@@ -1,21 +1,21 @@
 <section class="tool-page convert-page">
   <div class="tool-page-header">
     <h2>Convert Files</h2>
-    <p>Batch convert images; more formats coming soon. Originals are kept unless you choose to recycle them.</p>
+    <p>Batch convert images to WebP, JPEG, or PNG. Originals are kept unless you choose to recycle them.</p>
   </div>
 
-  <div class="convert-tabs" role="tablist" aria-label="Conversion categories">
-    <button class="convert-tab active" type="button" role="tab" aria-selected="true" data-category="images" data-panel="panel-images">Images</button>
-    <button class="convert-tab convert-tab-soon" type="button" role="tab" aria-selected="false" data-category="documents" data-panel="panel-coming-soon">Documents</button>
-    <button class="convert-tab convert-tab-soon" type="button" role="tab" aria-selected="false" data-category="audio" data-panel="panel-coming-soon">Audio</button>
-    <button class="convert-tab convert-tab-soon" type="button" role="tab" aria-selected="false" data-category="video" data-panel="panel-coming-soon">Video</button>
-  </div>
+  <form id="convert-form" class="convert-form">
+    <div class="tool-workspace">
+      <nav class="tool-step-nav" role="tablist" aria-label="Conversion steps">
+        <button type="button" class="tool-step-tab active" role="tab" aria-selected="true" data-step="source">Source</button>
+        <button type="button" class="tool-step-tab" role="tab" aria-selected="false" data-step="format">Format</button>
+        <button type="button" class="tool-step-tab" role="tab" aria-selected="false" data-step="output">Output</button>
+      </nav>
 
-  <div class="convert-panels">
-    <div class="convert-panel active" id="panel-images" role="tabpanel">
-      <form id="convert-form" class="convert-form">
-        <section class="convert-section">
-          <h3 class="convert-section-title">Source</h3>
+      <div class="tool-step-panels">
+        <div class="tool-step-panel active" data-step="source" role="tabpanel">
+          <h3 class="tool-panel-title">Source folder</h3>
+          <p class="tool-panel-desc">Choose where to scan for images. Leave empty to use your default folder from Settings.</p>
           <div class="convert-field convert-field-full">
             <label for="convert-path">Folder</label>
             <div class="input-group">
@@ -25,19 +25,25 @@
               </button>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section class="convert-section">
-          <h3 class="convert-section-title">Conversion</h3>
-          <div class="convert-field-grid">
-            <div class="convert-field">
-              <label for="convert-format">Output format</label>
-              <select id="convert-format">
-                <option value="webp">WebP — best space savings</option>
-                <option value="jpeg">JPEG — high compatibility</option>
-                <option value="png">PNG — lossless</option>
-              </select>
+        <div class="tool-step-panel" data-step="format" role="tabpanel" hidden>
+          <h3 class="tool-panel-title">Output format</h3>
+          <p class="tool-panel-desc">Pick a format and tune quality or max dimensions.</p>
+          <div class="convert-field convert-field-full">
+            <label for="convert-format">Format</label>
+            <select id="convert-format">
+              <option value="webp">WebP</option>
+              <option value="jpeg">JPEG</option>
+              <option value="png">PNG</option>
+            </select>
+            <div class="chip-group" data-chip-for="convert-format" aria-label="Output format">
+              <button type="button" class="chip-option" data-value="webp">WebP</button>
+              <button type="button" class="chip-option" data-value="jpeg">JPG</button>
+              <button type="button" class="chip-option" data-value="png">PNG</button>
             </div>
+          </div>
+          <div class="convert-field-grid">
             <div class="convert-field">
               <label for="convert-quality">Quality</label>
               <div class="range-group">
@@ -47,17 +53,18 @@
             </div>
             <div class="convert-field">
               <label for="convert-max-width">Max width (px) <span class="field-optional">optional</span></label>
-              <input id="convert-max-width" type="number" min="1" placeholder="Leave blank to keep original" />
+              <input id="convert-max-width" type="number" min="1" placeholder="Original size" />
             </div>
             <div class="convert-field">
               <label for="convert-max-height">Max height (px) <span class="field-optional">optional</span></label>
-              <input id="convert-max-height" type="number" min="1" placeholder="Leave blank to keep original" />
+              <input id="convert-max-height" type="number" min="1" placeholder="Original size" />
             </div>
           </div>
-        </section>
+        </div>
 
-        <section class="convert-section">
-          <h3 class="convert-section-title">Output</h3>
+        <div class="tool-step-panel" data-step="output" role="tabpanel" hidden>
+          <h3 class="tool-panel-title">Save location</h3>
+          <p class="tool-panel-desc">Where converted files go and how originals are handled.</p>
           <div class="convert-field convert-field-full">
             <label for="convert-output-mode">Save converted files to</label>
             <select id="convert-output-mode">
@@ -67,7 +74,7 @@
             </select>
           </div>
           <div class="convert-field convert-field-full" id="custom-path-row" hidden>
-            <label for="convert-custom-path">Custom output folder <span class="field-optional">optional</span></label>
+            <label for="convert-custom-path">Custom output folder</label>
             <div class="input-group">
               <input id="convert-custom-path" type="text" placeholder="Only needed when using a custom folder" />
               <button type="button" class="btn-browse" id="convert-custom-browse" title="Browse...">
@@ -75,34 +82,31 @@
               </button>
             </div>
           </div>
-        </section>
-
-        <section class="convert-section convert-options">
-          <label class="convert-option">
-            <input id="convert-strip-metadata" type="checkbox" checked />
-            <span>Strip metadata (EXIF, etc.)</span>
-          </label>
-          <label class="convert-option">
-            <input id="convert-delete-originals" type="checkbox" />
-            <span>Move originals to Recycle Bin after successful conversion</span>
-          </label>
-        </section>
-
-        <div class="convert-actions">
-          <button type="button" class="btn-secondary" id="convert-preview-btn">Preview</button>
-          <button type="submit" class="btn-primary" id="convert-run-btn">Convert All</button>
+          <div class="convert-options">
+            <label class="convert-option">
+              <input id="convert-strip-metadata" type="checkbox" checked />
+              <span>Strip metadata (EXIF, etc.)</span>
+            </label>
+            <label class="convert-option">
+              <input id="convert-delete-originals" type="checkbox" />
+              <span>Move originals to Recycle Bin after successful conversion</span>
+            </label>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
 
-    <div class="convert-panel" id="panel-coming-soon" role="tabpanel" hidden>
-      <div class="coming-soon-message">
-        <span class="material-symbols-rounded">construction</span>
-        <h3 id="coming-soon-title">Coming Soon</h3>
-        <p id="coming-soon-text">Support for this file category is currently under development.</p>
+      <div class="tool-form-footer convert-actions">
+        <button type="button" class="btn-secondary tool-step-back" hidden>Back</button>
+        <div class="tool-form-footer-end">
+          <button type="button" class="btn-primary tool-step-next">Next</button>
+          <div class="tool-step-final-actions" hidden>
+            <button type="button" class="btn-secondary" id="convert-preview-btn">Preview</button>
+            <button type="submit" class="btn-primary" id="convert-run-btn">Convert All</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
 
   <div id="convert-summary" class="tool-summary convert-summary"></div>
   <div id="convert-results" class="tool-results"></div>

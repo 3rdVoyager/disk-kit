@@ -3,7 +3,6 @@ import { loadPopups } from './popups/load-popups.js';
 import { setupRenameTool } from './tools/rename.js';
 import { setupDuplicatesTool } from './tools/duplicates.js';
 import { setupConvertTool } from './tools/convert.js';
-import { setupComingSoonTool } from './tools/coming-soon.js';
 import { checkForUpdates } from './updates.js';
 import { resolveAppVersion } from './version.js';
 import { setupSettingsTool } from './pages/settings.js';
@@ -20,29 +19,33 @@ const TOOL_IDS = ['convert', 'rename', 'duplicates'];
 const PAGE_ROUTES = new Set(['settings']);
 
 const OP_ICONS = {
-  rename: { icon: 'edit', color: 'blue' },
-  delete: { icon: 'delete_sweep', color: 'green' },
-  duplicates: { icon: 'find_replace', color: 'green' },
-  convert: { icon: 'transform', color: 'orange' },
+  rename: { icon: 'edit' },
+  delete: { icon: 'delete_sweep' },
+  duplicates: { icon: 'find_replace' },
+  convert: { icon: 'transform' },
 };
 
 const TOOL_META = {
-  convert: { icon: 'transform', label: 'Convert Files', description: 'Batch convert images' },
-  rename: { icon: 'edit', label: 'Batch Rename', description: 'Preview and apply rename rules' },
-  duplicates: { icon: 'find_replace', label: 'Duplicate Finder', description: 'Find exact duplicate files' },
+  convert: {
+    icon: 'transform',
+    label: 'Convert Files',
+    description: 'Batch convert images to WebP, JPEG, or PNG',
+  },
+  rename: {
+    icon: 'edit',
+    label: 'Batch Rename',
+    description: 'Preview rename rules before applying them to a folder',
+  },
+  duplicates: {
+    icon: 'find_replace',
+    label: 'Duplicate Finder',
+    description: 'Find exact copies by file size and content hash',
+  },
   settings: { icon: 'settings', label: 'Settings', description: 'Configure application settings' },
   home: { icon: 'home', label: 'Dashboard', description: 'Return to the dashboard' },
 };
 
-const DASHBOARD_CARD_COLORS = {
-  convert: 'orange',
-  rename: 'blue',
-  duplicates: 'green',
-  settings: 'gray',
-};
-
 function getViewHtmlPath(routeId) {
-  if (routeId.startsWith('coming-soon-')) return 'html/tools/coming-soon.html';
   const folder = PAGE_ROUTES.has(routeId) ? 'pages' : 'tools';
   return `html/${folder}/${routeId}.html`;
 }
@@ -55,17 +58,19 @@ function renderDashboardQuickTools() {
   TOOL_IDS.forEach((toolId) => {
     const meta = TOOL_META[toolId];
     if (!meta) return;
-    const color = DASHBOARD_CARD_COLORS[toolId] || 'gray';
     const li = document.createElement('li');
     li.className = 'quick-tool-item';
     li.setAttribute('data-tool', toolId);
     li.innerHTML = `
-      <div class="tool-icon ${color}">
+      <div class="tool-icon">
         <span class="material-symbols-rounded">${meta.icon}</span>
       </div>
       <div class="tool-info">
         <h4>${meta.label}</h4>
         <p>${meta.description}</p>
+      </div>
+      <div class="tool-chevron" aria-hidden="true">
+        <span class="material-symbols-rounded">chevron_right</span>
       </div>
     `;
     grid.appendChild(li);
@@ -92,15 +97,19 @@ async function renderRecentOperations() {
     const data = await apiFetch('/api/operations?limit=10');
     const ops = data.operations || [];
     if (ops.length === 0) {
-      list.innerHTML = '<li class="operation-empty">No operations yet — run a tool to see history here.</li>';
+      list.innerHTML = `
+        <li class="operation-empty">
+          <span class="material-symbols-rounded">inbox</span>
+          <span>No operations yet — run a tool to see history here.</span>
+        </li>`;
       return;
     }
 
     list.innerHTML = ops.map(op => {
-      const meta = OP_ICONS[op.type] || { icon: 'info', color: 'gray' };
+      const meta = OP_ICONS[op.type] || { icon: 'info' };
       return `
         <li class="operation-item">
-          <div class="op-icon ${meta.color}">
+          <div class="op-icon">
             <span class="material-symbols-rounded">${meta.icon}</span>
           </div>
           <div class="op-details">
@@ -115,7 +124,11 @@ async function renderRecentOperations() {
       `;
     }).join('');
   } catch (err) {
-    list.innerHTML = `<li class="operation-empty">Could not load history: ${escapeHtml(err.message)}</li>`;
+    list.innerHTML = `
+      <li class="operation-empty">
+        <span class="material-symbols-rounded">error_outline</span>
+        <span>Could not load history: ${escapeHtml(err.message)}</span>
+      </li>`;
   }
 }
 
@@ -137,7 +150,7 @@ async function loadContent(toolName, pushHistory = true) {
   }
 
   // Legacy routes removed in v1 simplification
-  if (toolName === 'alltools' || toolName === 'storage-overview' || toolName === 'large-files' || toolName === 'organize' || toolName === 'browse-files') {
+  if (toolName === 'alltools' || toolName === 'storage-overview' || toolName === 'large-files' || toolName === 'organize' || toolName === 'browse-files' || toolName.startsWith('coming-soon-')) {
     toolName = 'home';
     contentSection.innerHTML = originalHomeHTML;
     renderDashboardHome();
@@ -155,7 +168,6 @@ async function loadContent(toolName, pushHistory = true) {
     if (toolName === 'convert') setTimeout(() => setupConvertTool(), 0);
     if (toolName === 'rename') setTimeout(() => setupRenameTool(), 0);
     if (toolName === 'duplicates') setTimeout(() => setupDuplicatesTool(), 0);
-    if (toolName.startsWith('coming-soon-')) setTimeout(() => setupComingSoonTool(), 0);
 
     if (pushHistory) history.pushState(null, null, `#${toolName}`);
   } catch (err) {

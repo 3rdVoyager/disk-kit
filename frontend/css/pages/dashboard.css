@@ -1,60 +1,95 @@
 /* ============================================
-   DASHBOARD - Card Base Styles
+   DASHBOARD - Layout & Card Base
    ============================================ */
 
-/* Card Base */
+.dashboard-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    width: 100%;
+}
+
 .dashboard-card {
     background-color: var(--bg-card);
-    border: 1px solid var(--border-default);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: var(--space-md);
+    padding: var(--card-padding);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1px 4px var(--shadow-color);
-    min-height: 0;
+    box-shadow: var(--shadow-elevated);
 }
 
 /* ============================================
-   DASHBOARD GRID LAYOUT
+   CARD HEADERS
    ============================================ */
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
+.card-header {
+    display: flex;
+    align-items: flex-start;
     gap: var(--space-md);
-    align-items: stretch;
+    margin-bottom: var(--space-lg);
+    flex-shrink: 0;
 }
 
-.dashboard-grid .getting-started-card {
-    grid-column: 1;
-    grid-row: 1;
+.card-header-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--icon-tile-bg);
+    border: 1px solid var(--icon-tile-border);
 }
 
-.dashboard-grid .quick-tools-card {
-    grid-column: 2;
-    grid-row: 1;
+.card-header-icon .material-symbols-rounded {
+    font-size: var(--icon-lg);
+    color: var(--icon-tile-fg);
 }
 
-.dashboard-grid .recent-ops-card {
-    grid-column: 1;
-    grid-row: 2;
+.getting-started-icon {
+    background: var(--logo-gradient);
+    border: none;
 }
 
-.dashboard-grid .roadmap-card {
-    grid-column: 2;
-    grid-row: 2;
+.getting-started-icon .material-symbols-rounded {
+    color: var(--text-on-brand);
+}
+
+.tools-icon,
+.ops-icon {
+    background: var(--icon-tile-bg);
+    border: 1px solid var(--icon-tile-border);
+}
+
+.card-header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-header-text h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.card-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
 }
 
 /* ============================================
-   BUTTONS
+   BUTTONS & LINKS
    ============================================ */
 
 .btn-link {
     background: none;
     border: none;
-    color: var(--accent-info);
+    color: var(--text-link);
     cursor: pointer;
     font-size: var(--font-size-sm);
     padding: var(--space-xs) var(--space-xs);
@@ -64,315 +99,298 @@
 }
 
 .btn-link:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--accent-tint-subtle);
     text-decoration: underline;
 }
 
-/* ============================================
-   CARD HEADER ROW (for Quick Tools & Recent Ops)
-   ============================================ */
-
-.card-header-row {
-    display: flex;
-    justify-content: space-between;
+.btn-secondary-link {
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-    flex-shrink: 0;
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-default);
+    transition: all var(--transition-fast);
 }
 
-.card-header-row h3 {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    margin: 0;
+.btn-secondary-link .material-symbols-rounded {
+    font-size: var(--icon);
+}
+
+.btn-secondary-link:hover {
+    color: var(--text-primary);
+    border-color: var(--border-accent);
+    background-color: var(--accent-tint-soft);
 }
 
 /* ============================================
    GETTING STARTED CARD
    ============================================ */
 
-.getting-started-card {
-    min-height: 200px;
-}
-
 .getting-started-steps {
+    list-style: none;
     margin: 0;
-    padding-left: var(--space-md);
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    line-height: 1.6;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
     flex: 1;
 }
 
-.getting-started-steps li {
-    margin-bottom: var(--space-sm);
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--pill-bar-bg);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius);
+    transition: border-color var(--transition-fast);
 }
 
-.getting-started-steps li:last-child {
-    margin-bottom: 0;
+.step-item:hover {
+    border-color: var(--pill-bar-border-hover);
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--surface-600);
+    border: 1px solid var(--border-accent);
+    color: var(--accent-info);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.step-content strong {
+    display: block;
+    font-size: var(--font-size);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.step-content p {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.step-content a {
+    color: var(--text-link);
+    text-decoration: none;
+}
+
+.step-content a:hover {
+    text-decoration: underline;
 }
 
 .getting-started-actions {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: var(--space-md);
-    margin-top: var(--space-md);
-    padding-top: var(--space-md);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
     border-top: 1px solid var(--border-default);
     flex-shrink: 0;
 }
 
 .getting-started-actions .btn-primary {
-    padding: var(--space-xs) var(--space-md);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius);
     font-size: var(--font-size-sm);
-    cursor: pointer;
-    border: 1px solid var(--accent-primary);
-    background: var(--accent-primary);
-    color: var(--text-primary);
-}
-
-.btn-secondary-link {
-    font-size: var(--font-size-sm);
-    color: var(--accent-info);
-    text-decoration: none;
-}
-
-.btn-secondary-link:hover {
-    text-decoration: underline;
-}
-
-.operation-empty {
-    padding: var(--space-sm);
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    text-align: center;
-}
-
-/* ============================================
-   ROADMAP CARD
-   ============================================ */
-
-.roadmap-card {
-    min-height: 200px;
-}
-
-.roadmap-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xs);
-    flex: 1;
-    align-content: start;
-}
-
-.roadmap-item {
-    text-decoration: none;
-    color: inherit;
-}
-
-.roadmap-item:hover {
-    transform: translateY(-1px);
-}
-
-.roadmap-item .material-symbols-rounded {
-    font-size: var(--icon);
-    color: var(--text-secondary);
-    width: 28px;
-    text-align: center;
-}
-
-.roadmap-item:hover .material-symbols-rounded {
-    color: var(--accent-info);
-}
-
-.roadmap-info h4 {
-    font-size: var(--font-size-sm);
     font-weight: 600;
-    color: var(--text-primary);
-    margin: 0 0 1px 0;
+    cursor: pointer;
+    border: 1px solid color-mix(in srgb, var(--accent-600) 80%, var(--accent-700));
+    background: var(--accent-primary);
+    color: var(--text-on-brand);
+    transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
-.roadmap-info p {
-    font-size: var(--font-size-xs);
-    color: var(--text-secondary);
-    margin: 0;
-    line-height: 1.2;
+.getting-started-actions .btn-primary .material-symbols-rounded {
+    font-size: var(--icon);
+}
+
+.getting-started-actions .btn-primary:hover {
+    background: var(--accent-700);
+    border-color: var(--accent-700);
 }
 
 /* ============================================
-   QUICK TOOLS - 2x4 Grid of Tool Cards
+   QUICK TOOLS
    ============================================ */
 
-.quick-tools-card {
-    min-height: 200px;
-}
-
-/* Grid Container */
-.quick-tools-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xs);
+.quick-tools-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
     flex: 1;
-    align-content: start;
 }
 
-/* Individual Tool Item */
 .quick-tool-item {
     cursor: pointer;
 }
 
-.quick-tool-item:hover .tool-icon .material-symbols-rounded {
-    transform: rotate(-5deg) scale(1.05);
+.quick-tool-item:hover .tool-chevron {
+    color: var(--icon-tile-fg-hover);
+    transform: translateX(2px);
 }
 
-/* Tool Icon Container */
+.quick-tool-item:hover .tool-icon {
+    border-color: var(--border-accent);
+}
+
+.quick-tool-item:hover .tool-icon .material-symbols-rounded {
+    color: var(--icon-tile-fg-hover);
+}
+
 .tool-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    background: var(--icon-tile-bg);
+    border: 1px solid var(--icon-tile-border);
+    transition: border-color var(--transition-fast);
 }
 
 .tool-icon .material-symbols-rounded {
-    font-size: var(--icon);
-    color: var(--text-primary);
-    transition: transform var(--transition-fast);
+    font-size: var(--icon-lg);
+    color: var(--icon-tile-fg);
+    transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
-/* Icon Color Variants */
-.tool-icon.blue {
-    background-color: var(--accent-blue);
-}
-
-.tool-icon.purple {
-    background-color: var(--accent-purple);
-}
-
-.tool-icon.green {
-    background-color: var(--accent-green);
-}
-
-.tool-icon.orange {
-    background-color: var(--accent-orange);
-}
-
-.tool-icon.gray {
-    background-color: var(--accent-gray);
-}
-
-.tool-icon.yellow {
-    background-color: var(--accent-yellow);
-}
-
-.tool-icon.teal {
-    background-color: var(--accent-teal);
-}
-
-/* Tool Info */
 .tool-info {
     flex: 1;
     min-width: 0;
 }
 
 .tool-info h4 {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size);
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0 0 1px 0;
+    margin: 0 0 2px 0;
 }
 
 .tool-info p {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
     margin: 0;
-    line-height: 1.25;
+    line-height: 1.4;
+}
+
+.tool-chevron {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.tool-chevron .material-symbols-rounded {
+    font-size: var(--icon-lg);
 }
 
 /* ============================================
    RECENT OPERATIONS
    ============================================ */
 
-.recent-ops-card {
-    min-height: 200px;
-}
-
-/* Operations List */
 .operations-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     flex: 1;
     min-height: 0;
+    max-height: 360px;
     overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-/* Operation Icon */
+.operation-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-xl) var(--space-md);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    border: 1px dashed var(--border-default);
+    border-radius: var(--radius);
+    background-color: var(--pill-bar-bg);
+}
+
+.operation-empty .material-symbols-rounded {
+    font-size: calc(var(--icon-lg) * 1.5);
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
 .op-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
-
-.op-icon.blue {
-    background-color: var(--accent-blue);
-}
-
-.op-icon.purple {
-    background-color: var(--accent-purple);
-}
-
-.op-icon.green {
-    background-color: var(--accent-green);
-}
-
-.op-icon.orange {
-    background-color: var(--accent-orange);
-}
-
-.op-icon.yellow {
-    background-color: var(--accent-yellow);
-}
-
-.op-icon.teal {
-    background-color: var(--accent-teal);
-}
-
-.op-icon.gray {
-    background-color: var(--accent-gray);
+    background: var(--icon-tile-bg);
+    border: 1px solid var(--icon-tile-border);
 }
 
 .op-icon .material-symbols-rounded {
     font-size: var(--icon);
-    color: var(--text-primary);
+    color: var(--icon-tile-fg);
 }
 
-/* Operation Details */
 .op-details {
     flex: 1;
     min-width: 0;
 }
 
 .op-details h4 {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size);
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0 0 1px 0;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .op-details p {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
     margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Operation Meta (time + badge) */
 .op-meta {
     display: flex;
     flex-direction: column;
@@ -387,31 +405,42 @@
     white-space: nowrap;
 }
 
-/* Status Badge */
 .badge-success {
     display: inline-block;
-    background-color: rgba(34, 197, 94, 0.15);
+    background-color: var(--status-success-bg);
     color: var(--status-success);
-    padding: 1px var(--space-xs);
+    padding: 2px var(--space-sm);
     border-radius: var(--radius);
     font-size: var(--font-size-sm);
     font-weight: 500;
     white-space: nowrap;
+    text-transform: capitalize;
 }
 
 /* ============================================
-   RESPONSIVE DASHBOARD
+   RESPONSIVE
    ============================================ */
 
-@media (max-width: 900px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 600px) {
+    .dashboard-card {
+        padding: var(--space-lg);
     }
 
-    .dashboard-grid .getting-started-card,
-    .dashboard-grid .quick-tools-card,
-    .dashboard-grid .recent-ops-card {
-        grid-column: 1;
-        grid-row: auto;
+    .card-header {
+        margin-bottom: var(--space-md);
+    }
+
+    .getting-started-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .getting-started-actions .btn-primary,
+    .getting-started-actions .btn-secondary-link {
+        justify-content: center;
+    }
+
+    .op-meta {
+        display: none;
     }
 }

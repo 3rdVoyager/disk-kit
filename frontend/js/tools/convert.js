@@ -1,21 +1,7 @@
 import { apiFetch, formatBytes, getLastPath } from '../utils.js';
 import { setupPathBrowse } from '../path-picker.js';
 import { renderToolResultList } from './tool-ui.js';
-
-const COMING_SOON_COPY = {
-  documents: {
-    title: 'Document conversion coming soon',
-    text: 'PDF to Image, Image to PDF, and Text to PDF conversion is planned for a future update.',
-  },
-  audio: {
-    title: 'Audio conversion coming soon',
-    text: 'Batch audio conversion (MP3, WAV, FLAC, and more) is on the way.',
-  },
-  video: {
-    title: 'Video conversion coming soon',
-    text: 'Batch video conversion and compression will be available in a future update.',
-  },
-};
+import { setupToolSteps, setupChipSelect } from './tool-steps.js';
 
 function renderConvertResults(resultsEl, operations) {
   renderToolResultList(resultsEl, operations, (item) => {
@@ -105,37 +91,6 @@ async function runImageConvert(dryRun = true) {
   });
 }
 
-function switchConvertTab(category) {
-  const tabs = document.querySelectorAll('.convert-tab');
-  const panels = {
-    images: document.getElementById('panel-images'),
-    comingSoon: document.getElementById('panel-coming-soon'),
-  };
-  const summaryEl = document.getElementById('convert-summary');
-  const resultsEl = document.getElementById('convert-results');
-  const comingSoonTitle = document.getElementById('coming-soon-title');
-  const comingSoonText = document.getElementById('coming-soon-text');
-
-  tabs.forEach((tab) => {
-    const isActive = tab.dataset.category === category;
-    tab.classList.toggle('active', isActive);
-    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
-  });
-
-  const isComingSoon = category === 'audio' || category === 'video' || category === 'documents';
-  panels.images.hidden = category !== 'images';
-  panels.comingSoon.hidden = !isComingSoon;
-
-  if (isComingSoon && COMING_SOON_COPY[category]) {
-    comingSoonTitle.textContent = COMING_SOON_COPY[category].title;
-    comingSoonText.textContent = COMING_SOON_COPY[category].text;
-  }
-
-  if (summaryEl) summaryEl.textContent = '';
-  if (resultsEl) resultsEl.innerHTML = '';
-}
-
-
 export function setupConvertTool() {
   const form = document.getElementById('convert-form');
   if (!form) return;
@@ -166,9 +121,7 @@ export function setupConvertTool() {
     runImageConvert(false);
   });
 
-  document.querySelectorAll('.convert-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      switchConvertTab(tab.dataset.category);
-    });
-  });
+  const workspace = form.querySelector('.tool-workspace');
+  if (workspace) setupToolSteps(workspace);
+  setupChipSelect({ groupSelector: '[data-chip-for="convert-format"]', selectId: 'convert-format' });
 }

@@ -1,6 +1,7 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { formatBytes, renderToolResultList } from './tool-ui.js';
 import { setupPathBrowse } from '../path-picker.js';
+import { setupToolSteps } from './tool-steps.js';
 
 export function setupDuplicatesTool() {
   const form = document.getElementById('duplicates-form');
@@ -18,6 +19,9 @@ export function setupDuplicatesTool() {
   }
 
   setupPathBrowse('duplicates-path', 'duplicates-browse');
+
+  const workspace = form.querySelector('.tool-workspace');
+  if (workspace) setupToolSteps(workspace);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();

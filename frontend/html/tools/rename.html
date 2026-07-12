@@ -5,79 +5,100 @@
   </div>
 
   <form id="batch-rename-form" class="convert-form">
-    <section class="convert-section">
-      <h3 class="convert-section-title">Source</h3>
-      <div class="convert-field convert-field-full">
-        <label for="rename-path">Folder</label>
-        <div class="input-group">
-          <input id="rename-path" type="text" placeholder="Leave empty to use default path" />
-          <button type="button" class="btn-browse" id="rename-browse" title="Browse...">
-            <span class="material-symbols-rounded">folder_open</span>
-          </button>
-        </div>
-      </div>
-    </section>
+    <div class="tool-workspace">
+      <nav class="tool-step-nav" role="tablist" aria-label="Rename steps">
+        <button type="button" class="tool-step-tab active" role="tab" aria-selected="true" data-step="source">Source</button>
+        <button type="button" class="tool-step-tab" role="tab" aria-selected="false" data-step="rule">Rule</button>
+      </nav>
 
-    <section class="convert-section">
-      <h3 class="convert-section-title">Renaming Rule</h3>
-      <div class="convert-field convert-field-full">
-        <label for="rename-mode">Mode</label>
-        <select id="rename-mode">
-          <option value="replace">Find & Replace</option>
-          <option value="prefix-suffix">Prefix + Suffix</option>
-          <option value="numbering">Numbering</option>
-        </select>
-      </div>
-
-      <!-- Mode-specific fields -->
-      <div id="rename-fields-replace" class="rename-mode-group">
-        <div class="convert-field-grid">
-          <div class="convert-field">
-            <label for="rename-find">Find text</label>
-            <input id="rename-find" type="text" placeholder="e.g. IMG_" />
-          </div>
-          <div class="convert-field">
-            <label for="rename-replace">Replace with</label>
-            <input id="rename-replace" type="text" placeholder="e.g. Photo_" />
+      <div class="tool-step-panels">
+        <div class="tool-step-panel active" data-step="source" role="tabpanel">
+          <h3 class="tool-panel-title">Source folder</h3>
+          <p class="tool-panel-desc">Files in this folder will be renamed. Leave empty to use your default path.</p>
+          <div class="convert-field convert-field-full">
+            <label for="rename-path">Folder</label>
+            <div class="input-group">
+              <input id="rename-path" type="text" placeholder="Leave empty to use default path" />
+              <button type="button" class="btn-browse" id="rename-browse" title="Browse...">
+                <span class="material-symbols-rounded">folder_open</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="rename-fields-prefix" class="rename-mode-group" hidden>
-        <div class="convert-field-grid">
-          <div class="convert-field">
-            <label for="rename-prefix">Prefix <span class="field-optional">optional</span></label>
-            <input id="rename-prefix" type="text" placeholder="Add to start" />
+        <div class="tool-step-panel" data-step="rule" role="tabpanel" hidden>
+          <h3 class="tool-panel-title">Renaming rule</h3>
+          <p class="tool-panel-desc">Choose a pattern, then fill in the fields for that mode.</p>
+          <div class="convert-field convert-field-full">
+            <label for="rename-mode">Mode</label>
+            <select id="rename-mode">
+              <option value="replace">Find & Replace</option>
+              <option value="prefix-suffix">Prefix + Suffix</option>
+              <option value="numbering">Numbering</option>
+            </select>
+            <div class="chip-group" data-chip-for="rename-mode" aria-label="Rename mode">
+              <button type="button" class="chip-option" data-value="replace">Find & Replace</button>
+              <button type="button" class="chip-option" data-value="prefix-suffix">Prefix + Suffix</button>
+              <button type="button" class="chip-option" data-value="numbering">Numbering</button>
+            </div>
           </div>
-          <div class="convert-field">
-            <label for="rename-suffix">Suffix <span class="field-optional">optional</span></label>
-            <input id="rename-suffix" type="text" placeholder="Add to end" />
+
+          <div id="rename-fields-replace" class="rename-mode-group">
+            <div class="convert-field-grid">
+              <div class="convert-field">
+                <label for="rename-find">Find text</label>
+                <input id="rename-find" type="text" placeholder="e.g. IMG_" />
+              </div>
+              <div class="convert-field">
+                <label for="rename-replace">Replace with</label>
+                <input id="rename-replace" type="text" placeholder="e.g. Photo_" />
+              </div>
+            </div>
+          </div>
+
+          <div id="rename-fields-prefix" class="rename-mode-group" hidden>
+            <div class="convert-field-grid">
+              <div class="convert-field">
+                <label for="rename-prefix">Prefix <span class="field-optional">optional</span></label>
+                <input id="rename-prefix" type="text" placeholder="Add to start" />
+              </div>
+              <div class="convert-field">
+                <label for="rename-suffix">Suffix <span class="field-optional">optional</span></label>
+                <input id="rename-suffix" type="text" placeholder="Add to end" />
+              </div>
+            </div>
+          </div>
+
+          <div id="rename-fields-numbering" class="rename-mode-group" hidden>
+            <div class="convert-field-grid">
+              <div class="convert-field">
+                <label for="rename-base">Base name</label>
+                <input id="rename-base" type="text" value="file" />
+              </div>
+              <div class="convert-field">
+                <label for="rename-start">Start index</label>
+                <input id="rename-start" type="number" min="1" value="1" />
+              </div>
+              <div class="convert-field">
+                <label for="rename-pad">Pad width</label>
+                <input id="rename-pad" type="number" min="1" max="10" value="3" />
+              </div>
+            </div>
+            <p class="form-hint">Files will be renamed in alphabetical order: base_001, base_002, etc.</p>
           </div>
         </div>
       </div>
 
-      <div id="rename-fields-numbering" class="rename-mode-group" hidden>
-        <div class="convert-field-grid">
-          <div class="convert-field">
-            <label for="rename-base">Base name</label>
-            <input id="rename-base" type="text" value="file" />
-          </div>
-          <div class="convert-field">
-            <label for="rename-start">Start index</label>
-            <input id="rename-start" type="number" min="1" value="1" />
-          </div>
-          <div class="convert-field">
-            <label for="rename-pad">Pad width</label>
-            <input id="rename-pad" type="number" min="1" max="10" value="3" />
+      <div class="tool-form-footer convert-actions">
+        <button type="button" class="btn-secondary tool-step-back" hidden>Back</button>
+        <div class="tool-form-footer-end">
+          <button type="button" class="btn-primary tool-step-next">Next</button>
+          <div class="tool-step-final-actions" hidden>
+            <button type="button" class="btn-secondary" id="rename-preview-btn">Preview</button>
+            <button type="submit" class="btn-primary">Apply Rename</button>
           </div>
         </div>
-        <p class="form-hint">Files will be renamed in alphabetical order: base_001, base_002, etc.</p>
       </div>
-    </section>
-
-    <div class="convert-actions">
-      <button type="button" class="btn-secondary" id="rename-preview-btn">Preview</button>
-      <button type="submit" class="btn-primary">Apply Rename</button>
     </div>
   </form>
 

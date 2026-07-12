@@ -49,7 +49,6 @@ body {
 
 /* Pill bars — standardized bordered row tiles */
 .quick-tool-item,
-.roadmap-item,
 .operation-item,
 .tool-results-item,
 .onboarding-feature,
@@ -76,7 +75,6 @@ body {
 }
 
 .quick-tool-item:hover,
-.roadmap-item:hover,
 .operation-item:hover,
 .tool-results-item:hover,
 .onboarding-feature:hover,

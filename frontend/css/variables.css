@@ -1,132 +1,254 @@
 :root {
     /* ============================================
-       SURFACE COLORS
+       LOGO — from brand mark, used sparingly
        ============================================ */
-    --bg-primary: #0b101b;       /* Main page background */
-    --bg-sidebar: #111722;       /* Sidebar background */
-    --bg-card: #0b101b;          /* Card background (darker than before for better contrast) */
-    --bg-header: #1a2332;        /* Header background (darker than before for better contrast) */
-    --bg-elevated: #0b101b;      /* Elevated items inside cards (tool items, ops, breakdowns) */
-    --bg-elevated-hover: #1f2937;/* Hover for elevated items */
-    --bg-hover: #262059;         /* General hover state (sidebar links, header icons) */
-    --bg-selected: #2e5ef7;      /* Selected/active state */
-    --shadow-color: #000000; /* Shadow color for elevated elements */
+    --logo-indigo: #4552a3;
+    --logo-cyan: #4ab1d8;
+    --logo-gradient: linear-gradient(135deg, var(--logo-indigo), var(--logo-cyan));
+
+    /* ============================================
+       UI ACCENT — single interactive color (blue)
+       ============================================ */
+    --accent-400: #6299ff;
+    --accent-500: #4589ff;
+    --accent-600: #2f6fed;
+    --accent-700: #2558c7;
+
+    /* ============================================
+       NEUTRAL SURFACES
+       ============================================ */
+    --surface-950: #09090b;
+    --surface-900: #0f1014;
+    --surface-850: #141519;
+    --surface-800: #181a20;
+    --surface-750: #1c1f27;
+    --surface-700: #22262f;
+    --surface-600: #2a2f3a;
+    --surface-500: #343a47;
+    --surface-400: #4a5160;
+
+    --neutral-white: #ffffff;
+    --neutral-black: #000000;
+
+    /* ============================================
+       SEMANTIC — status only, never decoration
+       ============================================ */
+    --semantic-success: #22c55e;
+    --semantic-warning: #f59e0b;
+    --semantic-error: #ef4444;
+
+    /* ============================================
+       SURFACES
+       ============================================ */
+    --bg-primary: var(--surface-950);
+    --bg-sidebar: var(--surface-900);
+    --bg-card: var(--surface-800);
+    --bg-header: var(--surface-750);
+    --bg-elevated: var(--surface-700);
+    --bg-elevated-hover: var(--surface-600);
+    --bg-hover: color-mix(in srgb, var(--neutral-white) 4%, transparent);
+    --bg-selected: color-mix(in srgb, var(--accent-600) 10%, var(--surface-800));
 
     /* ============================================
        BORDERS
        ============================================ */
-    --border-default: #2a3042;   /* Default border color */
-    --border-accent: #3b82f6;    /* Accent border (btn-action hover, links) */
-    
-    /* Border Radius */
-    --radius: 8px;              /* cards, buttons, inputs, list rows */
-    --radius-progress: 2px;     /* thin progress / breakdown bars */
+    --border-default: var(--surface-500);
+    --border-subtle: color-mix(in srgb, var(--surface-500) 65%, var(--surface-700));
+    --border-accent: color-mix(in srgb, var(--accent-500) 45%, var(--surface-500));
+    --border-focus: var(--accent-500);
 
     /* ============================================
-       DENSITY / TYPOGRAPHY
+       ACCENT TINTS
        ============================================ */
+    --accent-tint-subtle: color-mix(in srgb, var(--accent-500) 8%, transparent);
+    --accent-tint-soft: color-mix(in srgb, var(--accent-500) 5%, transparent);
+    --accent-tint-medium: color-mix(in srgb, var(--accent-500) 12%, transparent);
+    --accent-tint-selected: color-mix(in srgb, var(--accent-600) 10%, var(--surface-800));
+
+    /* Legacy aliases */
+    --brand-tint-subtle: var(--accent-tint-subtle);
+    --brand-tint-soft: var(--accent-tint-soft);
+    --brand-tint-medium: var(--accent-tint-medium);
+    --brand-tint-strong: color-mix(in srgb, var(--accent-500) 16%, transparent);
+    --brand-tint-border: color-mix(in srgb, var(--accent-500) 22%, var(--surface-600));
+    --brand-tint-selected: var(--accent-tint-selected);
+
+    --overlay-scrim: color-mix(in srgb, var(--surface-950) 55%, transparent);
+    --overlay-scrim-light: color-mix(in srgb, var(--surface-950) 40%, transparent);
+    --overlay-scrim-heavy: color-mix(in srgb, var(--surface-950) 65%, transparent);
+
+    --shadow-color: color-mix(in srgb, var(--neutral-black) 70%, transparent);
+    --shadow-soft: 0 1px 2px color-mix(in srgb, var(--neutral-black) 30%, transparent);
+    --shadow-elevated: 0 4px 12px color-mix(in srgb, var(--neutral-black) 40%, transparent);
+    --shadow-modal: 0 16px 48px color-mix(in srgb, var(--neutral-black) 50%, transparent);
+
+    --brand-gradient: var(--accent-600);
+    --brand-gradient-logo: var(--logo-gradient);
+    --brand-gradient-subtle: linear-gradient(180deg, var(--surface-800), var(--surface-850));
+
+    /* ============================================
+       TEXT
+       ============================================ */
+    --text-primary: #eceef2;
+    --text-secondary: #949bab;
+    --text-muted: #636878;
+    --text-brand: var(--accent-400);
+    --text-on-brand: var(--neutral-white);
+    --text-link: var(--accent-400);
+
+    /* ============================================
+       INTERACTIVE & ICON TILES
+       ============================================ */
+    --accent-primary: var(--accent-600);
+    --accent-info: var(--accent-400);
+    --accent-highlight: var(--accent-400);
+    --accent-success: var(--semantic-success);
+    --accent-danger: var(--semantic-error);
+
+    --icon-tile-bg: var(--surface-600);
+    --icon-tile-border: var(--border-subtle);
+    --icon-tile-fg: var(--text-secondary);
+    --icon-tile-fg-hover: var(--accent-400);
+
+    /* Legacy category accents → unified neutral system */
+    --accent-blue: var(--accent-400);
+    --accent-purple: var(--icon-tile-fg);
+    --accent-green: var(--semantic-success);
+    --accent-orange: var(--icon-tile-fg);
+    --accent-red: var(--semantic-error);
+    --accent-gray: var(--text-muted);
+    --accent-yellow: var(--semantic-warning);
+    --accent-teal: var(--icon-tile-fg);
+
+    /* ============================================
+       STATUS
+       ============================================ */
+    --status-success: var(--semantic-success);
+    --status-error: var(--semantic-error);
+    --status-success-text: #86efac;
+    --status-info-text: var(--accent-400);
+    --status-error-text: #fca5a5;
+    --status-neutral-text: var(--text-secondary);
+
+    --status-success-bg: color-mix(in srgb, var(--semantic-success) 12%, transparent);
+    --status-success-bg-strong: color-mix(in srgb, var(--semantic-success) 18%, transparent);
+    --status-info-bg: color-mix(in srgb, var(--accent-500) 12%, transparent);
+    --status-error-bg: color-mix(in srgb, var(--semantic-error) 10%, transparent);
+    --status-error-bg-strong: color-mix(in srgb, var(--semantic-error) 16%, transparent);
+    --status-neutral-bg: color-mix(in srgb, var(--text-muted) 14%, transparent);
+    --status-info-border: color-mix(in srgb, var(--accent-500) 25%, transparent);
+
+    /* ============================================
+       LAYOUT / TYPOGRAPHY
+       ============================================ */
+    --radius: 8px;
+    --radius-progress: 2px;
+
     --font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    --font-size-sm: calc(12 / 14 * 1rem);   /* meta, labels, secondary text */
-    --font-size: 15px;                       /* body and UI text (root anchor) */
-    --font-size-lg: calc(17 / 14 * 1rem);   /* headings */
-    --font-size-logo: calc(30 / 14 * 1rem);   /* hero / empty-state spacing */
+    --font-size-sm: calc(13 / 14 * 1rem);
+    --font-size: 16px;
+    --font-size-lg: calc(18 / 14 * 1rem);
+    --font-size-logo: calc(30 / 14 * 1rem);
 
-    --space-xs: calc(4 / 14 * 1rem);        /* tight padding and micro gaps */
-    --space-sm: calc(8 / 14 * 1rem);        /* default gaps and padding */
-    --space-md: 1rem;                       /* section spacing and margins */
-    --space-lg: calc(16 / 14 * 1rem);       /* larger section spacing */
-    --space-xl: calc(24 / 14 * 1rem);       /* hero / empty-state spacing */
+    --space-xs: calc(4 / 14 * 1rem);
+    --space-sm: calc(8 / 14 * 1rem);
+    --space-md: 1.125rem;
+    --space-lg: calc(20 / 14 * 1rem);
+    --space-xl: calc(28 / 14 * 1rem);
 
-    --sidebar-width: 250px;
-    --sidebar-collapsed-width: 70px;
-    --content-padding: var(--space-md);
+    --sidebar-width: 272px;
+    --sidebar-collapsed-width: 72px;
+    --sidebar-padding-x: var(--space-md);
+    --sidebar-nav-gap: var(--space-xs);
+    --sidebar-nav-height: calc(40 / 14 * 1rem);
+    --sidebar-nav-padding-y: calc(10 / 14 * 1rem);
+    --sidebar-nav-padding-x: var(--space-sm);
+    --content-padding: var(--space-lg);
+    --card-padding: var(--space-xl);
+    --section-padding: var(--space-lg);
 
     --icon: calc(17 / 14 * 1rem);
-    --icon-lg: calc(21 / 14 * 1rem);        /* large icons (e.g. grid view tiles) */
+    --icon-lg: calc(21 / 14 * 1rem);
 
     --button-height-lg: calc(40 / 14 * 1rem);
     --btn-height: calc(30 / 14 * 1rem);
     --row-height: calc(26 / 14 * 1rem);
 
-    /* Pill bars — bordered interactive row tiles */
-    --pill-bar-bg: var(--bg-sidebar);
+    --pill-bar-bg: var(--bg-elevated);
     --pill-bar-bg-hover: var(--bg-elevated-hover);
-    --pill-bar-border-color: var(--border-default);
+    --pill-bar-border-color: var(--border-subtle);
     --pill-bar-border: 1px solid var(--pill-bar-border-color);
-    --pill-bar-border-hover: var(--accent-primary);
+    --pill-bar-border-hover: var(--border-accent);
     --pill-bar-radius: var(--radius);
     --pill-bar-padding-y: calc(6 / 14 * 1rem);
     --pill-bar-padding-x: calc(10 / 14 * 1rem);
     --pill-bar-gap: var(--space-sm);
     --pill-bar-min-height: var(--row-height);
     --pill-bar-transition: all var(--transition-fast);
-    /* ============================================
-       TEXT
-       ============================================ */
-    --text-primary: #ffffff;
-    --text-secondary: #9ca3af;
 
-    /* ============================================
-       ACCENT COLORS (for icons, badges, progress bars)
-       ============================================ */
-    --accent-primary: #2e5ef7;   /* Primary accent (selected state, profile icon) */
-    --accent-info: #3b82f6;      /* Info/link accent (btn-link, storage ring) */
-    
-    --accent-blue: #2563eb;
-    --accent-purple: #9333ea;
-    --accent-green: #16a34a;
-    --accent-orange: #ea580c;
-    --accent-red: #dc2626;
-    --accent-gray: #4b5563;
-    --accent-yellow: #f59e0b;
-    --accent-teal: #0d9488;
-
-    /* ============================================
-       STATUS COLORS
-       ============================================ */
-    --status-success: #22c55e;
-    --status-error: #ef4444;
-
-    /* ============================================
-       TRANSITIONS
-       ============================================ */
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-   /* ============================================
-      INPUTS
-      ============================================ */
-   --input-bg: #1f2937;          /* Input background */
+    --input-bg: var(--surface-700);
 }
 
-   /* Light mode */
-   [data-theme="light"] {
-       --bg-primary: #f9fafb;
-       --bg-sidebar: #ffffff;
-       --bg-card: #ffffff;
-       --bg-header: #f3f4f6;
-       --bg-elevated: #ffffff;
-       --bg-elevated-hover: #d7d7d7;
-       --bg-hover: #e5e7eb;
-       --bg-selected: #3b82f6;
-      --shadow-color: #414141;
+[data-theme="light"] {
+    --surface-950: #f4f4f5;
+    --surface-900: #ffffff;
+    --surface-850: #fafafa;
+    --surface-800: #ffffff;
+    --surface-750: #f8f8f9;
+    --surface-700: #f1f2f4;
+    --surface-600: #e8eaee;
+    --surface-500: #d5d9e0;
+    --surface-400: #a1a8b3;
 
-       --border-default: #d1d5db;
-       --border-accent: #3b82f6;
+    --bg-primary: var(--surface-950);
+    --bg-sidebar: var(--surface-900);
+    --bg-card: var(--surface-800);
+    --bg-header: var(--surface-750);
+    --bg-elevated: var(--surface-700);
+    --bg-elevated-hover: var(--surface-600);
+    --bg-hover: color-mix(in srgb, var(--accent-600) 5%, transparent);
+    --bg-selected: color-mix(in srgb, var(--accent-600) 8%, var(--surface-700));
 
-       --text-primary: #111827;
-       --text-secondary: #6b7280;
+    --border-default: var(--surface-500);
+    --border-subtle: color-mix(in srgb, var(--surface-500) 55%, var(--surface-700));
+    --border-accent: color-mix(in srgb, var(--accent-500) 40%, var(--surface-500));
+    --border-focus: var(--accent-600);
 
-       --accent-primary: #3b82f6;
-       --accent-info: #2563eb;
+    --accent-tint-subtle: color-mix(in srgb, var(--accent-600) 7%, transparent);
+    --accent-tint-soft: color-mix(in srgb, var(--accent-600) 4%, transparent);
+    --accent-tint-medium: color-mix(in srgb, var(--accent-600) 10%, transparent);
+    --accent-tint-selected: color-mix(in srgb, var(--accent-600) 8%, var(--surface-700));
 
-       --accent-blue: #2563eb;
-       --accent-purple: #9333ea;
-       --accent-green: #16a34a;
-       --accent-orange: #ea580c;
-       --accent-red: #dc2626;
-       --accent-gray: #4b5563;
-       --accent-yellow: #f59e0b;
-       --accent-teal: #0d9488; 
-       --input-bg: #f3f4f6;          /* Input background for light mode */
+    --brand-tint-subtle: var(--accent-tint-subtle);
+    --brand-tint-soft: var(--accent-tint-soft);
+    --brand-tint-medium: var(--accent-tint-medium);
+    --brand-tint-strong: color-mix(in srgb, var(--accent-600) 12%, transparent);
+    --brand-tint-border: color-mix(in srgb, var(--accent-600) 18%, var(--surface-600));
+    --brand-tint-selected: var(--accent-tint-selected);
+
+    --overlay-scrim: color-mix(in srgb, var(--surface-950) 50%, transparent);
+    --shadow-color: color-mix(in srgb, var(--neutral-black) 12%, transparent);
+
+    --text-primary: #18181b;
+    --text-secondary: #5c6370;
+    --text-muted: #8b919c;
+    --text-brand: var(--accent-600);
+    --text-link: var(--accent-600);
+
+    --accent-primary: var(--accent-600);
+    --accent-info: var(--accent-600);
+
+    --icon-tile-bg: var(--surface-700);
+    --icon-tile-border: var(--border-subtle);
+    --icon-tile-fg: var(--text-secondary);
+    --icon-tile-fg-hover: var(--accent-600);
+
+    --status-success-text: #15803d;
+    --status-info-text: var(--accent-700);
+    --status-error-text: #b91c1c;
+
+    --input-bg: var(--surface-700);
 }
