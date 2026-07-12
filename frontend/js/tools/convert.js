@@ -1,5 +1,5 @@
 import { apiFetch, formatBytes, getLastPath } from '../utils.js';
-import { openPathSelector } from '../popups/folder-picker.js';
+import { setupPathBrowse } from '../path-picker.js';
 import { renderToolResultList } from './tool-ui.js';
 
 const COMING_SOON_COPY = {
@@ -135,15 +135,6 @@ function switchConvertTab(category) {
   if (resultsEl) resultsEl.innerHTML = '';
 }
 
-function setupPathBrowse(inputId, buttonId) {
-  const pathInput = document.getElementById(inputId);
-  const browseBtn = document.getElementById(buttonId);
-  browseBtn?.addEventListener('click', () => {
-    openPathSelector((path) => {
-      pathInput.value = path;
-    }, { startPath: pathInput?.value || getLastPath() });
-  });
-}
 
 export function setupConvertTool() {
   const form = document.getElementById('convert-form');

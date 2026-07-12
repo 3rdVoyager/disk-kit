@@ -153,7 +153,6 @@ def build_exe():
         "--hidden-import", "send2trash",
         "--hidden-import", "backend.main",
         "--hidden-import", "backend.settings",
-        "--hidden-import", "backend.pages.browse_files",
         "--hidden-import", "backend.operations",
         "--hidden-import", "backend.path_utils",
         "--hidden-import", "backend.tools.convert",

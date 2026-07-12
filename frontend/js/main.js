@@ -1,11 +1,3 @@
-// Import file browser functionality
-import {
-  loadFileBrowser,
-  goBack,
-  selectFileItem,
-  setupFileBrowserButtonListeners,
-} from './pages/browse-files.js';
-
 import { loadPopups } from './popups/load-popups.js';
 
 import { setupRenameTool } from './tools/rename.js';
@@ -18,14 +10,14 @@ import { setupSettingsTool } from './pages/settings.js';
 import { setupOnboarding } from './popups/onboarding.js';
 import { initThemeFromSettings } from './theme.js';
 
-import { escapeHtml, apiFetch, getLastPath, setLastPath, getConfiguredDefaultPath, resolveBrowserPath } from './utils.js';
+import { escapeHtml, apiFetch, getLastPath, setLastPath, getConfiguredDefaultPath } from './utils.js';
 
 const contentSection = document.getElementById('content');
 const navLinks = document.querySelectorAll('#sidebar a');
 let originalHomeHTML = '';
 
 const TOOL_IDS = ['convert', 'rename', 'duplicates'];
-const PAGE_ROUTES = new Set(['browse-files', 'settings']);
+const PAGE_ROUTES = new Set(['settings']);
 
 const OP_ICONS = {
   rename: { icon: 'edit', color: 'blue' },
@@ -39,7 +31,6 @@ const TOOL_META = {
   rename: { icon: 'edit', label: 'Batch Rename', description: 'Preview and apply rename rules' },
   duplicates: { icon: 'find_replace', label: 'Duplicate Finder', description: 'Find exact duplicate files' },
   settings: { icon: 'settings', label: 'Settings', description: 'Configure application settings' },
-  'browse-files': { icon: 'folder', label: 'Browse Files', description: 'Browse and navigate files' },
   home: { icon: 'home', label: 'Dashboard', description: 'Return to the dashboard' },
 };
 
@@ -47,7 +38,6 @@ const DASHBOARD_CARD_COLORS = {
   convert: 'orange',
   rename: 'blue',
   duplicates: 'green',
-  'browse-files': 'blue',
   settings: 'gray',
 };
 
@@ -141,23 +131,19 @@ async function init() {
 
 async function loadContent(toolName, pushHistory = true) {
   if (toolName === 'home' || !toolName) {
-    document.body.classList.remove('page-browse-files');
     contentSection.innerHTML = originalHomeHTML;
     renderDashboardHome();
     return;
   }
 
   // Legacy routes removed in v1 simplification
-  if (toolName === 'alltools' || toolName === 'storage-overview' || toolName === 'large-files' || toolName === 'organize') {
+  if (toolName === 'alltools' || toolName === 'storage-overview' || toolName === 'large-files' || toolName === 'organize' || toolName === 'browse-files') {
     toolName = 'home';
-    document.body.classList.remove('page-browse-files');
     contentSection.innerHTML = originalHomeHTML;
     renderDashboardHome();
     history.replaceState(null, null, '#home');
     return;
   }
-
-  document.body.classList.toggle('page-browse-files', toolName === 'browse-files');
 
   try {
     const path = getViewHtmlPath(toolName);
@@ -165,12 +151,6 @@ async function loadContent(toolName, pushHistory = true) {
     if (!response.ok) throw new Error(`HTTP ${response.status} loading ${path}`);
     contentSection.innerHTML = await response.text();
 
-    if (toolName === 'browse-files') {
-      setTimeout(async () => {
-        await loadFileBrowser(await resolveBrowserPath(getLastPath()));
-        setupFileBrowserButtonListeners();
-      }, 0);
-    }
     if (toolName === 'settings') setTimeout(() => setupSettingsTool(), 0);
     if (toolName === 'convert') setTimeout(() => setupConvertTool(), 0);
     if (toolName === 'rename') setTimeout(() => setupRenameTool(), 0);
@@ -193,13 +173,6 @@ function navigateTo(toolName) {
 
 function setupGlobalNavigation() {
   document.addEventListener('click', (e) => {
-    if (e.target.closest('.btn-tool[title="Back"]')) {
-      e.preventDefault();
-      const backBtn = e.target.closest('.btn-tool[title="Back"]');
-      if (backBtn?.classList.contains('disabled')) return;
-      goBack();
-      return;
-    }
     const link = e.target.closest('a[href^="#"]');
     if (link) {
       e.preventDefault();

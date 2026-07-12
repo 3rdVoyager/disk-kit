@@ -12,7 +12,6 @@ First public toolkit release — image conversion, batch rename, and duplicate f
 
 **What exists now**
 - Dashboard with tool shortcuts and "On the Roadmap" future-view
-- Browse Files with guarded Recycle Bin operations
 - Convert Files (Batch Image to WebP, JPEG, PNG)
 - Batch Rename with preview and collision detection
 - Duplicate Finder (Exact size/hash match)
@@ -37,15 +36,14 @@ Focus: Ship the core three tools with professional UX and safety.
 - Coming Soon placeholders for future tools
 - Desktop packaging and release automation
 - Theme in Settings with system default
-- Set default path from file browser toolbar
 
 ### v0.9.0 - Workflow Polish
 
-Focus: Round out practical daily-use workflows.
+Focus: Round out practical daily-use workflows and improve integration with the OS.
 
 **Deliverables**
 - Operation history polish (more detail on converted/renamed items)
-- Improve file browser ergonomics (selection, state restore)
+- **Native OS folder picker** replaces custom in-app file browser
 - **Archive & Extract** (ZIP) tool implementation
 - **Empty Folder Finder** tool implementation
 

@@ -88,8 +88,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: var(--bg-sidebar);
     color: var(--text-secondary);
@@ -105,7 +105,7 @@ main {
 }
 
 .social-link .material-symbols-rounded {
-    font-size: var(--icon);
+    font-size: var(--icon-lg);
 }
 
 #content {
@@ -122,39 +122,6 @@ body.has-update-banner #content {
     padding-top: calc(var(--content-padding) + 36px);
 }
 
-
-#content:has(.browse-files-layout) {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-}
-
-#content > .browse-files-layout {
-    flex: 1;
-    min-height: 0;
-}
-
-/* Browse Files: keep scroll inside the file list, not the page shell */
-body.page-browse-files {
-    overflow: hidden;
-    height: 100vh;
-}
-
-body.page-browse-files main {
-    height: 100vh;
-    min-height: 0;
-    overflow: hidden;
-}
-
-body.page-browse-files #content {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-    height: 100vh;
-    box-sizing: border-box;
-}
 
 /* Header & Navigation adjustments */
 header,
@@ -424,8 +391,8 @@ header,
     justify-content: center;
     padding: var(--space-xs) 0;
     gap: 0;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     margin: 1px auto;
 }
 
@@ -435,8 +402,8 @@ header,
 }
 
 .sidebar-collapsed #sidebar #menu-toggle {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     padding: 0;
 }
 
@@ -489,10 +456,10 @@ header,
 }
 
 .sidebar-collapsed .social-link {
-    width: 24px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
 }
 
 .sidebar-collapsed .social-link .material-symbols-rounded {
-    font-size: var(--font-size-sm);
+    font-size: var(--icon);
 }

@@ -1,4 +1,4 @@
-const POPUP_FILES = ['onboarding', 'folder-picker'];
+const POPUP_FILES = ['onboarding'];
 
 export async function loadPopups() {
   await Promise.all(POPUP_FILES.map(async (name) => {

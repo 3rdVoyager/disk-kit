@@ -1,6 +1,6 @@
 import { apiFetch, escapeHtml, getLastPath } from '../utils.js';
 import { renderToolResultList } from './tool-ui.js';
-import { openPathSelector } from '../popups/folder-picker.js';
+import { setupPathBrowse } from '../path-picker.js';
 
 let lastPreviewPayload = null;
 
@@ -99,11 +99,7 @@ export function setupRenameTool() {
     pathInput.value = getLastPath();
   }
 
-  browseBtn?.addEventListener('click', () => {
-    openPathSelector((path) => {
-      if (pathInput) pathInput.value = path;
-    }, { startPath: pathInput?.value || getLastPath() });
-  });
+  setupPathBrowse('rename-path', 'rename-browse');
 
   const previewBtn = document.getElementById('rename-preview-btn');
   const groups = {

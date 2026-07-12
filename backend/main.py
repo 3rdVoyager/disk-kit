@@ -10,7 +10,6 @@ from flask import Flask, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 from backend.assets import assets_dir, ensure_logo, resolve_logo_path
 from backend.settings import DEFAULT_SETTINGS, ensure_settings_file, load_settings, save_settings
-from backend.pages.browse_files import list_files_api, delete_files_api, open_file_api
 from backend.operations import get_operations_api
 from backend.tools.rename import rename_api
 from backend.tools.duplicates import duplicates_api
@@ -61,21 +60,6 @@ def update_settings():
 def reset_settings():
     save_settings(DEFAULT_SETTINGS)
     return jsonify({'success': True, 'settings': DEFAULT_SETTINGS})
-
-@app.route('/api/files', methods=['GET'])
-def list_files():
-    """List files and directories at the given path"""
-    return list_files_api(request, load_settings)
-
-@app.route('/api/files/delete', methods=['POST'])
-def delete_files():
-    """Move a file or directory to the Recycle Bin"""
-    return delete_files_api(request, load_settings)
-
-@app.route('/api/files/open', methods=['POST'])
-def open_file():
-    """Open a file with the system default application."""
-    return open_file_api(request, load_settings)
 
 @app.route('/api/operations', methods=['GET'])
 def get_operations():
@@ -167,9 +151,3 @@ def handle_unexpected_error(err):
     if request.path.startswith('/api/'):
         return api_error('Internal server error', 500)
     return 'Internal server error', 500
-
-if __name__ == '__main__':
-    from waitress import serve
-
-    ensure_settings_file()
-    serve(app, host='127.0.0.1', port=5000)

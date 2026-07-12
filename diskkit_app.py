@@ -44,6 +44,24 @@ def run_server():
     serve(app, host='127.0.0.1', port=5000)
 
 
+class Api:
+    def pick_folder(self, initial_dir=''):
+        """Open a native OS folder dialog and return the selected path."""
+        window = webview.active_window()
+        if not window:
+            return None
+        
+        result = window.create_file_dialog(
+            webview.FileDialog.FOLDER,
+            directory=(initial_dir or '').replace('/', '\\'),
+        )
+        
+        if result:
+            # result is a tuple of selected paths
+            return str(result[0]).replace('\\', '/')
+        return None
+
+
 def create_window():
     """Create and configure the PyWebView window"""
     window = webview.create_window(
@@ -56,6 +74,7 @@ def create_window():
         easy_drag=False,
         frameless=False,
         text_select=True,
+        js_api=Api(),
     )
 
     return window

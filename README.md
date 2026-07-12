@@ -6,7 +6,6 @@ Disk Kit is a locally hosted desktop-style file toolkit with a Flask backend and
 
 Implemented and supported now:
 - Dashboard with tool shortcuts and future roadmap
-- Browse Files (list directories, inspect files, move items to Recycle Bin within configured root)
 - Convert Files (batch images to WebP/JPG/PNG)
 - Batch Rename (preview/apply with collision detection)
 - Duplicate Finder (exact match)
@@ -36,10 +35,10 @@ Planned items shown in older docs/UI are not part of shipped v1 unless listed ab
 
 ```bash
 pip install -r backend/requirements.txt
-python -m backend.main
+python diskkit_browser.py
 ```
 
-Open `http://127.0.0.1:5000`.
+Opens `http://127.0.0.1:5000` in your default browser. Use this for UI development; native folder browse is desktop-only.
 
 ## Desktop App (PyWebView)
 
@@ -48,6 +47,8 @@ Run desktop mode without building:
 ```bash
 python diskkit_app.py
 ```
+
+Disk Kit uses the native OS folder picker for directory selection when running in desktop mode. In standard browser mode, folder browsing is disabled and paths must be pasted manually.
 
 ## Build and Release
 
@@ -84,9 +85,6 @@ Settings are stored in:
 - `GET /api/settings`
 - `POST /api/settings`
 - `POST /api/settings/reset`
-- `GET /api/files`
-- `POST /api/files/delete`
-- `POST /api/files/open`
 - `GET /api/operations`
 - `POST /api/convert`
 - `POST /api/batch-rename`

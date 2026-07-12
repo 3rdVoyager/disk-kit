@@ -1,5 +1,5 @@
 import { apiFetch, getNestedValue, setNestedValue, setLastPath } from '../utils.js';
-import { openPathSelector } from '../popups/folder-picker.js';
+import { setupPathBrowse } from '../path-picker.js';
 import { checkForUpdates } from '../updates.js';
 import { setCachedAppVersion } from '../version.js';
 import { applyTheme } from '../theme.js';
@@ -90,7 +90,7 @@ async function saveSettings() {
     && !Boolean(currentSettings?.security?.disablePathProtections);
   if (enablingDangerMode) {
     const confirmed = window.confirm(
-      'Disable path protections?\n\nYou will be able to browse and delete files anywhere on your computer, including system folders. Turn this off again in Settings when you are done.'
+      'Disable path protections?\n\nYou will be able to access files anywhere on your computer, including system folders. Turn this off again in Settings when you are done.'
     );
     if (!confirmed) return;
   }
@@ -146,13 +146,7 @@ export function setupSettingsTool() {
   const resetBtn = document.getElementById('reset-settings');
   if (resetBtn) resetBtn.addEventListener('click', () => resetSettings());
 
-  const browseBtn = document.getElementById('settings-browse');
-  const pathInput = document.getElementById('defaultPath');
-  browseBtn?.addEventListener('click', () => {
-    openPathSelector((path) => {
-      if (pathInput) pathInput.value = path;
-    });
-  });
+  setupPathBrowse('defaultPath', 'settings-browse');
 
   const disableCheckbox = document.getElementById('disablePathProtections');
   disableCheckbox?.addEventListener('change', updateDangerZoneState);

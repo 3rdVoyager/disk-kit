@@ -1,10 +1,10 @@
 import { apiFetch, setLastPath } from '../utils.js';
-import { openPathSelector } from './folder-picker.js';
+import { pickFolder } from '../path-picker.js';
 import { applyTheme, DEFAULT_THEME } from '../theme.js';
 
 const ONBOARDED_KEY = 'disk-kit-onboarded';
-const SETUP_STEP_INDEX = 3;
-const TOTAL_STEPS = 5;
+const SETUP_STEP_INDEX = 2;
+const TOTAL_STEPS = 4;
 
 let currentStep = 0;
 
@@ -26,7 +26,6 @@ function getElements() {
 
 const STEP_TITLES = [
   'Welcome to Disk Kit',
-  'Browse Files',
   'Your toolkit',
   'Set up your workspace',
   'Ready to go',
@@ -130,10 +129,11 @@ export function setupOnboarding() {
 
   document.getElementById('take-tour-btn')?.addEventListener('click', () => openOnboarding());
 
-  browseBtn?.addEventListener('click', () => {
-    openPathSelector((path) => {
-      if (pathInput) pathInput.value = path;
-    }, { startPath: pathInput?.value || '' });
+  browseBtn?.addEventListener('click', async () => {
+    const path = await pickFolder({ startPath: pathInput?.value || '' });
+    if (path && pathInput) {
+      pathInput.value = path;
+    }
   });
 
   themeSelect?.addEventListener('change', (e) => {

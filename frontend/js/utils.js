@@ -57,17 +57,7 @@ export function getLastPath() {
 }
 
 export function setLastPath(path) {
-  if (path) localStorage.setItem(LAST_PATH_KEY, path);
-}
-
-export function updateBreadcrumb(path) {
-  const parts = path ? path.split('/').filter(Boolean) : [];
-  const text = parts.length ? `This PC > ${parts.join(' > ')}` : 'This PC';
-
-  const toolbarBreadcrumb = document.querySelector('#content .toolbar-breadcrumb');
-  if (toolbarBreadcrumb) {
-    toolbarBreadcrumb.textContent = text;
-  }
+    if (path) localStorage.setItem(LAST_PATH_KEY, path);
 }
 
 export async function getConfiguredDefaultPath() {
@@ -78,16 +68,6 @@ export async function getConfiguredDefaultPath() {
   } catch {
     return '';
   }
-}
-
-/**
- * Resolve the path to open in the file browser.
- * Prefers an explicit path, then last visited, then settings defaultPath.
- */
-export async function resolveBrowserPath(explicitPath = '') {
-  const normalized = (explicitPath || getLastPath() || '').replace(/\\/g, '/');
-  if (normalized) return normalized;
-  return getConfiguredDefaultPath();
 }
 
 export function formatBytes(bytes) {

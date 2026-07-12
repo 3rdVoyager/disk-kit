@@ -38,7 +38,7 @@
     --space-xl: calc(24 / 14 * 1rem);       /* hero / empty-state spacing */
 
     --sidebar-width: 250px;
-    --sidebar-collapsed-width: 54px;
+    --sidebar-collapsed-width: 70px;
     --content-padding: var(--space-md);
 
     --icon: calc(17 / 14 * 1rem);
