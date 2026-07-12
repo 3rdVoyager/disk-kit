@@ -9,7 +9,7 @@ Released: {{date}}
 3. Launch from Start Menu or Desktop shortcut
 
 ### Option 2: Portable
-1. Extract DiskKit-Portable-{{version}}.zip to any folder
+1. Extract the downloaded DiskKit-Portable-{{version}}-*.zip to any folder
 2. Run DiskKit.exe
 
 ## System Requirements

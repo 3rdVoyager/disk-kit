@@ -9,7 +9,7 @@ Released: July 12, 2026
 3. Launch from Start Menu or Desktop shortcut
 
 ### Option 2: Portable
-1. Extract DiskKit-Portable-0.8.0.zip to any folder
+1. Extract the downloaded DiskKit-Portable-0.8.0-*.zip to any folder
 2. Run DiskKit.exe
 
 ## System Requirements
@@ -23,7 +23,6 @@ Released: July 12, 2026
 - **Automated Update Checks** — Stay informed when new versions are released via a subtle in-app notification.
 - **Roadmap & Coming Soon** — Visual placeholders in the sidebar and dashboard showcase future capabilities like ZIP archiving and Smart Sort.
 - **Stability & Security** — Production-ready Waitress server and strict path access controls for safety.
-- **Settings-first UX** — Theme (system/dark/light) and default path controls in Settings; set default path from Browse Files toolbar.
 
 ## Known Issues
 - Duplicate Finder lists matches but does not yet delete duplicates from the results view.
